@@ -1,5 +1,8 @@
 'use client';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
+
 import {
   getRetroFundingRoundProjectById,
   type getRetroFundingRoundProjectByIdResponse,
@@ -17,8 +20,7 @@ import { agoraRoundsAPI } from '@/config';
 import type { CategoryType } from '@/lib/categories';
 import { request } from '@/lib/request';
 import type { CategoryId } from '@/types/shared';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
+
 import type { ImpactScore } from './useProjectScoring';
 
 export const categoryMap: Record<CategoryType, string> = {

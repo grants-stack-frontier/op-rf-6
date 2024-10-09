@@ -1,6 +1,7 @@
-import { useToast } from '@/components/ui/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import ky from 'ky';
+
+import { useToast } from '@/components/ui/use-toast';
 
 export type FeedbackForm = {
   address: string;

@@ -1,7 +1,9 @@
-import { ProjectGrantsAndFunding } from '@/__generated__/api/agora.schemas';
 import { RiLink, RiMoneyDollarCircleFill, RiTimeFill } from '@remixicon/react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { ProjectGrantsAndFunding } from '@/__generated__/api/agora.schemas';
+
 import Logo from '../../../public/logo.png';
 import { CustomAccordion } from '../common/custom-accordion';
 import { Card, CardContent } from '../ui/card';

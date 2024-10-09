@@ -1,6 +1,7 @@
-import { cn } from '@/lib/utils';
 import { ComponentProps } from 'react';
 import ReactMarkdown from 'react-markdown';
+
+import { cn } from '@/lib/utils';
 
 const components = {
   a: (p: ComponentProps<'a'>) => <a target="_blank" {...p} />,

@@ -1,8 +1,8 @@
 'use client';
+import debounce from 'lodash.debounce';
 import { useCallback, useRef, useState } from 'react';
 
 import type { Round4Allocation } from './useBallot';
-import debounce from 'lodash.debounce';
 
 export type BallotState = Record<
   string,

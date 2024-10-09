@@ -1,4 +1,7 @@
 'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { CategoryDetails } from '@/components/category-details';
 import { PageView } from '@/components/common/page-view';
 import { ProjectsSidebar } from '@/components/project-details/projects-sidebar';
@@ -11,8 +14,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { categories } from '@/lib/categories';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function CategoryDetailsPage({
   params: { id = '' },

@@ -1,4 +1,8 @@
 'use client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Address } from 'viem';
+import { useAccount } from 'wagmi';
+
 import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { UnlockBallotDialog } from '@/components/ballot/unlock-ballot';
 import { LoadingDialog } from '@/components/common/loading-dialog';
@@ -7,13 +11,10 @@ import { ProjectDetails } from '@/components/project-details';
 import { ProjectBreadcrumb } from '@/components/project-details/project-breadcrumb';
 import { ReviewSidebar } from '@/components/project-details/review-sidebar';
 import { useSession } from '@/hooks/useAuth';
+import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
 import { ImpactScore, useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
-import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
 import { CategoryId } from '@/types/shared';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Address } from 'viem';
-import { useAccount } from 'wagmi';
 
 export default function ProjectDetailsPage({
   params,

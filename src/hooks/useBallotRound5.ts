@@ -6,19 +6,19 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { agoraRoundsAPI } from '@/config';
-
-import { useAccount, useSignMessage } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { request } from '@/lib/request';
 import { useMemo } from 'react';
-import { useBallotRound5Context } from '@/components/ballot/provider5';
-import type { CategoryId } from '@/types/shared';
+import { useAccount, useSignMessage } from 'wagmi';
+
+import { submitRetroFundingBallot } from '@/__generated__/api/agora';
 import type {
   RetroFunding5BallotSubmissionContent,
   SubmitRetroFundingBallotBody,
 } from '@/__generated__/api/agora.schemas';
-import { submitRetroFundingBallot } from '@/__generated__/api/agora';
+import { useBallotRound5Context } from '@/components/ballot/provider5';
+import { useToast } from '@/components/ui/use-toast';
+import { agoraRoundsAPI } from '@/config';
+import { request } from '@/lib/request';
+import type { CategoryId } from '@/types/shared';
 
 export type Round5CategoryAllocation = {
   category_slug: CategoryId;

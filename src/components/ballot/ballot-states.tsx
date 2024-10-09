@@ -1,19 +1,22 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
+import { type ComponentType, type PropsWithChildren, useMemo } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
-import Link from 'next/link';
-import { type ComponentType, type PropsWithChildren, useMemo } from 'react';
-import { Progress } from '../ui/progress';
-import { useBallotRound5Context } from './provider5';
 import { useDisconnect, useSession } from '@/hooks/useAuth';
 import { categoryNames } from '@/lib/categories';
 import type { CategoryId } from '@/types/shared';
+
 import PairwiseLogo from '../../../public/pairwise.svg';
-import Image from 'next/image';
+import { Progress } from '../ui/progress';
 import { Separator } from '../ui/separator';
+
+import { useBallotRound5Context } from './provider5';
 
 export function EmptyBallot() {
   const { ballot } = useBallotRound5Context();

@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useAllProjectsByCategory } from '@/hooks/useProjects';
-import type { CategoryId } from '@/types/shared';
 import debounce from 'lodash.debounce';
-import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budget-helpers';
-import { useBudget } from './useBudget';
-import { categories } from '@/lib/categories';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAccount } from 'wagmi';
+
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
+import { useAllProjectsByCategory } from '@/hooks/useProjects';
+import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budget-helpers';
+import { categories } from '@/lib/categories';
+import type { CategoryId } from '@/types/shared';
+
 import { useSession } from './useAuth';
+import { useBudget } from './useBudget';
+
 
 export function useBudgetForm() {
   const roundId = 5;

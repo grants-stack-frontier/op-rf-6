@@ -6,16 +6,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { agoraRoundsAPI } from '@/config';
-
-import { useAccount, useSignMessage } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { request } from '@/lib/request';
-import type { ProjectAllocation } from './useMetrics';
 import debounce from 'lodash.debounce';
 import { useRef } from 'react';
+import { useAccount, useSignMessage } from 'wagmi';
+
 import { useBallotContext } from '@/components/ballot/provider';
+import { useToast } from '@/components/ui/use-toast';
+import { agoraRoundsAPI } from '@/config';
+import { request } from '@/lib/request';
 import type { CategoryId } from '@/types/shared';
+
+import type { ProjectAllocation } from './useMetrics';
 
 export type Round4Ballot = {
   address: string;

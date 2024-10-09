@@ -7,8 +7,9 @@ import {
   useCallback,
   useState,
 } from 'react';
-import { type Round5Ballot, useRound5Ballot } from '@/hooks/useBallotRound5';
 import { useAccount } from 'wagmi';
+
+import { type Round5Ballot, useRound5Ballot } from '@/hooks/useBallotRound5';
 import { useBallotRound5Editor } from '@/hooks/useBallotRound5Editor';
 
 type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {

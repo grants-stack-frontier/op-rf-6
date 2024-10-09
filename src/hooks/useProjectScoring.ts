@@ -1,3 +1,5 @@
+import { useCallback, useMemo, useState } from 'react';
+
 import { toast } from '@/components/ui/use-toast';
 import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
@@ -7,9 +9,9 @@ import {
   removeSkippedProject,
   setProjectsSkipped,
 } from '@/lib/localStorage';
-import { useCallback, useMemo, useState } from 'react';
-import type { Address } from 'viem';
+
 import type { Round5Ballot } from './useBallotRound5';
+import type { Address } from 'viem';
 
 export type ImpactScore = 0 | 1 | 2 | 3 | 4 | 5 | 'Skip';
 

@@ -1,13 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-
 import { useAccount } from 'wagmi';
-import type { Round4Allocation } from './useBallot';
+
 import {
   getImpactMetricsOnRetroFundingRound,
   recordImpactMetricView,
 } from '@/__generated__/api/agora';
+
+import type { Round4Allocation } from './useBallot';
 
 enum OrderBy {
   name = 'name',

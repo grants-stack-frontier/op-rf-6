@@ -1,13 +1,17 @@
 'use client';
 
+import { ArrowDownToLineIcon } from 'lucide-react';
 import Image from 'next/image';
-import { Card } from '../ui/card';
+
+import { votingEndDate } from '@/config';
+
 import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { Button } from '../ui/button';
-import { ArrowDownToLineIcon } from 'lucide-react';
-import { votingEndDate } from '@/config';
-import { downloadImage } from './submit-dialog5';
+import { Card } from '../ui/card';
+
+
 import { useBallotRound5Context } from './provider5';
+import { downloadImage } from './submit-dialog5';
 
 const monthNames = [
   'Jan',

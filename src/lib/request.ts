@@ -1,8 +1,10 @@
 'use client';
 import { decodeJwt } from 'jose';
 import ky, { HTTPError } from 'ky';
-import type { Address } from 'viem';
+
 import { getToken, setToken } from './token';
+
+import type { Address } from 'viem';
 
 export const request = ky.extend({
   hooks: {

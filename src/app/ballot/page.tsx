@@ -1,18 +1,24 @@
 'use client';
-import { EmptyBallot, NonBadgeholder } from '@/components/ballot/ballot-states';
-import { Card } from '@/components/ui/card';
+import { LoaderIcon, Menu } from 'lucide-react';
+import Link from 'next/link';
+import { type ComponentProps, useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { EmptyBallot, NonBadgeholder } from '@/components/ballot/ballot-states';
 import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { SubmitRound5Dialog } from '@/components/ballot/submit-dialog5';
 import { PageView } from '@/components/common/page-view';
 import { SearchInput } from '@/components/common/search-input';
+import { useVotingTimeLeft } from '@/components/common/voting-ends-in';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { NumberInput } from '@/components/ui/number-input';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useVotingTimeLeft } from '@/components/voting-ends-in';
+import { DisabledTooltip } from '@/components/ui/tooltip';
 import { votingEndDate } from '@/config';
-import { categoryNames } from '@/lib/categories';
+import { useSession } from '@/hooks/useAuth';
 import {
   type Round5ProjectAllocation,
   useRound5Ballot,
@@ -24,18 +30,13 @@ import {
   DistributionMethod,
   useDistributionMethod,
 } from '@/hooks/useBallotRound5';
-import { LoaderIcon, Menu } from 'lucide-react';
-import Link from 'next/link';
-import { type ComponentProps, useEffect, useMemo, useState } from 'react';
-import { MetricsEditor } from '../../components/metrics-editor';
-import type { CategoryId } from '@/types/shared';
-import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { NumberInput } from '@/components/ui/number-input';
-import { Input } from '@/components/ui/input';
 import { useBudget } from '@/hooks/useBudget';
 import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
-import { DisabledTooltip } from '@/components/ui/tooltip';
-import { useSession } from '@/hooks/useAuth';
+import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
+import { categoryNames } from '@/lib/categories';
+import type { CategoryId } from '@/types/shared';
+
+import { MetricsEditor } from '../../components/metrics-editor';
 
 function formatAllocationOPAmount(amount?: number): string {
   if (amount === undefined) return '0';

@@ -1,8 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Category } from '@/lib/categories';
 import {
   RiAddLine,
   RiArrowRightSLine,
@@ -13,8 +8,16 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useBudgetContext } from './provider';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import { categoryMap } from '@/hooks/useProjects';
+import { Category } from '@/lib/categories';
+
+import { useBudgetContext } from './provider';
+
 
 interface CategoryItemProps {
   category: Category;

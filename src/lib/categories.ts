@@ -1,4 +1,5 @@
 import type { CategoryId } from '@/types/shared';
+
 import ethCore from '../../public/eth_core.svg';
 import opRnd from '../../public/op_rnd.svg';
 import opTooling from '../../public/op_tooling.svg';

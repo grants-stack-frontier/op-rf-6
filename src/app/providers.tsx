@@ -1,19 +1,18 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   getDefaultConfig,
   getDefaultWallets,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
 import {
   argentWallet,
   trustWallet,
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PropsWithChildren } from 'react';
+import { WagmiProvider } from 'wagmi';
 import { mainnet, optimism } from 'wagmi/chains';
 import '@/lib/mixpanel';
 

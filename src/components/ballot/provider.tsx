@@ -5,6 +5,8 @@ import {
   useContext,
   useEffect,
 } from 'react';
+import { useAccount } from 'wagmi';
+
 import {
   type Round4Ballot,
   useBallot,
@@ -12,7 +14,6 @@ import {
   useSaveAllocation,
 } from '@/hooks/useBallot';
 import { useBallotEditor } from '@/hooks/useBallotEditor';
-import { useAccount } from 'wagmi';
 
 type BallotContext = ReturnType<typeof useBallotEditor>;
 const BallotContext = createContext(

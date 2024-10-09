@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { decodeJwt } from 'jose';
+import ky from 'ky';
 import { useRouter } from 'next/navigation';
 import { useDisconnect as useWagmiDisconnect } from 'wagmi';
-import ky from 'ky';
-import { decodeJwt } from 'jose';
-import type { Address } from 'viem';
+
 import mixpanel from '@/lib/mixpanel';
 import { getToken, setToken } from '@/lib/token';
+
+import type { Address } from 'viem';
 
 export function useNonce() {
   return useQuery({

@@ -1,13 +1,16 @@
+import { RiArrowRightSLine } from '@remixicon/react';
+import Image from 'next/image';
+import { useState } from 'react';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { RiArrowRightSLine } from '@remixicon/react';
-import Image from 'next/image';
-import { useState } from 'react';
+
 import { Button } from '../ui/button';
+
 import { ContributorsDialog } from './contributors-dialog';
 
 export function AvatarCarousel({

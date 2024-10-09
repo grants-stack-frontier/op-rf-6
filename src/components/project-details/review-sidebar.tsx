@@ -1,3 +1,6 @@
+import { RiCheckLine } from '@remixicon/react';
+import { useCallback, useMemo, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -8,8 +11,7 @@ import {
 } from '@/components/ui/card';
 import { ImpactScore, scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
-import { RiCheckLine } from '@remixicon/react';
-import { useCallback, useMemo, useState } from 'react';
+
 import { useBallotRound5Context } from '../ballot/provider5';
 import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';

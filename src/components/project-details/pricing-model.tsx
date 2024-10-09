@@ -1,5 +1,6 @@
 import { ProjectPricingModel } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
+
 import { CustomAccordion } from '../common/custom-accordion';
 import { Card, CardContent } from '../ui/card';
 

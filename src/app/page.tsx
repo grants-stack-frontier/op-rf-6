@@ -1,10 +1,11 @@
 'use client';
+import { redirect } from 'next/navigation';
+import { useAccount } from 'wagmi';
+
 import { PageView } from '@/components/common/page-view';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { WelcomeCarousel } from '@/components/welcome/carousel';
-import { redirect } from 'next/navigation';
-import { useAccount } from 'wagmi';
 
 import onboard1 from '../../public/onboard1.svg';
 import onboard2 from '../../public/onboard2.svg';

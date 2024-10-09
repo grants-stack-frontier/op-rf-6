@@ -1,8 +1,11 @@
 'use client';
 
-import { Text } from '@/components/ui/text';
 import { useMemo } from 'react';
+
+import { Text } from '@/components/ui/text';
+
 import { Progress } from '../ui/progress';
+
 import { useBallotRound5Context } from './provider5';
 
 export function ScoringProgressBar() {

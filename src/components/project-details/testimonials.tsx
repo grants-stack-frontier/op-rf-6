@@ -1,7 +1,9 @@
-import { Heading } from '@/components/ui/headings';
-import mixpanel from '@/lib/mixpanel';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+
+import { Heading } from '@/components/ui/headings';
+import mixpanel from '@/lib/mixpanel';
+
 import { Card, CardContent } from '../ui/card';
 
 export function Testimonials({

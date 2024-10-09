@@ -1,22 +1,29 @@
 'use client';
 
-import { decodeJwt } from 'jose';
-import { useAccount, useDisconnect as useWagmiDisconnect } from 'wagmi';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button } from '../ui/button';
-
-import { getToken } from '@/lib/token';
+import { decodeJwt } from 'jose';
 import { useRouter } from 'next/navigation';
-import mixpanel from '@/lib/mixpanel';
-import type { Address } from 'viem';
 import React, { useEffect, useState } from 'react';
-
-import { UnifiedDialog } from './unified-dialog';
+import { useAccount, useDisconnect as useWagmiDisconnect } from 'wagmi';
 
 import {
   getVoterConfirmationView,
   removeVoterConfirmationView,
 } from '@/hooks/useAuth';
+import mixpanel from '@/lib/mixpanel';
+import { getToken } from '@/lib/token';
+
+import { Button } from '../ui/button';
+
+
+
+
+import { UnifiedDialog } from './unified-dialog';
+
+import type { Address } from 'viem';
+
+
+
 
 export function VoterConfirmationDialog() {
   const { data: session } = useSession();

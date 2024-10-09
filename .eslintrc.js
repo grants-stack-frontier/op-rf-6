@@ -19,6 +19,33 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'react/prop-types': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'before',
+          },
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   settings: {
     'import/parsers': {

@@ -1,9 +1,11 @@
-import { SocialLinks } from '@/__generated__/api/agora.schemas';
-import mixpanel from '@/lib/mixpanel';
-import { getSafeUrl } from '@/lib/projectUtils';
 import { RiLink, RiTwitterXLine } from '@remixicon/react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { SocialLinks } from '@/__generated__/api/agora.schemas';
+import mixpanel from '@/lib/mixpanel';
+import { getSafeUrl } from '@/lib/projectUtils';
+
 import Mirror from '../../../public/mirror.svg';
 import Warpcast from '../../../public/warpcast.svg';
 

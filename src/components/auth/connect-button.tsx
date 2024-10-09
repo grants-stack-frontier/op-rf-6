@@ -1,8 +1,13 @@
 'use client';
 
-import Image from 'next/image';
-import { ChevronDown } from 'lucide-react';
 import { ConnectButton as RConnectButton } from '@rainbow-me/rainbowkit';
+import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
+import { forwardRef } from 'react';
+
+import { useDisconnect } from '@/hooks/useAuth';
+import mixpanel from '@/lib/mixpanel';
+
 import { Button } from '../ui/button';
 import {
   DropdownMenu,
@@ -10,9 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { forwardRef } from 'react';
-import mixpanel from '@/lib/mixpanel';
-import { useDisconnect } from '@/hooks/useAuth';
 
 export function ConnectButton() {
   const { disconnect } = useDisconnect();

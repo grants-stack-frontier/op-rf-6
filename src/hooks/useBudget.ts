@@ -2,8 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import type { Round5Allocation } from '@/types/shared';
+
 import {
   getRetroFundingRoundBallotById,
   updateRetroFundingRoundCategoryAllocation,
@@ -14,6 +13,8 @@ import type {
   RetroFundingBallotCategoriesAllocation,
   Round5Ballot,
 } from '@/__generated__/api/agora.schemas';
+import { useToast } from '@/components/ui/use-toast';
+import type { Round5Allocation } from '@/types/shared';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();

@@ -1,9 +1,10 @@
 'use client';
 import React, { createContext, useContext } from 'react';
+
+import { Project } from '@/__generated__/api/agora.schemas';
+import { useBudgetForm } from '@/hooks/useBudgetForm';
 import { Category } from '@/lib/categories';
 import { CategoryId } from '@/types/shared';
-import { useBudgetForm } from '@/hooks/useBudgetForm';
-import { Project } from '@/__generated__/api/agora.schemas';
 
 interface BudgetContextType {
   categories: Category[] | undefined;

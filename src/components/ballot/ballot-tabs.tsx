@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 import { cn } from '@/lib/utils';
-import { Separator } from '../ui/separator';
+
 import { useBudgetContext } from '../budget/provider';
+import { Separator } from '../ui/separator';
 
 export function BallotTabs() {
   const path = usePathname();

@@ -1,8 +1,9 @@
 'use client';
-import { ComponentProps, PropsWithChildren, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Markdown } from '@/components/markdown';
 import mixpanel from 'mixpanel-browser';
+import { ComponentProps, PropsWithChildren, useEffect } from 'react';
+
+import { Markdown } from '@/components/common/markdown';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 export function ManualDialog({
   children,

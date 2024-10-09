@@ -6,17 +6,18 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { Button } from '@/components/ui/button';
 import { badgeholderManualUrl, votingEndDate } from '@/config';
 import { hasSeenIntro } from '@/lib/localStorage';
 
-import { Button } from '@/components/ui/button';
 import { ConnectButton } from '../auth/connect-button';
 import { SignMessage } from '../auth/sign-message';
 import { VoterConfirmationDialog } from '../auth/voter-confirmation';
-import { ModeToggle } from './mode-toggle';
 import { Separator } from '../ui/separator';
-import { VotingEndsIn } from './voting-ends-in';
+
 import { Logo } from './logo';
+import { ModeToggle } from './mode-toggle';
+import { VotingEndsIn } from './voting-ends-in';
 
 export function Header() {
   const { address } = useAccount();

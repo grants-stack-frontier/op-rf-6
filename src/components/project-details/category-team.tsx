@@ -1,5 +1,6 @@
 import { type CategoryType, categoryNames } from '@/lib/categories';
 import { getBadgeClassName } from '@/lib/projectUtils';
+
 import { AvatarCarousel } from '../common/avatar-carousel';
 import { Badge } from '../ui/badge';
 
