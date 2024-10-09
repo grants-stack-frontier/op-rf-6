@@ -1,6 +1,6 @@
 'use client';
 import type { Project } from '@/__generated__/api/agora.schemas';
-import type { CategoryType } from '@/data/categories';
+import type { CategoryType } from '@/lib/categories';
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 import { CategoryAndTeam, type TeamMember } from './category-team';

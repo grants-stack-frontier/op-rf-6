@@ -9,7 +9,7 @@ import { useBudgetContext } from './provider';
 import { useBudget } from '@/hooks/useBudget';
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { useAccount } from 'wagmi';
-import { Category } from '@/data/categories';
+import { Category } from '@/lib/categories';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =

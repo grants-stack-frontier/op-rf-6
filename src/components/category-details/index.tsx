@@ -1,6 +1,6 @@
 'use client';
 import { Heading } from '@/components/ui/headings';
-import { categories } from '@/data/categories';
+import { categories } from '@/lib/categories';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { CategoryId } from '@/types/shared';

@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { categories } from '@/data/categories';
+import { categories } from '@/lib/categories';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 

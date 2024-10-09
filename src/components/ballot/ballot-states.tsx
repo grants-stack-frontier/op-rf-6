@@ -10,7 +10,7 @@ import { Progress } from '../ui/progress';
 import { useBallotRound5Context } from './provider5';
 import { useDisconnect } from '@/hooks/useAuth';
 import { useVotingCategory } from '@/hooks/useVotingCategory';
-import { categoryNames } from '@/data/categories';
+import { categoryNames } from '@/lib/categories';
 import type { CategoryId } from '@/types/shared';
 import PairwiseLogo from '../../../public/pairwise.svg';
 import Image from 'next/image';

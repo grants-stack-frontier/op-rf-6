@@ -1,4 +1,4 @@
-import { CategoryType } from '@/data/categories';
+import { CategoryType } from '@/lib/categories';
 
 export function getBadgeClassName(category: CategoryType | undefined): string {
   switch (category) {

@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { Category } from '@/data/categories';
+import { Category } from '@/lib/categories';
 import {
   RiAddLine,
   RiArrowRightSLine,

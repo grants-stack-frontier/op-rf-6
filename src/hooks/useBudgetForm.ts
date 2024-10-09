@@ -4,7 +4,7 @@ import type { CategoryId } from '@/types/shared';
 import debounce from 'lodash.debounce';
 import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budget-helpers';
 import { useBudget } from './useBudget';
-import { categories } from '@/data/categories';
+import { categories } from '@/lib/categories';
 import { useAccount } from 'wagmi';
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { useSession } from './useAuth';

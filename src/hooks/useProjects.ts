@@ -14,7 +14,7 @@ import type {
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
-import type { CategoryType } from '@/data/categories';
+import type { CategoryType } from '@/lib/categories';
 import { request } from '@/lib/request';
 import type { CategoryId } from '@/types/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';

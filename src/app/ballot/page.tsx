@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useVotingTimeLeft } from '@/components/voting-ends-in';
 import { votingEndDate } from '@/config';
-import { categoryNames } from '@/data/categories';
+import { categoryNames } from '@/lib/categories';
 import {
   type Round5ProjectAllocation,
   useRound5Ballot,
