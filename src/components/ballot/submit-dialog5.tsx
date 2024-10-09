@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { ArrowDownToLineIcon } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import Image from 'next/image';
 import { ComponentProps, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
@@ -175,5 +175,5 @@ export function downloadImage(element: HTMLImageElement | null) {
   anchor.click();
   document.body.removeChild(anchor);
 
-  mixpanel.track('Download I Voted image');
+  track('Download I Voted image');
 }

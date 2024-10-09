@@ -8,6 +8,7 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
+    'next/core-web-vitals',
   ],
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'import'],
   rules: {

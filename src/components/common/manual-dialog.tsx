@@ -1,5 +1,5 @@
 'use client';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import { ComponentProps, PropsWithChildren, useEffect } from 'react';
 
 import { Markdown } from '@/components/common/markdown';
@@ -11,15 +11,16 @@ export function ManualDialog({
   onOpenChange,
 }: PropsWithChildren<Partial<ComponentProps<typeof Dialog>>>) {
   useEffect(() => {
-    if (open) track();
+    if (open) track('Open Manual');
   }, [open]);
 
-  function track() {
-    mixpanel.track('Open Manual');
-  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {children && <DialogTrigger onClick={track}>{children}</DialogTrigger>}
+      {children && (
+        <DialogTrigger onClick={() => track('Open Manual')}>
+          {children}
+        </DialogTrigger>
+      )}
       <DialogContent>
         <Markdown className="prose-sm max-h-[500px] overflow-y-scroll">
           {`## Open Source multiplier

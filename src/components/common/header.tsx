@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowUpRight } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
@@ -48,7 +48,7 @@ export function Header() {
             iconRight={ArrowUpRight}
             variant="link"
             className="pl-4 h-8"
-            onClick={() => mixpanel.track('Open Manual', { external: true })}
+            onClick={() => track('Open Manual', { external: true })}
           >
             View badgeholder manual
           </Button>

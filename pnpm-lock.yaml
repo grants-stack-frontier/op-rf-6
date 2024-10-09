@@ -156,6 +156,9 @@ importers:
         specifier: ^2.5.22
         version: 2.9.7(@tanstack/query-core@5.56.2)(@tanstack/react-query@5.56.2(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.25.2)(@babel/preset-env@7.24.6(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.25.2)(@babel/preset-env@7.24.6(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(typescript@5.4.5)(viem@2.13.1(bufferutil@4.0.8)(typescript@5.4.5)(zod@3.23.8))(zod@3.23.8)
     devDependencies:
+      '@next/eslint-plugin-next':
+        specifier: ^14.2.15
+        version: 14.2.15
       '@types/lodash.debounce':
         specifier: ^4.0.9
         version: 4.0.9
@@ -1503,6 +1506,9 @@ packages:
 
   '@next/env@14.2.3':
     resolution: {integrity: sha512-W7fd7IbkfmeeY2gXrzJYDx8D2lWKbVoTIj1o1ScPHNzvp30s1AuoEFSdr39bC5sjxJaxTtq3OTCZboNp0lNWHA==}
+
+  '@next/eslint-plugin-next@14.2.15':
+    resolution: {integrity: sha512-pKU0iqKRBlFB/ocOI1Ip2CkKePZpYpnw5bEItEkuZ/Nr9FQP1+p7VDWr4VfOdff4i9bFmrOaeaU1bFEyAcxiMQ==}
 
   '@next/eslint-plugin-next@14.2.2':
     resolution: {integrity: sha512-q+Ec2648JtBpKiu/FSJm8HAsFXlNvioHeBCbTP12T1SGcHYwhqHULSfQgFkPgHDu3kzNp2Kem4J54bK4rPQ5SQ==}
@@ -8939,6 +8945,10 @@ snapshots:
       strict-event-emitter: 0.5.1
 
   '@next/env@14.2.3': {}
+
+  '@next/eslint-plugin-next@14.2.15':
+    dependencies:
+      glob: 10.3.10
 
   '@next/eslint-plugin-next@14.2.2':
     dependencies:

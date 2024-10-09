@@ -12,7 +12,7 @@ import {
 } from '@/hooks/useBallotRound5';
 import type { ImpactScore } from '@/hooks/useProjectImpact';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { format, parse } from '@/lib/csv';
+import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
 import type { CategoryId } from '@/types/shared';
 
@@ -67,7 +67,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parse<Round5ProjectAllocation>(csvString);
+      const { data } = parseCSV<Round5ProjectAllocation>(csvString);
       const allocations = data.map(({ project_id, allocation, impact }) => ({
         project_id,
         allocation: Number(allocation).toString(),

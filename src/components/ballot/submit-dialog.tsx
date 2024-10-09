@@ -1,5 +1,5 @@
 import { ArrowDownToLineIcon } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import Image from 'next/image';
 import { type ComponentProps, useState } from 'react';
 
@@ -150,5 +150,5 @@ export function downloadImage(element: HTMLImageElement | null) {
   anchor.click();
   document.body.removeChild(anchor);
 
-  mixpanel.track('Download I Voted image');
+  track('Download I Voted image');
 }
