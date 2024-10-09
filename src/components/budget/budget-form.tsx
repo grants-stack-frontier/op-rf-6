@@ -14,8 +14,6 @@ import { Slider } from '../ui/slider';
 import { CategoryItem } from './category-item';
 import { useBudgetContext } from './provider';
 
-
-
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =
     useBudgetContext();

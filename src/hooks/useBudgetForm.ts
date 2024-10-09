@@ -11,7 +11,6 @@ import type { CategoryId } from '@/types/shared';
 import { useSession } from './useAuth';
 import { useBudget } from './useBudget';
 
-
 export function useBudgetForm() {
   const roundId = 5;
   const { address } = useAccount();

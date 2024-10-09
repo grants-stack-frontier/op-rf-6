@@ -18,7 +18,6 @@ import { Category } from '@/lib/categories';
 
 import { useBudgetContext } from './provider';
 
-
 interface CategoryItemProps {
   category: Category;
 }

@@ -20,7 +20,6 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 
-
 export function ResetButton() {
   const [isOpen, setIsOpen] = useState(false);
   const { ballot } = useBallotRound5Context();

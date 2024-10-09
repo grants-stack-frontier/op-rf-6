@@ -17,7 +17,6 @@ import {
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 
-
 export function UnlockBallotDialog({
   isOpen,
   setOpen,

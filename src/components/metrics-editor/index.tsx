@@ -23,8 +23,6 @@ import { Card } from '../ui/card';
 
 import { ResetButton } from './reset-button';
 
-
-
 export function BlueCircleCheckIcon() {
   return (
     <svg

@@ -18,7 +18,6 @@ import {
 
 import { useBallotContext } from './provider';
 
-
 export function ImportBallotDialog({
   isOpen,
   onOpenChange,

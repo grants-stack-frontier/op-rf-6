@@ -15,15 +15,9 @@ import { getToken } from '@/lib/token';
 
 import { Button } from '../ui/button';
 
-
-
-
 import { UnifiedDialog } from './unified-dialog';
 
 import type { Address } from 'viem';
-
-
-
 
 export function VoterConfirmationDialog() {
   const { data: session } = useSession();

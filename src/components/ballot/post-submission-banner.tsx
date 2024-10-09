@@ -9,7 +9,6 @@ import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 
-
 import { useBallotRound5Context } from './provider5';
 import { downloadImage } from './submit-dialog5';
 

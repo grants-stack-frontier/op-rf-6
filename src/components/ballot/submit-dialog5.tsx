@@ -22,7 +22,6 @@ import { Text } from '../ui/text';
 import { Feedback, Form } from './feedback-form';
 import { exportRound5Ballot } from './import-ballot5';
 
-
 export function SubmitRound5Dialog({
   open,
   ballot,
