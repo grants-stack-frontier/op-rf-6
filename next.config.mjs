@@ -1,5 +1,4 @@
 const AGORA_API_URL = process.env.AGORA_API_URL;
-const AGORA_API_KEY = process.env.AGORA_API_KEY;
 const DEFORM_API_URL = 'https://api.deform.cc';
 
 const hostnames = [
@@ -22,7 +21,6 @@ const nextConfig = {
   env: {
     AGORA_API_URL: AGORA_API_URL,
     DEFORM_API_URL: DEFORM_API_URL,
-    AGORA_API_KEY: AGORA_API_KEY,
   },
   // https://maxschmitt.me/posts/next-js-api-proxy
   // https://nextjs.org/docs/pages/api-reference/next-config-js/rewrites
