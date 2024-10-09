@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from './ui/accordion';
+} from '../ui/accordion';
 
 export function CustomAccordion({
   value,

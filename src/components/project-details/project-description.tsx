@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Markdown } from '../markdown';
+import { Markdown } from '../common/markdown';
 import { Button } from '../ui/button';
 
 export function ProjectDescription({ description }: { description?: string }) {

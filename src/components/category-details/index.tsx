@@ -5,7 +5,7 @@ import { useSession } from '@/hooks/useAuth';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { CategoryId } from '@/types/shared';
 import Image from 'next/image';
-import { Markdown } from '../markdown';
+import { Markdown } from '../common/markdown';
 import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
 

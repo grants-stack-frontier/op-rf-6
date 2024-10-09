@@ -13,9 +13,9 @@ import { Button } from '@/components/ui/button';
 import { ConnectButton } from '../auth/connect-button';
 import { SignMessage } from '../auth/sign-message';
 import { VoterConfirmationDialog } from '../auth/voter-confirmation';
-import { ModeToggle } from '../dark-mode-toggle';
+import { ModeToggle } from './mode-toggle';
 import { Separator } from '../ui/separator';
-import { VotingEndsIn } from '../voting-ends-in';
+import { VotingEndsIn } from './voting-ends-in';
 import { Logo } from './logo';
 
 export function Header() {

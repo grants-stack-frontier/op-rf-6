@@ -17,7 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { base, fraxtal, mode, optimism, zora } from 'viem/chains';
 import Logo from '../../../public/logo.png';
-import { CustomAccordion } from '../custom-accordion';
+import { CustomAccordion } from '../common/custom-accordion';
 import { Card, CardContent } from '../ui/card';
 import { Heading } from '../ui/headings';
 
