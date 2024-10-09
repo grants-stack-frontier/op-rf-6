@@ -8,7 +8,7 @@ export function Callouts() {
   const { address, status } = useAccount();
   const isBadgeholder = useIsBadgeholder();
 
-  const [days, hours, minutes, seconds] = useVotingTimeLeft(votingEndDate);
+  const [, , , seconds] = useVotingTimeLeft(votingEndDate);
 
   if (Number(seconds) < 0) {
     return (

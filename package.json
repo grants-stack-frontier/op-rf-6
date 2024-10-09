@@ -56,12 +56,12 @@
     "react-markdown": "^9.0.1",
     "react-use": "^17.5.0",
     "recharts": "^2.12.6",
+    "sharp": "^0.33.5",
     "siwe": "^2.3.2",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "2.x",
-    "wagmi": "^2.5.22",
-    "zod": "^3.22.5"
+    "wagmi": "^2.5.22"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.9",
@@ -70,8 +70,10 @@
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "eslint": "^8.57.0",
     "eslint-config-next": "14.2.2",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "husky": "^9.1.6",
     "orval": "^7.0.1",
     "postcss": "^8",

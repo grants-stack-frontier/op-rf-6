@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useDisconnect as useWagmiDisconnect } from 'wagmi';
 import ky from 'ky';
 import { decodeJwt } from 'jose';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import mixpanel from '@/lib/mixpanel';
 import { getToken, setToken } from '@/lib/token';
 
@@ -22,7 +22,7 @@ export function useVerify() {
       signature: string;
       nonce: string;
     }) => {
-      const { access_token, ...rest } = await ky
+      const { access_token } = await ky
         .post('/api/agora/auth/verify', { json })
         .json<{ access_token: string }>();
       mixpanel.track('Sign In', { status: 'success' });

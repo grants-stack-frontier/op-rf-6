@@ -2,15 +2,15 @@ import { toast } from '@/components/ui/use-toast';
 import { HttpStatusCode } from '@/enums/http-status-codes';
 import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
-  ProjectsSkipped,
+  type ProjectsSkipped,
   addSkippedProject,
   getProjectsSkipped,
   removeSkippedProject,
   setProjectsSkipped,
 } from '@/utils/localStorage';
 import { useCallback, useMemo, useState } from 'react';
-import { Address } from 'viem';
-import { Round5Ballot } from './useBallotRound5';
+import type { Address } from 'viem';
+import type { Round5Ballot } from './useBallotRound5';
 
 export type ImpactScore = 0 | 1 | 2 | 3 | 4 | 5 | 'Skip';
 
@@ -89,6 +89,7 @@ export const useProjectScoring = (
             }
           }
         } catch (error) {
+          console.error('Error saving impact score:', error);
           setIsSaving(false);
           return {
             allProjectsScored: false,
@@ -97,7 +98,7 @@ export const useProjectScoring = (
           setIsSaving(false);
         }
       }
-      if (!!updatedProjectsSkipped) {
+      if (updatedProjectsSkipped) {
         setProjectsSkipped(category, walletAddress, updatedProjectsSkipped);
       } else {
         setProjectsSkipped(category, walletAddress, projectsSkipped);

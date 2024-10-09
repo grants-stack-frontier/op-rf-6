@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { OrderBy, SortOrder } from './useFilter';
+import { OrderBy, type SortOrder } from './useFilter';
 import { useAccount } from 'wagmi';
-import { Round4Allocation } from './useBallot';
+import type { Round4Allocation } from './useBallot';
 import {
   getImpactMetricsOnRetroFundingRound,
   recordImpactMetricView,

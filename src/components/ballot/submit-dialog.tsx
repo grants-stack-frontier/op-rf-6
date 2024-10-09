@@ -1,11 +1,11 @@
-import { ComponentProps, useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Feedback, Form } from './feedback-form';
 import { Heading } from '../ui/headings';
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
 import { votingEndDate } from '@/config';
-import { Round4Ballot, useSubmitBallot } from '@/hooks/useBallot';
+import { type Round4Ballot, useSubmitBallot } from '@/hooks/useBallot';
 import { formatDate } from '@/lib/utils';
 import { exportBallot } from './import-ballot';
 import VotingSuccess from '../../../public/RetroFunding_Round4_IVoted@2x.png';

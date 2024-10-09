@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, useCallback, useRef } from 'react';
+import { type ComponentProps, useCallback, useRef } from 'react';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from '../ui/dialog';
 import { format, parse } from '@/lib/csv';
-import { Round4Allocation, useSaveAllocation } from '@/hooks/useBallot';
+import { type Round4Allocation, useSaveAllocation } from '@/hooks/useBallot';
 import { useBallotContext } from './provider';
 import { useMetricIds } from '@/hooks/useMetrics';
 import mixpanel from '@/lib/mixpanel';

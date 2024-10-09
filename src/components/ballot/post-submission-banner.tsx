@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { Card } from '../ui/card';
 import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
-import { useBallotSubmission } from '@/hooks/useBallotRound5';
 import { Button } from '../ui/button';
 import { ArrowDownToLineIcon } from 'lucide-react';
 import { votingEndDate } from '@/config';
@@ -30,7 +29,6 @@ const getMonthName = (monthNumber: number) => {
 };
 
 export function PostSubmissionBanner() {
-  // const { data } = useBallotSubmission();
   const { ballot } = useBallotRound5Context();
 
   if (!ballot || ballot.status !== 'SUBMITTED' || !ballot.submitted_at)

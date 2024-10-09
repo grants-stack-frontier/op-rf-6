@@ -14,7 +14,11 @@ import { categories } from '@/data/categories';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-export default function CategoryDetailsPage({ params: { id = '' } }) {
+export default function CategoryDetailsPage({
+  params: { id = '' },
+}: {
+  params: { id: string };
+}) {
   const router = useRouter();
 
   return (

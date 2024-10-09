@@ -1,20 +1,18 @@
 'use client';
 
-import ky from 'ky';
 import { decodeJwt } from 'jose';
 import { useAccount, useDisconnect as useWagmiDisconnect } from 'wagmi';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../ui/button';
 
-import { getToken, setToken } from '@/lib/token';
+import { getToken } from '@/lib/token';
 import { useRouter } from 'next/navigation';
 import mixpanel from '@/lib/mixpanel';
-import { Address } from 'viem';
-import { useEffect, useState } from 'react';
+import type { Address } from 'viem';
+import React, { useEffect, useState } from 'react';
 
 import { UnifiedDialog } from './unified-dialog';
 
-import React from 'react';
 import {
   getVoterConfirmationView,
   removeVoterConfirmationView,
@@ -122,32 +120,6 @@ function VoterIsNotBadgeholder({ onClose }: { onClose: () => void }) {
   );
 }
 
-function useNonce() {
-  return useQuery({
-    queryKey: ['nonce'],
-    queryFn: async () => ky.get('/api/agora/auth/nonce').text(),
-  });
-}
-function useVerify() {
-  const client = useQueryClient();
-  return useMutation({
-    mutationFn: async (json: {
-      message: string;
-      signature: string;
-      nonce: string;
-    }) => {
-      const { access_token, ...rest } = await ky
-        .post('/api/agora/auth/verify', { json })
-        .json<{ access_token: string }>();
-      mixpanel.track('Sign In', { status: 'success' });
-      setToken(access_token);
-      // Trigger a refetch of the session
-      await client.invalidateQueries({ queryKey: ['session'] });
-
-      return { access_token };
-    },
-  });
-}
 export function useDisconnect() {
   const client = useQueryClient();
   const router = useRouter();

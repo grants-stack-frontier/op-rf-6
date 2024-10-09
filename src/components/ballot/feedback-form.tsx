@@ -5,17 +5,15 @@ import { Badge } from '../ui/badge';
 
 import {
   FormProvider,
-  UseFormRegister,
+  type UseFormRegister,
   useController,
   useForm,
   useFormContext,
 } from 'react-hook-form';
 
-import { Card } from '../ui/card';
-import { Checkbox } from '../ui/checkbox';
 import { Textarea } from '../ui/textarea';
 import { ChevronLeft } from 'lucide-react';
-import { PropsWithChildren, useMemo } from 'react';
+import { type PropsWithChildren, useMemo } from 'react';
 import {
   Select,
   SelectContent,
@@ -23,8 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { FeedbackForm, useSendFeedback } from '@/hooks/useFeedback';
-import { FormMessage } from '../ui/form';
+import { type FeedbackForm, useSendFeedback } from '@/hooks/useFeedback';
 
 export function Form({
   children,
@@ -35,7 +32,7 @@ export function Form({
   return <FormProvider {...form}>{children}</FormProvider>;
 }
 
-export function Feedback({ onSubmit = () => {} }) {
+export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   const form = useFormContext<FeedbackForm & { index: number }>();
   const { handleSubmit, register, setValue, watch } = form;
   const index = watch('index') ?? 0;
@@ -341,7 +338,7 @@ function SelectForm({
   options: { value: string; label: string }[];
 }) {
   const _name = `${name}Rating`;
-  const { control, watch, register, formState } = useFormContext();
+  const { control, register } = useFormContext();
   const { field } = useController({ name: _name, control });
 
   return (

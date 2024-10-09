@@ -1,10 +1,7 @@
 'use client';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import { Round4Allocation } from './useBallot';
-import { createSortFn, useMetricsByRound } from './useMetrics';
-import { useBallotFilter } from './useFilter';
-import { useBallotContext } from '@/components/ballot/provider';
+import type { Round4Allocation } from './useBallot';
 import debounce from 'lodash.debounce';
 
 export type BallotState = Record<
@@ -45,7 +42,7 @@ export function useBallotEditor({
     [setState]
   );
 
-  const set = (id: string, amount: number, unlock: boolean = false) => {
+  const set = (id: string, amount: number, unlock = false) => {
     setState((s) => {
       // Must be between 0 - 100
       const allocation = Math.max(Math.min(amount || 0, 100), 0);
@@ -74,6 +71,7 @@ export function useBallotEditor({
   };
   const remove = (id: string) =>
     setState((s) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [id]: _remove, ..._state } = s;
       onRemove?.(id);
       return calculateBalancedAmounts(_state);
@@ -104,30 +102,4 @@ function calculateBalancedAmounts(state: BallotState): BallotState {
       },
     ])
   );
-}
-
-export function useSortBallot(initialState: BallotState) {
-  const { state } = useBallotContext();
-  const { data, isPending } = useMetricsByRound(4);
-  const [filter, setFilter] = useBallotFilter();
-
-  const metrics = data?.data ?? [];
-
-  // TODO remove forced assertion or metric_id
-  const sorted = useMemo(
-    () =>
-      metrics
-        ?.map((m) => ({ ...m, ...state[m.metric_id!] }))
-        .sort(createSortFn({ order: filter.order, sort: filter.sort }))
-        .map((m) => m?.metric_id ?? '')
-        .filter(Boolean) ?? [],
-    [filter, metrics] // Don't put state here because we don't want to sort when allocation changes
-  );
-
-  return {
-    filter,
-    sorted,
-    isPending,
-    setFilter,
-  };
 }

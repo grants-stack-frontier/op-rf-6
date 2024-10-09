@@ -7,7 +7,6 @@ import { Slider } from '../ui/slider';
 import { CategoryItem } from './category-item';
 import { useBudgetContext } from './provider';
 import { useBudget } from '@/hooks/useBudget';
-import { Round5Allocation } from '@/types/shared';
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { useAccount } from 'wagmi';
 import { Category } from '@/data/categories';

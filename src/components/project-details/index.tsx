@@ -1,9 +1,9 @@
 'use client';
-import { Project } from '@/__generated__/api/agora.schemas';
-import { CategoryType } from '@/data/categories';
+import type { Project } from '@/__generated__/api/agora.schemas';
+import type { CategoryType } from '@/data/categories';
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
-import { CategoryAndTeam, TeamMember } from './category-team';
+import { CategoryAndTeam, type TeamMember } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
 import { PricingModel } from './pricing-model';

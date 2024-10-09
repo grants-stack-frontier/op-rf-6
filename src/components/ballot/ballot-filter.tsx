@@ -13,7 +13,7 @@ import { Ellipsis } from 'lucide-react';
 
 export function BallotFilter() {
   const [isOpen, setOpen] = useState(false);
-  const { state, ballot } = useBallotRound5Context();
+  const { ballot } = useBallotRound5Context();
 
   return (
     <div className="flex gap-2">

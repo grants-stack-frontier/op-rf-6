@@ -1,4 +1,4 @@
-import { CategoryType, categoryNames } from '@/data/categories';
+import { type CategoryType, categoryNames } from '@/data/categories';
 import { getBadgeClassName } from '@/utils/projectUtils';
 import { AvatarCarousel } from '../common/avatar-carousel';
 import { Badge } from '../ui/badge';

@@ -14,7 +14,7 @@ import { useVotingTimeLeft } from '@/components/voting-ends-in';
 import { votingEndDate } from '@/config';
 import { categoryNames } from '@/data/categories';
 import {
-  Round5ProjectAllocation,
+  type Round5ProjectAllocation,
   useRound5Ballot,
   useIsSavingRound5Ballot,
   useRound5BallotWeightSum,
@@ -26,9 +26,9 @@ import {
 } from '@/hooks/useBallotRound5';
 import { LoaderIcon, Menu } from 'lucide-react';
 import Link from 'next/link';
-import { ComponentProps, useEffect, useMemo, useState } from 'react';
+import { type ComponentProps, useEffect, useMemo, useState } from 'react';
 import { MetricsEditor } from '../../components/metrics-editor';
-import { CategoryId } from '@/types/shared';
+import type { CategoryId } from '@/types/shared';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { useVotingCategory } from '@/hooks/useVotingCategory';
 import { NumberInput } from '@/components/ui/number-input';
@@ -374,16 +374,14 @@ function YourBallot() {
                         className="text-center"
                         value={proj.positionInput}
                         disabled={!isMovable || isSubmitting || isSavingBallot}
-                        onFocus={(e) => {
-                          setIsInputFocused(true);
-                        }}
+                        onFocus={() => setIsInputFocused(true)}
                         onFocusCapture={(e) => {
                           e.preventDefault();
                           setIsInputFocused(true);
                         }}
                         onChange={async (e) => {
                           const newIndex =
-                            parseInt(e.currentTarget.value, 10) - 1;
+                            Number.parseInt(e.currentTarget.value, 10) - 1;
                           if (
                             isMovable &&
                             // newIndex >= 0 &&
@@ -412,7 +410,8 @@ function YourBallot() {
                             setProjectList(newProjects);
                             return;
                           }
-                          const newIndex = parseInt(e.target.value, 10) - 1;
+                          const newIndex =
+                            Number.parseInt(e.target.value, 10) - 1;
                           if (
                             isMovable &&
                             Number(proj.position) !==
@@ -459,19 +458,19 @@ function YourBallot() {
                       placeholder="--"
                       className="text-center w-[112px]"
                       value={proj.allocationInput || ''}
-                      onFocus={(e) => {
-                        setIsInputFocused(true);
-                      }}
+                      onFocus={() => setIsInputFocused(true)}
                       onFocusCapture={(e) => {
                         e.preventDefault();
                         setIsInputFocused(true);
                       }}
                       onChange={(e) => {
                         const inputValue = e.target.value;
-                        const newAllocation = parseFloat(inputValue);
+                        const newAllocation = Number.parseFloat(inputValue);
 
                         const newProjectList = [...projectList];
-                        newProjectList[i].allocation = isNaN(newAllocation)
+                        newProjectList[i].allocation = Number.isNaN(
+                          newAllocation
+                        )
                           ? 0
                           : Number(inputValue);
                         newProjectList[i].allocationInput = inputValue;
@@ -485,7 +484,8 @@ function YourBallot() {
                         setIsInputFocused(false);
                         saveAllocation({
                           project_id: proj.project_id,
-                          allocation: parseFloat(proj.allocationInput) || 0,
+                          allocation:
+                            Number.parseFloat(proj.allocationInput) || 0,
                         });
                       }}
                       symbol="%"
@@ -494,7 +494,9 @@ function YourBallot() {
                   </div>
                   <div className="text-muted-foreground text-xs">
                     {formatAllocationOPAmount(
-                      (budget * (parseFloat(proj.allocationInput) || 0)) / 100
+                      (budget *
+                        (Number.parseFloat(proj.allocationInput) || 0)) /
+                        100
                     )}{' '}
                     OP
                   </div>
@@ -517,7 +519,7 @@ function YourBallot() {
 
         {ballot?.address && (
           <SubmitRound5Dialog
-            ballot={ballot!}
+            ballot={ballot}
             open={isSubmitting}
             onOpenChange={() => setSubmitting(false)}
           />
@@ -530,7 +532,7 @@ function YourBallot() {
             return (
               <div
                 key={proj.project_id}
-                className={`flex justify-between flex-1 border-b gap-1 py-6`}
+                className="flex justify-between flex-1 border-b gap-1 py-6"
                 draggable="true"
                 onDragStart={(e) => {
                   e.dataTransfer.setData(
@@ -588,7 +590,7 @@ function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
   const isBudgetIncomplete =
     !budgetData?.budget ||
     !budgetData.allocations ||
-    budgetData.allocations.length == 0;
+    budgetData.allocations.length === 0;
 
   if (Number(seconds) < 0) {
     return null;
@@ -643,13 +645,13 @@ function WeightsError() {
   const isBudgetIncomplete =
     !budgetData?.budget ||
     !budgetData.allocations ||
-    budgetData.allocations.length == 0;
+    budgetData.allocations.length === 0;
 
   if (Math.abs(remainingAllocation) < 0.01 && isBudgetIncomplete) {
     return (
       <span className="text-sm text-destructive">
         Please set{' '}
-        <a href={`/budget`} className="underline">
+        <a href="/budget" className="underline">
           your budget and category allocations
         </a>{' '}
         before submitting.

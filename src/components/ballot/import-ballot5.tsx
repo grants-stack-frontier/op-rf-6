@@ -3,16 +3,16 @@
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
-  Round5ProjectAllocation,
+  type Round5ProjectAllocation,
   useDistributionMethodFromLocalStorage,
   useRound5Ballot,
 } from '@/hooks/useBallotRound5';
-import { ImpactScore } from '@/hooks/useProjectImpact';
+import type { ImpactScore } from '@/hooks/useProjectImpact';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parse } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
-import { CategoryId } from '@/types/shared';
-import { ComponentProps, useCallback, useRef } from 'react';
+import type { CategoryId } from '@/types/shared';
+import { type ComponentProps, useCallback, useRef } from 'react';
 import { useAccount } from 'wagmi';
 import { Button } from '../ui/button';
 import {
@@ -108,7 +108,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           refetch();
           onClose();
         })
-        .catch((e) => {
+        .catch(() => {
           toast({
             title: 'Error importing ballot',
             variant: 'destructive',
