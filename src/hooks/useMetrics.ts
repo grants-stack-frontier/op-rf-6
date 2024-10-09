@@ -2,13 +2,21 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { OrderBy, type SortOrder } from './useFilter';
 import { useAccount } from 'wagmi';
 import type { Round4Allocation } from './useBallot';
 import {
   getImpactMetricsOnRetroFundingRound,
   recordImpactMetricView,
 } from '@/__generated__/api/agora';
+
+enum OrderBy {
+  name = 'name',
+  allocation = 'allocation',
+}
+enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 type SortFields = { [OrderBy.name]?: string; [OrderBy.allocation]?: number };
 

@@ -30,12 +30,12 @@ import { type ComponentProps, useEffect, useMemo, useState } from 'react';
 import { MetricsEditor } from '../../components/metrics-editor';
 import type { CategoryId } from '@/types/shared';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { useVotingCategory } from '@/hooks/useVotingCategory';
 import { NumberInput } from '@/components/ui/number-input';
 import { Input } from '@/components/ui/input';
 import { useBudget } from '@/hooks/useBudget';
 import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
 import { DisabledTooltip } from '@/components/ui/tooltip';
+import { useSession } from '@/hooks/useAuth';
 
 function formatAllocationOPAmount(amount?: number): string {
   if (amount === undefined) return '0';
@@ -101,7 +101,8 @@ function YourBallot() {
   const allocationSum = useRound5BallotWeightSum();
   const { isPending: isResetting } = useSaveProjects();
   const { getBudget } = useBudget(5);
-  const votingCategory = useVotingCategory();
+  const { data: session } = useSession();
+  const votingCategory = session?.category;
   const { data: projects } = useProjectsByCategory(
     votingCategory as CategoryId
   );

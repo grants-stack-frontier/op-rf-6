@@ -8,8 +8,7 @@ import Link from 'next/link';
 import { type ComponentType, type PropsWithChildren, useMemo } from 'react';
 import { Progress } from '../ui/progress';
 import { useBallotRound5Context } from './provider5';
-import { useDisconnect } from '@/hooks/useAuth';
-import { useVotingCategory } from '@/hooks/useVotingCategory';
+import { useDisconnect, useSession } from '@/hooks/useAuth';
 import { categoryNames } from '@/lib/categories';
 import type { CategoryId } from '@/types/shared';
 import PairwiseLogo from '../../../public/pairwise.svg';
@@ -18,7 +17,8 @@ import { Separator } from '../ui/separator';
 
 export function EmptyBallot() {
   const { ballot } = useBallotRound5Context();
-  const votingCategory = useVotingCategory();
+  const { data: session } = useSession();
+  const votingCategory = session?.category;
 
   const quantities = useMemo(() => {
     if (ballot) {
