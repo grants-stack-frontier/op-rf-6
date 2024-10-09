@@ -1,6 +1,6 @@
 import { SocialLinks } from '@/__generated__/api/agora.schemas';
 import mixpanel from '@/lib/mixpanel';
-import { getSafeUrl } from '@/utils/projectUtils';
+import { getSafeUrl } from '@/lib/projectUtils';
 import { RiLink, RiTwitterXLine } from '@remixicon/react';
 import Image from 'next/image';
 import Link from 'next/link';

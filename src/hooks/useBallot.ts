@@ -91,10 +91,6 @@ export function useBallot(address?: string) {
         .get(`${agoraRoundsAPI}/ballots/${address}`)
         .json<Round4Ballot[]>()
         .then((r) => r?.[0] ?? null),
-    // .catch(() => {
-    //   toast({ variant: "destructive", title: "Error loading ballot" });
-    //   return null;
-    // }),
   });
 }
 

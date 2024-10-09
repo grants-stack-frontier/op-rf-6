@@ -6,7 +6,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
-import { markIntroAsSeen } from '@/utils/localStorage';
+import { markIntroAsSeen } from '@/lib/localStorage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';

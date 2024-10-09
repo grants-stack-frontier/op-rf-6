@@ -121,14 +121,6 @@ export function ReviewSidebar({
             <Skeleton className="h-2 w-full" />
           </div>
         ) : (
-          // <>
-          //   <Progress
-          //     value={(votedCount ? votedCount / totalProjects : 0) * 100}
-          //   />
-          //   <p className="text-sm text-muted-foreground">
-          //     You&apos;ve scored {votedCount} out of {totalProjects} projects
-          //   </p>
-          // </>
           <ScoringProgressBar />
         )}
       </CardFooter>

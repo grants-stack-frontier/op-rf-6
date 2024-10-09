@@ -85,20 +85,6 @@ function CheckBallotState() {
     return <YourBallot />;
   }, [isPending, address, isConnecting, state, ballot]);
   return display;
-  // Comment out for local dev if needed
-  // if (isPending) {
-  //   return <Skeleton className='p-6 h-96' />;
-  // }
-  // if (!address && !isConnecting) {
-  //   return <NonBadgeholder />;
-  // }
-  // const isEmptyBallot = !Object.keys(state).length;
-  // const needImpactScoring =
-  //   ballot && ballot.projects_to_be_evaluated.length > 0;
-  // if (isEmptyBallot || needImpactScoring) {
-  //   return <EmptyBallot />;
-  // }
-  // return <YourBallot />;
 }
 
 interface ProjectAllocationState extends Round5ProjectAllocation {

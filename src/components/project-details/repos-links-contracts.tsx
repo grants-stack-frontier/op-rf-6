@@ -3,7 +3,7 @@ import {
   ProjectGithubItem,
   ProjectGithubItemOneOf,
 } from '@/__generated__/api/agora.schemas';
-import { formatProjectAge } from '@/utils/projectUtils';
+import { formatProjectAge } from '@/lib/projectUtils';
 import {
   RiGitForkFill,
   RiGithubFill,

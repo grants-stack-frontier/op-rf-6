@@ -12,17 +12,6 @@ export type BallotRound5State = Record<
 export function useBallotRound5Editor() {
   const [state, setState] = useState<BallotRound5State>({});
 
-  // const debouncedUpdate = useRef(
-  //   debounce(
-  //     (id: string, state: BallotRound5State) =>
-  //       onUpdate?.({ ...state[id], project_id: id }),
-  //     200,
-  //     {
-  //       leading: false,
-  //       trailing: true,
-  //     }
-  //   )
-  // ).current;
   const setInitialState = useCallback(
     (allocations: Round5ProjectAllocation[] = []) => {
       const ballot: BallotRound5State = Object.fromEntries(

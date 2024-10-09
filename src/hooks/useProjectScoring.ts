@@ -1,5 +1,4 @@
 import { toast } from '@/components/ui/use-toast';
-import { HttpStatusCode } from '@/enums/http-status-codes';
 import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
   type ProjectsSkipped,
@@ -7,7 +6,7 @@ import {
   getProjectsSkipped,
   removeSkippedProject,
   setProjectsSkipped,
-} from '@/utils/localStorage';
+} from '@/lib/localStorage';
 import { useCallback, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import type { Round5Ballot } from './useBallotRound5';
@@ -78,7 +77,7 @@ export const useProjectScoring = (
             projectId: id,
             impact: score,
           });
-          if (result.status === HttpStatusCode.OK) {
+          if (result.status === 200) {
             if (projectsSkipped?.ids?.includes(id)) {
               console.log('removing skipped project');
               updatedProjectsSkipped = removeSkippedProject(

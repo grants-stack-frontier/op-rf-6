@@ -143,9 +143,6 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  // const emptyBallot: Round5Allocation[] = [
-  //   { category_slug: 'ETHEREUM_CORE_CONTRIBUTIONS', allocation: 0, locked: false },
-  // ];
   const { ballot } = useBallotRound5Context();
   const emptyBallot: any[] = ballot
     ? ballot.project_allocations.map((alloc) => ({

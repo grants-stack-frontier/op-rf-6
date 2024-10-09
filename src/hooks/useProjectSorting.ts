@@ -1,5 +1,5 @@
 import { Project } from '@/__generated__/api/agora.schemas';
-import { getProjectsSkipped } from '@/utils/localStorage';
+import { getProjectsSkipped } from '@/lib/localStorage';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { Address } from 'viem';

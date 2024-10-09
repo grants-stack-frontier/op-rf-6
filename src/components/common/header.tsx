@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { badgeholderManualUrl, votingEndDate } from '@/config';
-import { hasSeenIntro } from '@/utils/localStorage';
+import { hasSeenIntro } from '@/lib/localStorage';
 
 import { Button } from '@/components/ui/button';
 import { ConnectButton } from '../auth/connect-button';
