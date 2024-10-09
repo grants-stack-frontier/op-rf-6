@@ -1,11 +1,9 @@
 import { Address } from 'viem';
 
+import { ProjectsSkipped } from '@/types/project-scoring';
+
 const PROJECTS_SKIPPED_KEY = 'projectsSkipped';
 const INTRO_SEEN_KEY = 'introSeen';
-
-export type ProjectsSkipped = {
-  ids: string[];
-};
 
 export const getProjectsSkipped = (
   category: string,

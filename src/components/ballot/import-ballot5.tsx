@@ -10,10 +10,10 @@ import {
   useDistributionMethodFromLocalStorage,
   useRound5Ballot,
 } from '@/hooks/useBallotRound5';
-import type { ImpactScore } from '@/hooks/useProjectImpact';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
+import { ImpactScore } from '@/types/project-scoring';
 import type { CategoryId } from '@/types/shared';
 
 import { Button } from '../ui/button';

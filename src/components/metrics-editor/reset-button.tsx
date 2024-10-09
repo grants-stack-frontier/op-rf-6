@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
-import { ImpactScore } from '@/hooks/useProjectImpact';
 import { useSaveProjects } from '@/hooks/useProjects';
+import { ImpactScore } from '@/types/project-scoring';
 
 import { useBallotRound5Context } from '../ballot/provider5';
 import { Button } from '../ui/button';

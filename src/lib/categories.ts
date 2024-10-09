@@ -1,14 +1,9 @@
-import type { CategoryId } from '@/types/shared';
+import { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
+import { Category } from '@/types/categories';
 
 import ethCore from '../../public/eth_core.svg';
 import opRnd from '../../public/op_rnd.svg';
 import opTooling from '../../public/op_tooling.svg';
-
-export enum CategoryType {
-  ETHEREUM_CORE_CONTRIBUTIONS = 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT = 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING = 'OP_STACK_TOOLING',
-}
 
 export const categoryNames: Record<string, string> = {
   ETHEREUM_CORE_CONTRIBUTIONS: 'Ethereum Core Contributions',
@@ -16,25 +11,9 @@ export const categoryNames: Record<string, string> = {
   OP_STACK_TOOLING: 'OP Stack Tooling',
 };
 
-export type Category = {
-  id: CategoryId;
-  name: string;
-  image: any;
-  description: string;
-  examples: string[];
-  eligibility: {
-    eligible_projects: string[];
-    not_eligible_projects: string[];
-  };
-  projects: {
-    name: string;
-    description: string;
-  }[];
-};
-
 export const categories: Category[] = [
   {
-    id: CategoryType.ETHEREUM_CORE_CONTRIBUTIONS,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.ETHEREUM_CORE_CONTRIBUTIONS,
     name: 'Ethereum Core Contributions',
     image: ethCore.src,
     description:
@@ -68,7 +47,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    id: CategoryType.OP_STACK_RESEARCH_AND_DEVELOPMENT,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_RESEARCH_AND_DEVELOPMENT,
     name: 'OP Stack Research & Development',
     image: opRnd.src,
     description:
@@ -99,7 +78,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    id: CategoryType.OP_STACK_TOOLING,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_TOOLING,
     name: 'OP Stack Tooling',
     image: opTooling.src,
     description:

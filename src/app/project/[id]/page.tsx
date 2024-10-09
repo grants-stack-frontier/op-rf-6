@@ -12,8 +12,9 @@ import { ProjectBreadcrumb } from '@/components/project-details/project-breadcru
 import { ReviewSidebar } from '@/components/project-details/review-sidebar';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
-import { ImpactScore, useProjectScoring } from '@/hooks/useProjectScoring';
+import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
+import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/shared';
 
 export default function ProjectDetailsPage({

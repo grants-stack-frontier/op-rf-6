@@ -14,9 +14,8 @@ import { useBallotContext } from '@/components/ballot/provider';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
 import { request } from '@/lib/request';
+import { ProjectAllocation } from '@/types/metrics';
 import type { CategoryId } from '@/types/shared';
-
-import type { ProjectAllocation } from './useMetrics';
 
 export type Round4Ballot = {
   address: string;

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { categoryMap } from '@/hooks/useProjects';
-import { Category } from '@/lib/categories';
+import { Category } from '@/types/categories';
 
 import { useBudgetContext } from './provider';
 
@@ -39,7 +39,7 @@ export function CategoryItem({ category }: CategoryItemProps) {
   const isLocked = lockedFields[category.id] || false;
   const projectCount =
     (allProjectsByCategory &&
-      allProjectsByCategory[categoryMap[category.id]].length) ||
+      allProjectsByCategory[categoryMap[category.id]]?.length) ||
     0;
 
   const formatAllocation = (value: number) =>

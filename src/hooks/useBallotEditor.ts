@@ -2,7 +2,7 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useRef, useState } from 'react';
 
-import type { Round4Allocation } from './useBallot';
+import { Round4Allocation } from '@/types/metrics';
 
 export type BallotState = Record<
   string,
