@@ -119,8 +119,11 @@ function YourBallot() {
   const { data: projects } = useProjectsByCategory(
     votingCategory as CategoryId
   );
-  const { data: distributionMethod, update: updateDistributionMethodLocally, isPending: isUpdatingDistributionMethod } =
-    useDistributionMethodFromLocalStorage();
+  const {
+    data: distributionMethod,
+    update: updateDistributionMethodLocally,
+    isPending: isUpdatingDistributionMethod,
+  } = useDistributionMethodFromLocalStorage();
 
   const { mutate: redistribute } = useDistributionMethod();
   const budget = useMemo(() => {
@@ -159,12 +162,31 @@ function YourBallot() {
       setConflicts(
         sortAndPrepProjects(ballot?.project_allocations || [], 'conflict')
       );
-    } else if (ballot && !distributionMethod && allocationSum > 0 && !isResetting && !isUpdatingDistributionMethod) {
+    } else if (
+      ballot &&
+      !distributionMethod &&
+      allocationSum > 0 &&
+      !isResetting &&
+      !isUpdatingDistributionMethod
+    ) {
       updateDistributionMethodLocally(DistributionMethod.CUSTOM);
-    } else if (ballot && (!distributionMethod || distributionMethod === DistributionMethod.CUSTOM) && allocationSum === 0 && !isResetting && !isUpdatingDistributionMethod) {
+    } else if (
+      ballot &&
+      (!distributionMethod ||
+        distributionMethod === DistributionMethod.CUSTOM) &&
+      allocationSum === 0 &&
+      !isResetting &&
+      !isUpdatingDistributionMethod
+    ) {
       updateDistributionMethodLocally(null);
     }
-  }, [ballot, distributionMethod, allocationSum, isResetting, isUpdatingDistributionMethod]);
+  }, [
+    ballot,
+    distributionMethod,
+    allocationSum,
+    isResetting,
+    isUpdatingDistributionMethod,
+  ]);
 
   type Filter = 'conflict' | 'no-conflict';
   function sortAndPrepProjects(
