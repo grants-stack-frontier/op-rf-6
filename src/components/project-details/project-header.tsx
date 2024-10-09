@@ -1,6 +1,7 @@
+import Image from 'next/image';
+
 import { Organization } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
-import Image from 'next/image';
 
 export function ProjectHeader({
   profileAvatarUrl,

@@ -1,7 +1,8 @@
 import { ProjectImpactStatement } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
-import { categoryNames } from '@/data/categories';
-import { Markdown } from '../markdown';
+import { categoryNames } from '@/lib/categories';
+
+import { Markdown } from '../common/markdown';
 
 export function ImpactStatement({
   impactStatement,

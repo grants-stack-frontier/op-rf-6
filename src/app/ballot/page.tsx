@@ -1,20 +1,26 @@
 'use client';
-import { EmptyBallot, NonBadgeholder } from '@/components/ballot/ballot-states';
-import { Card } from '@/components/ui/card';
+import { LoaderIcon, Menu } from 'lucide-react';
+import Link from 'next/link';
+import { type ComponentProps, useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { EmptyBallot, NonBadgeholder } from '@/components/ballot/ballot-states';
 import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { SubmitRound5Dialog } from '@/components/ballot/submit-dialog5';
 import { PageView } from '@/components/common/page-view';
 import { SearchInput } from '@/components/common/search-input';
+import { useVotingTimeLeft } from '@/components/common/voting-ends-in';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { NumberInput } from '@/components/ui/number-input';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useVotingTimeLeft } from '@/components/voting-ends-in';
+import { DisabledTooltip } from '@/components/ui/tooltip';
 import { votingEndDate } from '@/config';
-import { categoryNames } from '@/data/categories';
+import { useSession } from '@/hooks/useAuth';
 import {
-  Round5ProjectAllocation,
+  type Round5ProjectAllocation,
   useRound5Ballot,
   useIsSavingRound5Ballot,
   useRound5BallotWeightSum,
@@ -24,18 +30,13 @@ import {
   DistributionMethod,
   useDistributionMethod,
 } from '@/hooks/useBallotRound5';
-import { LoaderIcon, Menu } from 'lucide-react';
-import Link from 'next/link';
-import { ComponentProps, useEffect, useMemo, useState } from 'react';
-import { MetricsEditor } from '../../components/metrics-editor';
-import { CategoryId } from '@/types/shared';
-import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { useVotingCategory } from '@/hooks/useVotingCategory';
-import { NumberInput } from '@/components/ui/number-input';
-import { Input } from '@/components/ui/input';
 import { useBudget } from '@/hooks/useBudget';
 import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
-import { DisabledTooltip } from '@/components/ui/tooltip';
+import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
+import { categoryNames } from '@/lib/categories';
+import type { CategoryId } from '@/types/shared';
+
+import { MetricsEditor } from '../../components/metrics-editor';
 
 function formatAllocationOPAmount(amount?: number): string {
   if (amount === undefined) return '0';
@@ -85,20 +86,6 @@ function CheckBallotState() {
     return <YourBallot />;
   }, [isPending, address, isConnecting, state, ballot]);
   return display;
-  // Comment out for local dev if needed
-  // if (isPending) {
-  //   return <Skeleton className='p-6 h-96' />;
-  // }
-  // if (!address && !isConnecting) {
-  //   return <NonBadgeholder />;
-  // }
-  // const isEmptyBallot = !Object.keys(state).length;
-  // const needImpactScoring =
-  //   ballot && ballot.projects_to_be_evaluated.length > 0;
-  // if (isEmptyBallot || needImpactScoring) {
-  //   return <EmptyBallot />;
-  // }
-  // return <YourBallot />;
 }
 
 interface ProjectAllocationState extends Round5ProjectAllocation {
@@ -115,12 +102,16 @@ function YourBallot() {
   const allocationSum = useRound5BallotWeightSum();
   const { isPending: isResetting } = useSaveProjects();
   const { getBudget } = useBudget(5);
-  const votingCategory = useVotingCategory();
+  const { data: session } = useSession();
+  const votingCategory = session?.category;
   const { data: projects } = useProjectsByCategory(
     votingCategory as CategoryId
   );
-  const { data: distributionMethod, update: updateDistributionMethodLocally, isPending: isUpdatingDistributionMethod } =
-    useDistributionMethodFromLocalStorage();
+  const {
+    data: distributionMethod,
+    update: updateDistributionMethodLocally,
+    isPending: isUpdatingDistributionMethod,
+  } = useDistributionMethodFromLocalStorage();
 
   const { mutate: redistribute } = useDistributionMethod();
   const budget = useMemo(() => {
@@ -159,12 +150,31 @@ function YourBallot() {
       setConflicts(
         sortAndPrepProjects(ballot?.project_allocations || [], 'conflict')
       );
-    } else if (ballot && !distributionMethod && allocationSum > 0 && !isResetting && !isUpdatingDistributionMethod) {
+    } else if (
+      ballot &&
+      !distributionMethod &&
+      allocationSum > 0 &&
+      !isResetting &&
+      !isUpdatingDistributionMethod
+    ) {
       updateDistributionMethodLocally(DistributionMethod.CUSTOM);
-    } else if (ballot && (!distributionMethod || distributionMethod === DistributionMethod.CUSTOM) && allocationSum === 0 && !isResetting && !isUpdatingDistributionMethod) {
+    } else if (
+      ballot &&
+      (!distributionMethod ||
+        distributionMethod === DistributionMethod.CUSTOM) &&
+      allocationSum === 0 &&
+      !isResetting &&
+      !isUpdatingDistributionMethod
+    ) {
       updateDistributionMethodLocally(null);
     }
-  }, [ballot, distributionMethod, allocationSum, isResetting, isUpdatingDistributionMethod]);
+  }, [
+    ballot,
+    distributionMethod,
+    allocationSum,
+    isResetting,
+    isUpdatingDistributionMethod,
+  ]);
 
   type Filter = 'conflict' | 'no-conflict';
   function sortAndPrepProjects(
@@ -352,16 +362,14 @@ function YourBallot() {
                         className="text-center"
                         value={proj.positionInput}
                         disabled={!isMovable || isSubmitting || isSavingBallot}
-                        onFocus={(e) => {
-                          setIsInputFocused(true);
-                        }}
+                        onFocus={() => setIsInputFocused(true)}
                         onFocusCapture={(e) => {
                           e.preventDefault();
                           setIsInputFocused(true);
                         }}
                         onChange={async (e) => {
                           const newIndex =
-                            parseInt(e.currentTarget.value, 10) - 1;
+                            Number.parseInt(e.currentTarget.value, 10) - 1;
                           if (
                             isMovable &&
                             // newIndex >= 0 &&
@@ -390,7 +398,8 @@ function YourBallot() {
                             setProjectList(newProjects);
                             return;
                           }
-                          const newIndex = parseInt(e.target.value, 10) - 1;
+                          const newIndex =
+                            Number.parseInt(e.target.value, 10) - 1;
                           if (
                             isMovable &&
                             Number(proj.position) !==
@@ -437,19 +446,19 @@ function YourBallot() {
                       placeholder="--"
                       className="text-center w-[112px]"
                       value={proj.allocationInput || ''}
-                      onFocus={(e) => {
-                        setIsInputFocused(true);
-                      }}
+                      onFocus={() => setIsInputFocused(true)}
                       onFocusCapture={(e) => {
                         e.preventDefault();
                         setIsInputFocused(true);
                       }}
                       onChange={(e) => {
                         const inputValue = e.target.value;
-                        const newAllocation = parseFloat(inputValue);
+                        const newAllocation = Number.parseFloat(inputValue);
 
                         const newProjectList = [...projectList];
-                        newProjectList[i].allocation = isNaN(newAllocation)
+                        newProjectList[i].allocation = Number.isNaN(
+                          newAllocation
+                        )
                           ? 0
                           : Number(inputValue);
                         newProjectList[i].allocationInput = inputValue;
@@ -463,7 +472,8 @@ function YourBallot() {
                         setIsInputFocused(false);
                         saveAllocation({
                           project_id: proj.project_id,
-                          allocation: parseFloat(proj.allocationInput) || 0,
+                          allocation:
+                            Number.parseFloat(proj.allocationInput) || 0,
                         });
                       }}
                       symbol="%"
@@ -472,7 +482,9 @@ function YourBallot() {
                   </div>
                   <div className="text-muted-foreground text-xs">
                     {formatAllocationOPAmount(
-                      (budget * (parseFloat(proj.allocationInput) || 0)) / 100
+                      (budget *
+                        (Number.parseFloat(proj.allocationInput) || 0)) /
+                        100
                     )}{' '}
                     OP
                   </div>
@@ -495,7 +507,7 @@ function YourBallot() {
 
         {ballot?.address && (
           <SubmitRound5Dialog
-            ballot={ballot!}
+            ballot={ballot}
             open={isSubmitting}
             onOpenChange={() => setSubmitting(false)}
           />
@@ -508,7 +520,7 @@ function YourBallot() {
             return (
               <div
                 key={proj.project_id}
-                className={`flex justify-between flex-1 border-b gap-1 py-6`}
+                className="flex justify-between flex-1 border-b gap-1 py-6"
                 draggable="true"
                 onDragStart={(e) => {
                   e.dataTransfer.setData(
@@ -566,7 +578,7 @@ function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
   const isBudgetIncomplete =
     !budgetData?.budget ||
     !budgetData.allocations ||
-    budgetData.allocations.length == 0;
+    budgetData.allocations.length === 0;
 
   if (Number(seconds) < 0) {
     return null;
@@ -621,13 +633,13 @@ function WeightsError() {
   const isBudgetIncomplete =
     !budgetData?.budget ||
     !budgetData.allocations ||
-    budgetData.allocations.length == 0;
+    budgetData.allocations.length === 0;
 
   if (Math.abs(remainingAllocation) < 0.01 && isBudgetIncomplete) {
     return (
       <span className="text-sm text-destructive">
         Please set{' '}
-        <a href={`/budget`} className="underline">
+        <a href="/budget" className="underline">
           your budget and category allocations
         </a>{' '}
         before submitting.

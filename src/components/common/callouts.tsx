@@ -1,14 +1,16 @@
 'use client';
+import { useAccount } from 'wagmi';
+
 import { votingEndDate } from '@/config';
 import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
-import { useAccount } from 'wagmi';
-import { useVotingTimeLeft } from '../voting-ends-in';
+
+import { useVotingTimeLeft } from './voting-ends-in';
 
 export function Callouts() {
   const { address, status } = useAccount();
   const isBadgeholder = useIsBadgeholder();
 
-  const [days, hours, minutes, seconds] = useVotingTimeLeft(votingEndDate);
+  const [, , , seconds] = useVotingTimeLeft(votingEndDate);
 
   if (Number(seconds) < 0) {
     return (

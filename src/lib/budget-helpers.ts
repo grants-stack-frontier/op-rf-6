@@ -48,11 +48,13 @@ export const calculateBalancedAmounts = (
   changedCategoryId: string,
   newValue: number
 ) => {
-  let newAllocations = Object.entries(allocations).map(([id, allocation]) => ({
-    id,
-    allocation: id === changedCategoryId ? newValue : allocation,
-    locked: lockedFields[id],
-  }));
+  const newAllocations = Object.entries(allocations).map(
+    ([id, allocation]) => ({
+      id,
+      allocation: id === changedCategoryId ? newValue : allocation,
+      locked: lockedFields[id],
+    })
+  );
 
   const balancedAllocations = autobalanceAllocations(
     newAllocations,

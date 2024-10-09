@@ -1,19 +1,21 @@
 'use client';
 
+import { type ComponentProps, useCallback, useRef } from 'react';
+import { useAccount } from 'wagmi';
+
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
-  Round5ProjectAllocation,
+  type Round5ProjectAllocation,
   useDistributionMethodFromLocalStorage,
   useRound5Ballot,
 } from '@/hooks/useBallotRound5';
-import { ImpactScore } from '@/hooks/useProjectImpact';
+import type { ImpactScore } from '@/hooks/useProjectImpact';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { format, parse } from '@/lib/csv';
+import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
-import { CategoryId } from '@/types/shared';
-import { ComponentProps, useCallback, useRef } from 'react';
-import { useAccount } from 'wagmi';
+import type { CategoryId } from '@/types/shared';
+
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -23,6 +25,7 @@ import {
   DialogTitle,
 } from '../ui/dialog';
 import { toast } from '../ui/use-toast';
+
 import { useBallotRound5Context } from './provider5';
 
 export function ImportBallotDialog({
@@ -64,7 +67,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parse<Round5ProjectAllocation>(csvString);
+      const { data } = parseCSV<Round5ProjectAllocation>(csvString);
       const allocations = data.map(({ project_id, allocation, impact }) => ({
         project_id,
         allocation: Number(allocation).toString(),
@@ -108,7 +111,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           refetch();
           onClose();
         })
-        .catch((e) => {
+        .catch(() => {
           toast({
             title: 'Error importing ballot',
             variant: 'destructive',
@@ -143,9 +146,6 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  // const emptyBallot: Round5Allocation[] = [
-  //   { category_slug: 'ETHEREUM_CORE_CONTRIBUTIONS', allocation: 0, locked: false },
-  // ];
   const { ballot } = useBallotRound5Context();
   const emptyBallot: any[] = ballot
     ? ballot.project_allocations.map((alloc) => ({

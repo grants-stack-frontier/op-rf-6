@@ -1,16 +1,16 @@
 'use client';
+import { Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
+
 import { BallotTabs } from '@/components/ballot/ballot-tabs';
+import { BudgetForm } from '@/components/budget/budget-form';
+import { InfoBox } from '@/components/budget/info-box';
+import { BudgetProvider } from '@/components/budget/provider';
+import { DisconnectedState } from '@/components/common/disconnected-state';
 import { PageView } from '@/components/common/page-view';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { BudgetForm } from '@/components/budget/budget-form';
-import { BudgetProvider } from '@/components/budget/provider';
-import { InfoBox } from '@/components/budget/info-box';
 import { Separator } from '@/components/ui/separator';
-import { DisconnectedState } from '@/components/common/disconnected-state';
-import { useAccount } from 'wagmi';
-import { Loader2 } from 'lucide-react';
-import { PostSubmissionBanner } from '@/components/ballot/post-submission-banner';
 
 export default function BudgetBallotPage() {
   const { isConnecting, isConnected } = useAccount();

@@ -1,15 +1,18 @@
+import { Inter } from 'next/font/google';
+
 import { BallotProvider } from '@/components/ballot/provider';
 import { BallotRound5Provider } from '@/components/ballot/provider5';
 import { BudgetProvider } from '@/components/budget/provider';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/common/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
+
 import '@rainbow-me/rainbowkit/styles.css';
-import { Inter } from 'next/font/google';
+
 import { ClientLayout } from './client-layout';
 import './globals.css';
 import { metadata } from './layout-metadata';
 import { Provider } from './providers';
-import { Toaster } from '@/components/ui/toaster';
 
 export { metadata };
 

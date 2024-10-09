@@ -1,16 +1,18 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import { markIntroAsSeen } from '@/lib/localStorage';
 import { cn } from '@/lib/utils';
-import { markIntroAsSeen } from '@/utils/localStorage';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
+
 import { Button } from '../ui/button';
 import { Heading } from '../ui/headings';
 

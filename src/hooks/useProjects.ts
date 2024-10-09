@@ -1,25 +1,27 @@
 'use client';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
+
 import {
   getRetroFundingRoundProjectById,
-  getRetroFundingRoundProjectByIdResponse,
+  type getRetroFundingRoundProjectByIdResponse,
   getRetroFundingRoundProjects,
-  getRetroFundingRoundProjectsResponse,
+  type getRetroFundingRoundProjectsResponse,
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
-import {
+import type {
   GetRetroFundingRoundProjectsCategory,
   PageMetadata,
   Project,
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
-import { CategoryType } from '@/data/categories';
+import type { CategoryType } from '@/lib/categories';
 import { request } from '@/lib/request';
-import { CategoryId } from '@/types/shared';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
-import { ImpactScore } from './useProjectScoring';
+import type { CategoryId } from '@/types/shared';
+
+import type { ImpactScore } from './useProjectScoring';
 
 export const categoryMap: Record<CategoryType, string> = {
   ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
@@ -51,35 +53,36 @@ export function useProjects(params?: ProjectsParams) {
             category: category ?? 'all',
           });
         return results.data?.projects ?? [];
-      } else {
-        const allProjects: Project[] = [];
-        let currentOffset = offset ?? 0;
-        const pageLimit = 100;
+      }
 
-        while (true) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(5, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category ?? 'all',
-            });
+      const allProjects: Project[] = [];
+      let currentOffset = offset ?? 0;
+      const pageLimit = 100;
 
-          const res: ProjectsResponse = results.data;
+      let hasMoreData = true;
+      while (hasMoreData) {
+        const results: getRetroFundingRoundProjectsResponse =
+          await getRetroFundingRoundProjects(5, {
+            limit: pageLimit,
+            offset: currentOffset,
+            category: category ?? 'all',
+          });
 
-          if (!res.data || res.data.length === 0) {
-            break;
-          }
+        const res: ProjectsResponse = results.data;
 
+        if (!res.data || res.data.length === 0) {
+          hasMoreData = false;
+        } else {
           allProjects.push(...res.data);
           currentOffset += pageLimit;
 
           if (res.data.length < pageLimit) {
-            break;
+            hasMoreData = false;
           }
         }
-
-        return allProjects;
       }
+
+      return allProjects;
     },
   });
 }
@@ -197,11 +200,12 @@ export function useAllProjectsByCategory() {
       const projectsByCategory: Record<string, Project[]> = {};
 
       for (const category of categories) {
-        let allProjects: Project[] = [];
+        const allProjects: Project[] = [];
         let currentOffset = 0;
         const pageLimit = 100;
 
-        while (true) {
+        let hasMoreData = true;
+        while (hasMoreData) {
           const results: getRetroFundingRoundProjectsResponse =
             await getRetroFundingRoundProjects(5, {
               limit: pageLimit,
@@ -212,14 +216,14 @@ export function useAllProjectsByCategory() {
           const res: ProjectsResponse = results.data;
 
           if (!res.data || res.data.length === 0) {
-            break;
-          }
+            hasMoreData = false;
+          } else {
+            allProjects.push(...res.data);
+            currentOffset += pageLimit;
 
-          allProjects.push(...res.data);
-          currentOffset += pageLimit;
-
-          if (res.data.length < pageLimit) {
-            break;
+            if (res.data.length < pageLimit) {
+              hasMoreData = false;
+            }
           }
         }
 

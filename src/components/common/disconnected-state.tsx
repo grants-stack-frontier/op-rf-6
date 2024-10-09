@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react';
+
+import { ConnectButton } from '@/components/auth/connect-button';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
-import { ConnectButton } from '@/components/auth/connect-button';
 
 export const DisconnectedState = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

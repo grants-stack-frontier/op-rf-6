@@ -1,16 +1,18 @@
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
+import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useBudget } from '@/hooks/useBudget';
+import { Category } from '@/lib/categories';
+
 import { Slider } from '../ui/slider';
+
 import { CategoryItem } from './category-item';
 import { useBudgetContext } from './provider';
-import { useBudget } from '@/hooks/useBudget';
-import { Round5Allocation } from '@/types/shared';
-import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
-import { useAccount } from 'wagmi';
-import { Category } from '@/data/categories';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =

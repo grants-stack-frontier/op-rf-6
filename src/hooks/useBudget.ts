@@ -2,18 +2,19 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { CategoryId, Round5Allocation } from '@/types/shared';
+
 import {
   getRetroFundingRoundBallotById,
   updateRetroFundingRoundCategoryAllocation,
-  getRetroFundingRoundBallotByIdResponse,
-  updateRetroFundingRoundCategoryAllocationResponse,
+  type getRetroFundingRoundBallotByIdResponse,
+  type updateRetroFundingRoundCategoryAllocationResponse,
 } from '@/__generated__/api/agora';
-import {
+import type {
   RetroFundingBallotCategoriesAllocation,
   Round5Ballot,
 } from '@/__generated__/api/agora.schemas';
+import { useToast } from '@/components/ui/use-toast';
+import type { Round5Allocation } from '@/types/shared';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();
@@ -54,7 +55,7 @@ export function useBudget(roundId: number) {
         // Update the query data with the full structure
         queryClient.setQueryData(
           ['budget', address, roundId],
-          (oldData: any) => ({
+          (_: unknown) => ({
             budget: updatedBallot.budget,
             allocations: updatedBallot.category_allocations,
           })

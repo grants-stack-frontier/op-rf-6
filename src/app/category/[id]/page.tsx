@@ -1,4 +1,7 @@
 'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { CategoryDetails } from '@/components/category-details';
 import { PageView } from '@/components/common/page-view';
 import { ProjectsSidebar } from '@/components/project-details/projects-sidebar';
@@ -10,11 +13,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { categories } from '@/data/categories';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { categories } from '@/lib/categories';
 
-export default function CategoryDetailsPage({ params: { id = '' } }) {
+export default function CategoryDetailsPage({
+  params: { id = '' },
+}: {
+  params: { id: string };
+}) {
   const router = useRouter();
 
   return (

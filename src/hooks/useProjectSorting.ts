@@ -1,8 +1,10 @@
-import { Project } from '@/__generated__/api/agora.schemas';
-import { getProjectsSkipped } from '@/utils/localStorage';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { Address } from 'viem';
+
+import { Project } from '@/__generated__/api/agora.schemas';
+import { getProjectsSkipped } from '@/lib/localStorage';
+
 import { Round5Ballot } from './useBallotRound5';
 
 export function useProjectSorting(

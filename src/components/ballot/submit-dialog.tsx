@@ -1,17 +1,20 @@
-import { ComponentProps, useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Feedback, Form } from './feedback-form';
-import { Heading } from '../ui/headings';
-import { Button } from '../ui/button';
-import { Text } from '../ui/text';
-import { votingEndDate } from '@/config';
-import { Round4Ballot, useSubmitBallot } from '@/hooks/useBallot';
-import { formatDate } from '@/lib/utils';
-import { exportBallot } from './import-ballot';
-import VotingSuccess from '../../../public/RetroFunding_Round4_IVoted@2x.png';
-import Image from 'next/image';
 import { ArrowDownToLineIcon } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
+import Image from 'next/image';
+import { type ComponentProps, useState } from 'react';
+
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { votingEndDate } from '@/config';
+import { type Round4Ballot, useSubmitBallot } from '@/hooks/useBallot';
+import { formatDate } from '@/lib/utils';
+
+import VotingSuccess from '../../../public/RetroFunding_Round4_IVoted@2x.png';
+import { Button } from '../ui/button';
+import { Heading } from '../ui/headings';
+import { Text } from '../ui/text';
+
+import { Feedback, Form } from './feedback-form';
+import { exportBallot } from './import-ballot';
 
 export function SubmitDialog({
   open,
@@ -147,5 +150,5 @@ export function downloadImage(element: HTMLImageElement | null) {
   anchor.click();
   document.body.removeChild(anchor);
 
-  mixpanel.track('Download I Voted image');
+  track('Download I Voted image');
 }

@@ -1,35 +1,18 @@
 'use client';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { createSortFn, useMetricsByRound } from './useMetrics';
-import { useBallotFilter } from './useFilter';
-import { useBallotContext } from '@/components/ballot/provider';
-import { Round5Ballot, Round5ProjectAllocation } from './useBallotRound5';
-import { CategoryId } from '@/types/shared';
+import type { CategoryId } from '@/types/shared';
+
+import type { Round5ProjectAllocation } from './useBallotRound5';
 
 export type BallotRound5State = Record<
   string,
   { allocation: number; locked: boolean }
 >;
 
-export function useBallotRound5Editor({
-  onUpdate,
-}: {
-  onUpdate?: (allocation: Round5ProjectAllocation) => void | Round5Ballot;
-}) {
+export function useBallotRound5Editor() {
   const [state, setState] = useState<BallotRound5State>({});
 
-  // const debouncedUpdate = useRef(
-  //   debounce(
-  //     (id: string, state: BallotRound5State) =>
-  //       onUpdate?.({ ...state[id], project_id: id }),
-  //     200,
-  //     {
-  //       leading: false,
-  //       trailing: true,
-  //     }
-  //   )
-  // ).current;
   const setInitialState = useCallback(
     (allocations: Round5ProjectAllocation[] = []) => {
       const ballot: BallotRound5State = Object.fromEntries(
@@ -43,7 +26,7 @@ export function useBallotRound5Editor({
     [setState]
   );
 
-  const set = (id: CategoryId, amount: number, unlock: boolean = false) => {
+  const set = (id: CategoryId, amount: number, unlock = false) => {
     setState((s) => {
       // Must be between 0 - 100
       const allocation = Math.max(Math.min(amount || 0, 100), 0);
@@ -96,30 +79,4 @@ function calculateBalancedAmounts(state: BallotRound5State): BallotRound5State {
       },
     ])
   );
-}
-
-export function useSortBallot(initialState: BallotRound5State) {
-  const { state } = useBallotContext();
-  const { data, isPending } = useMetricsByRound(4);
-  const [filter, setFilter] = useBallotFilter();
-
-  const metrics = data?.data ?? []; // TO Do: Change to distrubition methods
-
-  // TODO remove forced assertion or metric_id
-  const sorted = useMemo(
-    () =>
-      metrics
-        ?.map((m) => ({ ...m, ...state[m.metric_id!] }))
-        .sort(createSortFn({ order: filter.order, sort: filter.sort }))
-        .map((m) => m?.metric_id ?? '')
-        .filter(Boolean) ?? [],
-    [filter, metrics] // Don't put state here because we don't want to sort when allocation changes
-  );
-
-  return {
-    filter,
-    sorted,
-    isPending,
-    setFilter,
-  };
 }

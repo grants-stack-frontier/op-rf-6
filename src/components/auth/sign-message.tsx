@@ -3,6 +3,15 @@
 import { useState, useEffect } from 'react';
 import { SiweMessage } from 'siwe';
 import { useAccount, useChainId, useSignMessage } from 'wagmi';
+
+import {
+  useDisconnect,
+  useNonce,
+  useSession,
+  useVerify,
+} from '@/hooks/useAuth';
+import mixpanel from '@/lib/mixpanel';
+
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -11,13 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
-import mixpanel from '@/lib/mixpanel';
-import {
-  useDisconnect,
-  useNonce,
-  useSession,
-  useVerify,
-} from '@/hooks/useAuth';
 
 export function SignMessage() {
   const [isLoading, setIsLoading] = useState(true);

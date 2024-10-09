@@ -6,16 +6,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { agoraRoundsAPI } from '@/config';
-
-import { useAccount, useSignMessage } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { request } from '@/lib/request';
-import { ProjectAllocation } from './useMetrics';
 import debounce from 'lodash.debounce';
 import { useRef } from 'react';
+import { useAccount, useSignMessage } from 'wagmi';
+
 import { useBallotContext } from '@/components/ballot/provider';
-import { CategoryId } from '@/types/shared';
+import { useToast } from '@/components/ui/use-toast';
+import { agoraRoundsAPI } from '@/config';
+import { request } from '@/lib/request';
+import type { CategoryId } from '@/types/shared';
+
+import type { ProjectAllocation } from './useMetrics';
 
 export type Round4Ballot = {
   address: string;
@@ -83,7 +84,6 @@ export function useRound5Ballot(address?: string) {
 }
 
 export function useBallot(address?: string) {
-  const { toast } = useToast();
   return useQuery({
     enabled: Boolean(address),
     queryKey: ['ballot', address],
@@ -92,10 +92,6 @@ export function useBallot(address?: string) {
         .get(`${agoraRoundsAPI}/ballots/${address}`)
         .json<Round4Ballot[]>()
         .then((r) => r?.[0] ?? null),
-    // .catch(() => {
-    //   toast({ variant: "destructive", title: "Error loading ballot" });
-    //   return null;
-    // }),
   });
 }
 
@@ -104,14 +100,6 @@ export function useSaveAllocation() {
   const { address } = useAccount();
 
   const queryClient = useQueryClient();
-
-  const debounceToast = useRef(
-    debounce(
-      () => toast({ title: 'Your ballot is saved automatically' }),
-      2000,
-      { leading: true, trailing: false }
-    )
-  ).current;
 
   return useMutation({
     mutationKey: ['save-ballot'],

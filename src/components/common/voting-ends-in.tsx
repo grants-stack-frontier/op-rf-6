@@ -3,6 +3,7 @@ import { ComponentProps, PropsWithChildren } from 'react';
 import { createGlobalState, useHarmonicIntervalFn } from 'react-use';
 
 const useEndDate = createGlobalState<string[]>(['00', '00', '00']);
+
 export function useVotingTimeLeft(date: Date) {
   const [state, setState] = useEndDate();
 
@@ -10,6 +11,7 @@ export function useVotingTimeLeft(date: Date) {
 
   return state;
 }
+
 export const VotingEndsIn = ({
   date,
   ...props

@@ -1,6 +1,12 @@
 'use client';
 
-import { ComponentProps, useCallback, useRef } from 'react';
+import { type ComponentProps, useCallback, useRef } from 'react';
+
+import { type Round4Allocation, useSaveAllocation } from '@/hooks/useBallot';
+import { useMetricIds } from '@/hooks/useMetrics';
+import { format, parseCSV } from '@/lib/csv';
+import mixpanel from '@/lib/mixpanel';
+
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -9,11 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
-import { format, parse } from '@/lib/csv';
-import { Round4Allocation, useSaveAllocation } from '@/hooks/useBallot';
+
 import { useBallotContext } from './provider';
-import { useMetricIds } from '@/hooks/useMetrics';
-import mixpanel from '@/lib/mixpanel';
 
 export function ImportBallotDialog({
   isOpen,
@@ -48,7 +51,7 @@ function ImportBallotButton() {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parse<Round4Allocation>(csvString);
+      const { data } = parseCSV<Round4Allocation>(csvString);
       const allocations = data
         .map(({ metric_id, allocation, locked }) => ({
           metric_id,

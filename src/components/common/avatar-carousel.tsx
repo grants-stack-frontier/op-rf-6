@@ -1,13 +1,16 @@
+import { RiArrowRightSLine } from '@remixicon/react';
+import Image from 'next/image';
+import { useState } from 'react';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { RiArrowRightSLine } from '@remixicon/react';
-import Image from 'next/image';
-import { useState } from 'react';
+
 import { Button } from '../ui/button';
+
 import { ContributorsDialog } from './contributors-dialog';
 
 export function AvatarCarousel({
@@ -15,21 +18,14 @@ export function AvatarCarousel({
 }: {
   images: { url: string; name: string }[];
 }) {
-  const [currentGroup, setCurrentGroup] = useState(0);
   const [contributorsDialogOpen, setContributorsDialogOpen] = useState(false);
-  const groupSize = 5;
-  const groupCount = Math.ceil(images.length / groupSize);
-
-  const currentImages = images.slice(
-    currentGroup * groupSize,
-    (currentGroup + 1) * groupSize
-  );
+  const currentImages = images.slice(0, 5);
 
   return (
     <div className="flex items-center">
       <div className="flex -space-x-2 rtl:space-x-reverse">
-        {currentImages.map(({ url, name }, index) => (
-          <TooltipProvider key={index}>
+        {currentImages.map(({ url, name }) => (
+          <TooltipProvider key={name}>
             <Tooltip delayDuration={url ? 0 : 1000000}>
               <TooltipTrigger asChild>
                 <Image
@@ -50,7 +46,7 @@ export function AvatarCarousel({
           </TooltipProvider>
         ))}
       </div>
-      {currentGroup < groupCount - 1 && (
+      {images.length > 5 && (
         <Button
           variant={null}
           size="icon"

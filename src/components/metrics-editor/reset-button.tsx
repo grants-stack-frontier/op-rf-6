@@ -1,6 +1,14 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useAccount } from 'wagmi';
+
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
+import { ImpactScore } from '@/hooks/useProjectImpact';
+import { useSaveProjects } from '@/hooks/useProjects';
+
+import { useBallotRound5Context } from '../ballot/provider5';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -11,12 +19,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { useBallotRound5Context } from '../ballot/provider5';
-import { useSaveProjects } from '@/hooks/useProjects';
-import { ImpactScore } from '@/hooks/useProjectImpact';
-import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
-import { useAccount } from 'wagmi';
-import { useQueryClient } from '@tanstack/react-query';
 
 export function ResetButton() {
   const [isOpen, setIsOpen] = useState(false);

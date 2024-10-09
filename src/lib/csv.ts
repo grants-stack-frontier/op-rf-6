@@ -1,8 +1,8 @@
-import Papa, { type UnparseConfig } from 'papaparse';
+import { parse, unparse, type UnparseConfig } from 'papaparse';
 
-export function parse<T>(file: string) {
-  return Papa.parse<T>(file, { header: true });
+export function parseCSV<T>(file: string) {
+  return parse<T>(file, { header: true });
 }
 export function format(data: unknown[], config: UnparseConfig) {
-  return Papa.unparse(data, config);
+  return unparse(data, config);
 }

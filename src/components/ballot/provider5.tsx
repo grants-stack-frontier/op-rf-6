@@ -1,16 +1,16 @@
 'use client';
 import {
-  PropsWithChildren,
+  type PropsWithChildren,
   createContext,
   useContext,
   useEffect,
   useCallback,
   useState,
 } from 'react';
-import { Round5Ballot, useRound5Ballot } from '@/hooks/useBallotRound5';
 import { useAccount } from 'wagmi';
+
+import { type Round5Ballot, useRound5Ballot } from '@/hooks/useBallotRound5';
 import { useBallotRound5Editor } from '@/hooks/useBallotRound5Editor';
-import { useSaveRound5Allocation } from '@/hooks/useBallotRound5';
 
 type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {
   isPending: boolean;
@@ -28,17 +28,16 @@ export function BallotRound5Provider({ children }: PropsWithChildren) {
     isPending,
     refetch,
   } = useRound5Ballot(address);
-  const save = useSaveRound5Allocation();
   const [localBallot, setLocalBallot] = useState<Round5Ballot | undefined>(
     ballot
   );
 
-  const editor = useBallotRound5Editor({
-    onUpdate: save.mutate,
-  });
+  const editor = useBallotRound5Editor();
 
   useEffect(() => {
-    isFetched && editor.reset(ballot?.project_allocations);
+    if (isFetched) {
+      editor.reset(ballot?.project_allocations);
+    }
     setLocalBallot(ballot);
   }, [isFetched, ballot]);
 
