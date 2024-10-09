@@ -8,9 +8,9 @@ import {
   removeSkippedProject,
   setProjectsSkipped,
 } from '@/lib/localStorage';
+import { Round5Ballot } from '@/types/ballot';
 import { ImpactScore, ProjectsSkipped } from '@/types/project-scoring';
 
-import type { Round5Ballot } from './useBallotRound5';
 import type { Address } from 'viem';
 
 export const scoreLabels: Record<ImpactScore, string> = {

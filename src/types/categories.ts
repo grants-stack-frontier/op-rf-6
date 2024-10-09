@@ -1,4 +1,4 @@
-import { CategoryId } from './shared';
+import { CategoryId } from './various';
 
 export type Category = {
   id: CategoryId;

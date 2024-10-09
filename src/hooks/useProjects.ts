@@ -20,7 +20,7 @@ import { agoraRoundsAPI } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
 import { ProjectsParams, ProjectsResponse } from '@/types/projects';
-import type { CategoryId } from '@/types/shared';
+import type { CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
   ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
@@ -126,7 +126,6 @@ export function useSaveProjectImpact() {
   });
 }
 
-export type SaveProjectsActionType = 'reset' | 'import';
 export function useSaveProjects() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -141,7 +140,7 @@ export function useSaveProjects() {
         allocation: string;
         impact: 0 | 1 | 2 | 3 | 4 | 5 | 999;
       }[];
-      action?: SaveProjectsActionType;
+      action?: 'reset' | 'import';
     }) => {
       await request
         .post(`${agoraRoundsAPI}/ballots/${address}/projects`, {

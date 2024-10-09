@@ -8,12 +8,12 @@ import {
 import { useAccount } from 'wagmi';
 
 import {
-  type Round4Ballot,
   useBallot,
   useRemoveAllocation,
   useSaveAllocation,
 } from '@/hooks/useBallot';
 import { useBallotEditor } from '@/hooks/useBallotEditor';
+import { Round4Ballot } from '@/types/ballot';
 
 type BallotContext = ReturnType<typeof useBallotEditor>;
 const BallotContext = createContext(

@@ -6,15 +6,15 @@ import { useAccount } from 'wagmi';
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
-  type Round5ProjectAllocation,
   useDistributionMethodFromLocalStorage,
   useRound5Ballot,
 } from '@/hooks/useBallotRound5';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
+import { Round5ProjectAllocation } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
-import type { CategoryId } from '@/types/shared';
+import type { CategoryId } from '@/types/various';
 
 import { Button } from '../ui/button';
 import {

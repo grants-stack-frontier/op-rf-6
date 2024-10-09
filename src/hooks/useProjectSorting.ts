@@ -4,8 +4,7 @@ import { Address } from 'viem';
 
 import { Project } from '@/__generated__/api/agora.schemas';
 import { getProjectsSkipped } from '@/lib/localStorage';
-
-import { Round5Ballot } from './useBallotRound5';
+import { Round5Ballot } from '@/types/ballot';
 
 export function useProjectSorting(
   projects: Project[] | undefined,

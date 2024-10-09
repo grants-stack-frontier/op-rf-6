@@ -15,7 +15,7 @@ import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
 import { ImpactScore } from '@/types/project-scoring';
-import { CategoryId } from '@/types/shared';
+import { CategoryId } from '@/types/various';
 
 export default function ProjectDetailsPage({
   params,
@@ -136,7 +136,8 @@ export default function ProjectDetailsPage({
   const currentProjectScore = useMemo(() => {
     if (!ballot || !currentProject) return undefined;
     const allocation = ballot.project_allocations?.find(
-      (p) => p.project_id === currentProject.applicationId
+      (p: { project_id: string }) =>
+        p.project_id === currentProject.applicationId
     );
     return allocation ? (allocation.impact as ImpactScore) : undefined;
   }, [ballot, currentProject]);

@@ -1,3 +1,5 @@
+import { Round4Allocation } from './ballot';
+
 export type Metric = {
   metric_id: string;
   name: string;
@@ -28,10 +30,4 @@ export type Round4Ballot = {
   os_multiplier: number;
   os_only: boolean;
   status: 'SUBMITTED';
-};
-
-export type Round4Allocation = {
-  metric_id: string;
-  allocation: number;
-  locked?: boolean;
 };

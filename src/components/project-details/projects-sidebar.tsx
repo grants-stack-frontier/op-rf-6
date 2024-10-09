@@ -7,7 +7,7 @@ import { useIntersection } from 'react-use';
 import { Project } from '@/__generated__/api/agora.schemas';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { cn } from '@/lib/utils';
-import { CategoryId } from '@/types/shared';
+import { CategoryId } from '@/types/various';
 
 import AvatarPlaceholder from '../../../public/avatar-placeholder.svg';
 import { ManualDialog } from '../common/manual-dialog';

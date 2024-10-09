@@ -10,7 +10,7 @@ import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
 import { useDisconnect, useSession } from '@/hooks/useAuth';
 import { categoryNames } from '@/lib/categories';
-import type { CategoryId } from '@/types/shared';
+import type { CategoryId } from '@/types/various';
 
 import PairwiseLogo from '../../../public/pairwise.svg';
 import { Progress } from '../ui/progress';

@@ -7,12 +7,9 @@ import { useAccount } from 'wagmi';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { votingEndDate } from '@/config';
-import {
-  Round5Ballot,
-  useRound5Ballot,
-  useSubmitBallot,
-} from '@/hooks/useBallotRound5';
+import { useRound5Ballot, useSubmitBallot } from '@/hooks/useBallotRound5';
 import { formatDate } from '@/lib/utils';
+import { Round5Ballot } from '@/types/ballot';
 
 import VotingSuccess_OPStack from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { Button } from '../ui/button';

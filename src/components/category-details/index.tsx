@@ -5,7 +5,7 @@ import { Heading } from '@/components/ui/headings';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { categories } from '@/lib/categories';
-import { CategoryId } from '@/types/shared';
+import { CategoryId } from '@/types/various';
 
 import { Markdown } from '../common/markdown';
 import { Badge } from '../ui/badge';
