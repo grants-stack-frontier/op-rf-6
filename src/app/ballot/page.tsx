@@ -9,6 +9,7 @@ import { BallotProjects } from '@/components/ballot/ballot-projects';
 import { NonBadgeholder, EmptyBallot } from '@/components/ballot/ballot-states';
 import { ConflictsSection } from '@/components/ballot/conflicts-section';
 import { PageView } from '@/components/common/page-view';
+import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 
@@ -33,9 +34,11 @@ export default function BallotPage() {
       content = (
         <div className="space-y-4">
           <BallotHeader />
-          <BallotProjects />
-          <BallotFooter />
-          <ConflictsSection />
+          <Card className="p-6 space-y-8">
+            <BallotProjects />
+            <BallotFooter />
+            <ConflictsSection />
+          </Card>
         </div>
       );
     }

@@ -51,7 +51,7 @@ export function ImportBallotDialog({
 }
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
-  const editor = useBallotRound5Context();
+  const { ballot, reset } = useBallotRound5Context();
   const { mutateAsync: saveProjects } = useSaveProjects();
   const { address } = useAccount();
   const { refetch } = useRound5Ballot(address);
@@ -79,18 +79,18 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
         );
       }
 
-      editor.reset(
+      reset(
         allocations.map((alloc) => ({
           project_id: alloc.project_id,
           allocation: Number(alloc.allocation),
           impact: alloc.impact,
-          name: editor.ballot?.project_allocations.find(
+          name: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.name,
-          image: editor.ballot?.project_allocations.find(
+          image: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.image,
-          position: editor.ballot?.project_allocations.find(
+          position: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.position,
         })) as Round5ProjectAllocation[]
@@ -117,7 +117,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           });
         });
     },
-    [editor]
+    [ballot, reset]
   );
 
   return (

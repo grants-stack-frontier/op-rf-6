@@ -27,11 +27,11 @@ export function ProjectItem({ project, index }: ProjectItemProps) {
     isMovable,
     handleProjectMove,
     handleAllocationChange,
+    handleAllocationSave,
     handlePositionChange,
     budget,
-    isSubmitting,
-    isSavingBallot,
     formatAllocationOPAmount,
+    isInteractive,
   } = useBallotRound5Context();
 
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -95,7 +95,7 @@ export function ProjectItem({ project, index }: ProjectItemProps) {
             <Input
               className="text-center"
               value={project.positionInput}
-              disabled={!isMovable || isSubmitting || isSavingBallot}
+              disabled={!isMovable || !isInteractive}
               onFocus={() => setIsInputFocused(true)}
               onFocusCapture={() => setIsInputFocused(true)}
               onChange={(e) => handlePositionChange(index, e.target.value)}
@@ -118,27 +118,35 @@ export function ProjectItem({ project, index }: ProjectItemProps) {
       </div>
       <div className="flex flex-col justify-start items-center gap-1 max-w-[112px]">
         <div className="relative">
-          <NumberInput
-            min={0}
-            max={100}
-            step={1}
-            disabled={isSubmitting || isSavingBallot}
-            placeholder="--"
-            className="text-center w-[112px]"
-            value={project.allocationInput || ''}
-            onFocus={() => setIsInputFocused(true)}
-            onFocusCapture={() => setIsInputFocused(true)}
-            onChange={(e) => handleAllocationChange(index, e.target.value)}
-            onBlur={() => setIsInputFocused(false)}
-            symbol="%"
-            maxDecimals={2}
-          />
-        </div>
-        <div className="text-muted-foreground text-xs">
-          {formatAllocationOPAmount(
-            (budget * (Number.parseFloat(project.allocationInput) || 0)) / 100
-          )}{' '}
-          OP
+          <div className="flex flex-col justify-start items-center gap-1 max-w-[112px]">
+            <div className="relative">
+              <NumberInput
+                min={0}
+                max={100}
+                step={1}
+                disabled={!isInteractive}
+                placeholder="--"
+                className="text-center w-[112px]"
+                value={project.allocationInput || ''}
+                onFocus={() => setIsInputFocused(true)}
+                onFocusCapture={() => setIsInputFocused(true)}
+                onChange={(e) => handleAllocationChange(index, e.target.value)}
+                onBlur={() => {
+                  setIsInputFocused(false);
+                  handleAllocationSave(index);
+                }}
+                symbol="%"
+                maxDecimals={2}
+              />
+            </div>
+            <div className="text-muted-foreground text-xs">
+              {formatAllocationOPAmount(
+                (budget * (Number.parseFloat(project.allocationInput) || 0)) /
+                  100
+              )}{' '}
+              OP
+            </div>
+          </div>
         </div>
       </div>
     </div>

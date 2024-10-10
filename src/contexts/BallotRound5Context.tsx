@@ -20,6 +20,7 @@ import {
   useDistributionMethod,
   DistributionMethod,
   useIsSavingRound5Ballot,
+  useSaveRound5Allocation,
 } from '@/hooks/useBallotRound5';
 import { useBallotRound5Editor } from '@/hooks/useBallotRound5Editor';
 import { useBudget } from '@/hooks/useBudget';
@@ -51,12 +52,14 @@ type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {
   isSaving: boolean;
   isVoted: boolean;
   budget: number;
+  isInteractive: boolean;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isMovable: boolean;
   handleProjectMove: (draggedIndex: number, newIndex: number) => void;
   handleAllocationChange: (index: number, value: string) => void;
+  handleAllocationSave: (index: number) => void;
   handlePositionChange: (index: number, value: string) => void;
   isSubmitting: boolean;
   setSubmitting: (isSubmitting: boolean) => void;
@@ -90,17 +93,37 @@ export function BallotRound5Provider({ children }: PropsWithChildren) {
     update: updateDistributionMethodLocally,
     isPending: isUpdatingDistributionMethod,
   } = useDistributionMethodFromLocalStorage();
-  const { mutate: redistribute } = useDistributionMethod();
+  const { mutate: redistribute, isPending: isRedistributing } =
+    useDistributionMethod();
   const { mutateAsync: savePosition } = useSaveRound5Position();
   const allocationSum = useRound5BallotWeightSum();
   const { getBudget } = useBudget(5);
   const isSavingBallot = useIsSavingRound5Ballot();
+  const { mutate: saveAllocation } = useSaveRound5Allocation();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showUnlockDialog, setShowUnlockDialog] = useState(false);
   const [projectList, setProjectList] = useState<ProjectAllocationState[]>([]);
   const [conflicts, setConflicts] = useState<ProjectAllocationState[]>([]);
+
+  const isInteractive = useMemo(() => {
+    return (
+      !isPending &&
+      !isSubmitting &&
+      !isSavingBallot &&
+      !isRedistributing &&
+      projectList.length > 0 &&
+      !!projects
+    );
+  }, [
+    isPending,
+    isSubmitting,
+    isRedistributing,
+    isSavingBallot,
+    projectList,
+    projects,
+  ]);
 
   useEffect(() => {
     if (isFetched) {
@@ -290,22 +313,44 @@ export function BallotRound5Provider({ children }: PropsWithChildren) {
 
   const handleAllocationChange = useCallback(
     (index: number, value: string) => {
-      const newAllocation = Number.parseFloat(value);
       const newProjectList = [...projectList];
-      newProjectList[index].allocation = Number.isNaN(newAllocation)
-        ? 0
-        : Number(value);
       newProjectList[index].allocationInput = value;
       setProjectList(newProjectList);
-      updateDistributionMethodLocally(DistributionMethod.CUSTOM);
     },
-    [projectList, updateDistributionMethodLocally]
+    [projectList]
+  );
+  const handleAllocationSave = useCallback(
+    (index: number) => {
+      const project = projectList[index];
+      const newAllocation = Number.parseFloat(project.allocationInput);
+      const normalizedNewAllocation = Number.isNaN(newAllocation)
+        ? 0
+        : newAllocation;
+
+      if (Number(normalizedNewAllocation) !== Number(project.allocation)) {
+        const newProjectList = [...projectList];
+        newProjectList[index].allocation = normalizedNewAllocation;
+        setProjectList(newProjectList);
+
+        updateDistributionMethodLocally(DistributionMethod.CUSTOM);
+
+        saveAllocation({
+          project_id: project.project_id,
+          allocation: normalizedNewAllocation,
+        });
+      }
+    },
+    [projectList, updateDistributionMethodLocally, saveAllocation]
   );
 
   const handlePositionChange = useCallback(
     (index: number, value: string) => {
       const newIndex = Number.parseInt(value, 10) - 1;
-      if (newIndex >= 0 && newIndex < projectList.length) {
+      if (
+        newIndex >= 0 &&
+        newIndex < projectList.length &&
+        newIndex !== index
+      ) {
         const newProjects = [...projectList];
         const [movedProject] = newProjects.splice(index, 1);
         newProjects.splice(newIndex, 0, movedProject);
@@ -393,6 +438,8 @@ export function BallotRound5Provider({ children }: PropsWithChildren) {
       distributionMethod === DistributionMethod.TOP_WEIGHTED,
     handleProjectMove,
     handleAllocationChange,
+    handleAllocationSave,
+    isInteractive,
     handlePositionChange,
     isSubmitting,
     setSubmitting,
