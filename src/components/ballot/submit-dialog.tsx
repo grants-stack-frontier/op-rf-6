@@ -5,8 +5,9 @@ import { type ComponentProps, useState } from 'react';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { votingEndDate } from '@/config';
-import { type Round4Ballot, useSubmitBallot } from '@/hooks/useBallot';
+import { useSubmitBallot } from '@/hooks/useBallot';
 import { formatDate } from '@/lib/utils';
+import { Round4Ballot } from '@/types/metrics';
 
 import VotingSuccess from '../../../public/RetroFunding_Round4_IVoted@2x.png';
 import { Button } from '../ui/button';

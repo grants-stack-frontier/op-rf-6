@@ -8,7 +8,8 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import { type FeedbackForm, useSendFeedback } from '@/hooks/useFeedback';
+import { useSendFeedback } from '@/hooks/useFeedback';
+import { FeedbackForm } from '@/types/various';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';

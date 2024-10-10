@@ -14,7 +14,7 @@ import type {
   Round5Ballot,
 } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
-import type { Round5Allocation } from '@/types/shared';
+import type { Round5Allocation } from '@/types/various';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();

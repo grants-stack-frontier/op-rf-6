@@ -2,10 +2,11 @@
 
 import { type ComponentProps, useCallback, useRef } from 'react';
 
-import { type Round4Allocation, useSaveAllocation } from '@/hooks/useBallot';
+import { useSaveAllocation } from '@/hooks/useBallot';
 import { useMetricIds } from '@/hooks/useMetrics';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
+import { Round4Allocation } from '@/types/ballot';
 
 import { Button } from '../ui/button';
 import {

@@ -7,7 +7,7 @@ import { useIntersection } from 'react-use';
 import { Project } from '@/__generated__/api/agora.schemas';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { cn } from '@/lib/utils';
-import { CategoryId } from '@/types/shared';
+import { CategoryId } from '@/types/various';
 
 import AvatarPlaceholder from '../../../public/avatar-placeholder.svg';
 import { ManualDialog } from '../common/manual-dialog';
@@ -65,7 +65,7 @@ export function ProjectsSidebar({ id }: { id: CategoryId }) {
           {(intersection?.intersectionRatio ?? 0) < 1 && (
             <Badge
               variant="outline"
-              className="animate-in fade-in zoom-in absolute bottom-2 left-1/2 -translate-x-1/2 bg-white"
+              className="animate-in fade-in zoom-in absolute bottom-2 left-1/2 -translate-x-1/2 bg-white dark:text-black"
             >
               More <RiArrowDownLine className="ml-2 size-3 " />
             </Badge>

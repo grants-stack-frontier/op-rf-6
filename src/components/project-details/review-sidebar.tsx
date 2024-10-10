@@ -9,17 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ImpactScore, scoreLabels } from '@/hooks/useProjectScoring';
+import { scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
+import { ImpactScore } from '@/types/project-scoring';
 
 import { useBallotRound5Context } from '../ballot/provider5';
 import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';
 import { Skeleton } from '../ui/skeleton';
 
-type CardProps = React.ComponentProps<typeof Card>;
-
-interface ReviewSidebarProps extends CardProps {
+interface ReviewSidebarProps extends React.ComponentProps<typeof Card> {
   onScoreSelect: (score: ImpactScore) => void;
   isSaving: boolean;
   isVoted: boolean;
@@ -46,7 +45,7 @@ export function ReviewSidebar({
 
   const handleScore = useCallback(
     (score: ImpactScore) => {
-      if (Number(score) === 0) {
+      if (score === 0) {
         setIsConflictOfInterestDialogOpen(true);
         return;
       } else {
@@ -57,14 +56,15 @@ export function ReviewSidebar({
   );
 
   const sortedScores = useMemo(() => {
-    return (Object.entries(scoreLabels) as [ImpactScore, string][])
+    return Object.entries(scoreLabels)
+      .map(([score, label]) => [Number(score), label] as [number, string])
       .sort(([scoreA], [scoreB]) => {
-        if (scoreA === 'Skip') return 1;
-        if (scoreB === 'Skip') return -1;
-        return Number(scoreB) - Number(scoreA);
+        if (scoreA === 999) return 1;
+        if (scoreB === 999) return -1;
+        return scoreB - scoreA;
       })
-      .filter(([score]) => score !== 'Skip')
-      .concat([['Skip', scoreLabels['Skip']] as [ImpactScore, string]]);
+      .filter(([score]) => score !== 999)
+      .concat([[999, scoreLabels[999]] as [number, string]]);
   }, []);
 
   return (
@@ -83,11 +83,11 @@ export function ReviewSidebar({
         <div className="flex flex-col gap-2">
           {sortedScores.map(([score, label]) => {
             const isDisabled =
-              isLoading || isSaving || (score === 'Skip' && allProjectsScored);
+              isLoading || isSaving || (score === 999 && allProjectsScored);
             return (
               <Button
                 key={score}
-                variant={score === 'Skip' ? 'link' : 'outline'}
+                variant={score === 999 ? 'link' : 'outline'}
                 className={cn(
                   label === 'Conflict of interest'
                     ? 'hover:bg-red-200 hover:text-red-600'
@@ -104,7 +104,7 @@ export function ReviewSidebar({
                       ? 'bg-red-200 text-red-600'
                       : ''
                 )}
-                onClick={() => handleScore(score)}
+                onClick={() => handleScore(score as ImpactScore)}
                 disabled={isDisabled}
               >
                 {isVoted && Number(currentProjectScore) === Number(score) && (

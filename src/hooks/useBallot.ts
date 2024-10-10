@@ -14,62 +14,7 @@ import { useBallotContext } from '@/components/ballot/provider';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
 import { request } from '@/lib/request';
-import type { CategoryId } from '@/types/shared';
-
-import type { ProjectAllocation } from './useMetrics';
-
-export type Round4Ballot = {
-  address: string;
-  allocations: Round4Allocation[];
-  project_allocations: ProjectAllocation[];
-  updated_at: string;
-  published_at: string;
-  os_multiplier: number;
-  os_only: boolean;
-  status: 'SUBMITTED';
-};
-export type Round4Allocation = {
-  metric_id: string;
-  allocation: number;
-  locked?: boolean;
-};
-
-export type Round5Allocation = {
-  category_slug: CategoryId;
-  allocation: number;
-  locked: boolean;
-};
-
-export type Round5ProjectAllocation = {
-  project_id: string;
-  name: string;
-  image: string;
-  position: number;
-  allocation: number;
-  impact: number;
-};
-
-export type Round5BallotStatus =
-  | 'NOT STARTED'
-  | 'RANKED'
-  | 'PENDING SUBMISSION'
-  | 'SUBMITTED';
-
-export type Round5Ballot = {
-  address: string;
-  round_id: number;
-  status: Round5BallotStatus;
-  created_at: string;
-  updated_at: string;
-  published_at: string;
-  catgory_allocation: Round5Allocation[];
-  projects_allocation: Round5ProjectAllocation[];
-  projects_to_be_evaluated: string[];
-  total_projects: number;
-  distribution_method: string;
-};
-
-export type Ballot<T extends 4 | 5> = T extends 4 ? Round4Ballot : Round5Ballot;
+import { Round4Ballot, Round5Ballot, Round4Allocation } from '@/types/ballot';
 
 export function useRound5Ballot(address?: string) {
   return useQuery({
@@ -221,7 +166,9 @@ export function useIsSavingBallot() {
 export function useBallotWeightSum() {
   const { ballot } = useBallotContext();
   return Math.round(
-    ballot?.allocations.reduce((sum, x) => (sum += Number(x.allocation)), 0) ??
+    ballot?.allocations.reduce(
+      (sum: number, x: { allocation: number }) => sum + Number(x.allocation),
       0
+    ) ?? 0
   );
 }

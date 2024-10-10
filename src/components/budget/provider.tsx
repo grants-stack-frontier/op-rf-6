@@ -3,8 +3,8 @@ import React, { createContext, useContext } from 'react';
 
 import { Project } from '@/__generated__/api/agora.schemas';
 import { useBudgetForm } from '@/hooks/useBudgetForm';
-import { Category } from '@/lib/categories';
-import { CategoryId } from '@/types/shared';
+import { Category } from '@/types/categories';
+import { CategoryId } from '@/types/various';
 
 interface BudgetContextType {
   categories: Category[] | undefined;

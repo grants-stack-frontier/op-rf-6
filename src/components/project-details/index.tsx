@@ -1,11 +1,14 @@
 'use client';
-import type { Project } from '@/__generated__/api/agora.schemas';
-import type { CategoryType } from '@/lib/categories';
+import type {
+  Project,
+  RetroFundingBallotCategoriesAllocationCategorySlug,
+} from '@/__generated__/api/agora.schemas';
+import { TeamMember } from '@/types/project-details';
 
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 
-import { CategoryAndTeam, type TeamMember } from './category-team';
+import { CategoryAndTeam } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
 import { PricingModel } from './pricing-model';
@@ -61,7 +64,9 @@ export function ProjectDetails({
           <ProjectDescription description={description} />
           <SocialLinksList socialLinks={socialLinks} />
           <CategoryAndTeam
-            category={applicationCategory as CategoryType}
+            category={
+              applicationCategory as RetroFundingBallotCategoriesAllocationCategorySlug
+            }
             team={team as TeamMember[] | undefined}
           />
           <ReposLinksContracts

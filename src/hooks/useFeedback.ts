@@ -2,18 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import ky from 'ky';
 
 import { useToast } from '@/components/ui/use-toast';
-
-export type FeedbackForm = {
-  address: string;
-  votingTime: string;
-  votingRating: string;
-  concernRating: string;
-  concernComment?: string;
-  confidenceRating: string;
-  confidenceComment?: string;
-  influenceRating: string;
-  influenceComment?: string;
-};
+import { FeedbackForm } from '@/types/various';
 
 const formMap: FeedbackForm = {
   address: '45ea618e-403e-40b8-b610-88b6b1b63b6c',

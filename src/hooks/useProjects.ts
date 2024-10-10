@@ -10,35 +10,22 @@ import {
   type getRetroFundingRoundProjectsResponse,
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
-import type {
-  GetRetroFundingRoundProjectsCategory,
-  PageMetadata,
-  Project,
+import {
+  type GetRetroFundingRoundProjectsCategory,
+  type Project,
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
-import type { CategoryType } from '@/lib/categories';
 import { request } from '@/lib/request';
-import type { CategoryId } from '@/types/shared';
+import { ImpactScore } from '@/types/project-scoring';
+import { ProjectsParams, ProjectsResponse } from '@/types/projects';
+import type { CategoryId } from '@/types/various';
 
-import type { ImpactScore } from './useProjectScoring';
-
-export const categoryMap: Record<CategoryType, string> = {
+export const categoryMap: Record<CategoryId, string> = {
   ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
   OP_STACK_RESEARCH_AND_DEVELOPMENT: 'op_rnd',
   OP_STACK_TOOLING: 'op_tooling',
 };
-
-export type ProjectsResponse = {
-  metadata?: PageMetadata;
-  data?: Project[];
-};
-
-export interface ProjectsParams {
-  limit?: number;
-  offset?: number;
-  category?: GetRetroFundingRoundProjectsCategory;
-}
 
 export function useProjects(params?: ProjectsParams) {
   const { limit, offset, category } = params ?? {};
@@ -96,9 +83,9 @@ export function useProjectsByCategory(categoryId: CategoryId) {
         category: categoryMap[
           categoryId
         ] as GetRetroFundingRoundProjectsCategory,
-      }).then((results: getRetroFundingRoundProjectsResponse) => {
-        const res: ProjectsResponse = results.data;
-        return res.data;
+        //fix type when agora fixes it
+      }).then((results: any) => {
+        return results.data.data as Project[];
       }),
   });
 }
@@ -138,7 +125,6 @@ export function useSaveProjectImpact() {
   });
 }
 
-export type SaveProjectsActionType = 'reset' | 'import';
 export function useSaveProjects() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -151,9 +137,9 @@ export function useSaveProjects() {
       projects: {
         project_id: string;
         allocation: string;
-        impact: 0 | 1 | 2 | 3 | 4 | 5;
+        impact: 0 | 1 | 2 | 3 | 4 | 5 | 999;
       }[];
-      action?: SaveProjectsActionType;
+      action?: 'reset' | 'import';
     }) => {
       await request
         .post(`${agoraRoundsAPI}/ballots/${address}/projects`, {

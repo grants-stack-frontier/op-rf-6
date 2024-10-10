@@ -3,17 +3,15 @@ import { useCallback, useMemo, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
-  type ProjectsSkipped,
   addSkippedProject,
   getProjectsSkipped,
   removeSkippedProject,
   setProjectsSkipped,
 } from '@/lib/localStorage';
+import { Round5Ballot } from '@/types/ballot';
+import { ImpactScore, ProjectsSkipped } from '@/types/project-scoring';
 
-import type { Round5Ballot } from './useBallotRound5';
 import type { Address } from 'viem';
-
-export type ImpactScore = 0 | 1 | 2 | 3 | 4 | 5 | 'Skip';
 
 export const scoreLabels: Record<ImpactScore, string> = {
   0: 'Conflict of interest',
@@ -22,7 +20,7 @@ export const scoreLabels: Record<ImpactScore, string> = {
   3: 'Medium',
   4: 'High',
   5: 'Very high',
-  Skip: 'Skip',
+  999: 'Skip',
 };
 
 // Custom hook for project scoring logic
@@ -65,7 +63,7 @@ export const useProjectScoring = (
       const projectsSkipped = getProjectsSkipped(category, walletAddress);
       let updatedProjectsSkipped: ProjectsSkipped | undefined;
 
-      if (score === 'Skip') {
+      if (score === 999) {
         updatedProjectsSkipped = addSkippedProject(category, id, walletAddress);
       } else {
         setIsSaving(true);
@@ -81,7 +79,6 @@ export const useProjectScoring = (
           });
           if (result.status === 200) {
             if (projectsSkipped?.ids?.includes(id)) {
-              console.log('removing skipped project');
               updatedProjectsSkipped = removeSkippedProject(
                 category,
                 id,

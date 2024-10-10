@@ -9,8 +9,9 @@ import {
 } from 'react';
 import { useAccount } from 'wagmi';
 
-import { type Round5Ballot, useRound5Ballot } from '@/hooks/useBallotRound5';
+import { useRound5Ballot } from '@/hooks/useBallotRound5';
 import { useBallotRound5Editor } from '@/hooks/useBallotRound5Editor';
+import { Round5Ballot } from '@/types/ballot';
 
 type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {
   isPending: boolean;

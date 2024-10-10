@@ -12,9 +12,10 @@ import { ProjectBreadcrumb } from '@/components/project-details/project-breadcru
 import { ReviewSidebar } from '@/components/project-details/review-sidebar';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
-import { ImpactScore, useProjectScoring } from '@/hooks/useProjectScoring';
+import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
-import { CategoryId } from '@/types/shared';
+import { ImpactScore } from '@/types/project-scoring';
+import { CategoryId } from '@/types/various';
 
 export default function ProjectDetailsPage({
   params,
@@ -135,7 +136,8 @@ export default function ProjectDetailsPage({
   const currentProjectScore = useMemo(() => {
     if (!ballot || !currentProject) return undefined;
     const allocation = ballot.project_allocations?.find(
-      (p) => p.project_id === currentProject.applicationId
+      (p: { project_id: string }) =>
+        p.project_id === currentProject.applicationId
     );
     return allocation ? (allocation.impact as ImpactScore) : undefined;
   }, [ballot, currentProject]);

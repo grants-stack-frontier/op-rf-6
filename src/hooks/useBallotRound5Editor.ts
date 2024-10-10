@@ -1,11 +1,10 @@
 'use client';
 import { useCallback, useState } from 'react';
 
-import type { CategoryId } from '@/types/shared';
+import { Round5ProjectAllocation } from '@/types/ballot';
+import type { CategoryId } from '@/types/various';
 
-import type { Round5ProjectAllocation } from './useBallotRound5';
-
-export type BallotRound5State = Record<
+type BallotRound5State = Record<
   string,
   { allocation: number; locked: boolean }
 >;

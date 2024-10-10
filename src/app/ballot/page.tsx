@@ -20,7 +20,6 @@ import { DisabledTooltip } from '@/components/ui/tooltip';
 import { votingEndDate } from '@/config';
 import { useSession } from '@/hooks/useAuth';
 import {
-  type Round5ProjectAllocation,
   useRound5Ballot,
   useIsSavingRound5Ballot,
   useRound5BallotWeightSum,
@@ -34,7 +33,8 @@ import { useBudget } from '@/hooks/useBudget';
 import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { categoryNames } from '@/lib/categories';
-import type { CategoryId } from '@/types/shared';
+import { Round5ProjectAllocation } from '@/types/ballot';
+import type { CategoryId } from '@/types/various';
 
 import { MetricsEditor } from '../../components/metrics-editor';
 

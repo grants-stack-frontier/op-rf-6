@@ -1,12 +1,14 @@
-import { CategoryType } from '@/lib/categories';
+import { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
 
-export function getBadgeClassName(category: CategoryType | undefined): string {
+export function getBadgeClassName(
+  category?: RetroFundingBallotCategoriesAllocationCategorySlug
+): string {
   switch (category) {
-    case CategoryType.ETHEREUM_CORE_CONTRIBUTIONS:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.ETHEREUM_CORE_CONTRIBUTIONS:
       return 'bg-blue-500/25 text-blue-600';
-    case CategoryType.OP_STACK_RESEARCH_AND_DEVELOPMENT:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_RESEARCH_AND_DEVELOPMENT:
       return 'bg-purple-500/25 text-purple-600';
-    case CategoryType.OP_STACK_TOOLING:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_TOOLING:
       return 'bg-orange-500/25 text-orange-600';
     default:
       return 'bg-blue-500/25 text-blue-600';
