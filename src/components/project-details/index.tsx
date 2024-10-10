@@ -8,6 +8,7 @@ import { TeamMember } from '@/types/project-details';
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 
+import { Attestations } from './attestations';
 import { CategoryAndTeam } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
@@ -16,8 +17,7 @@ import { ProjectDescription } from './project-description';
 import { ProjectHeader } from './project-header';
 import { ReposLinksContracts } from './repos-links-contracts';
 import { SocialLinksList } from './social-links';
-import { Testimonials } from './testimonials';
-import { Attestations } from './attestations';
+// import { Testimonials } from './testimonials';
 
 export function ProjectDetails({
   data,
@@ -39,7 +39,7 @@ export function ProjectDetails({
     grantsAndFunding,
     pricingModel,
     impactStatement,
-    testimonials,
+    // testimonials,
     contracts,
     team,
     projectId,
