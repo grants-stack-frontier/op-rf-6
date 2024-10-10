@@ -231,34 +231,6 @@ function YourBallot() {
 
   return (
     <div className="space-y-4">
-      {/* {ballot?.status === 'SUBMITTED' && (
-        <Alert variant={'accent'}>
-          <div className="flex gap-2 text-sm items-center">
-            <p>
-              Your ballot was submitted on {formatDate(ballot?.published_at)}.
-              You can make changes and resubmit until{' '}
-              {formatDate(votingEndDate)}. To do so, simply edit the ballot
-              below and submit again.
-            </p>
-            <div
-              className="flex gap-4 items-center cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => downloadImage(document.querySelector('#download'))}
-            >
-              <Image
-                id="download"
-                {...VotingSuccess}
-                alt="Success!"
-                className="rounded-xl max-w-[142px]"
-              />
-              <Button
-                icon={ArrowDownToLineIcon}
-                size="icon"
-                variant={'ghost'}
-              />
-            </div>
-          </div>
-        </Alert>
-      )} */}
       <p>
         Your voting category is{' '}
         <a href={`/category/${votingCategory}`} className="underline">
