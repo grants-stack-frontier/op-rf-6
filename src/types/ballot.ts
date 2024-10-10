@@ -8,6 +8,12 @@ export type Round5Allocation = {
   locked: boolean;
 };
 
+export interface ProjectAllocationState extends Round5ProjectAllocation {
+  allocationInput: string;
+  positionInput: string;
+  description?: string;
+}
+
 export type Round5ProjectAllocation = {
   project_id: string;
   name: string;

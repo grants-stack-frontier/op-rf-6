@@ -74,14 +74,14 @@ export function useProjects(params?: ProjectsParams) {
   });
 }
 
-export function useProjectsByCategory(categoryId: CategoryId) {
+export function useProjectsByCategory(categoryId?: CategoryId) {
   return useQuery({
     queryKey: ['projects-by-category', categoryId],
     queryFn: async () =>
       getRetroFundingRoundProjects(5, {
         limit: 100,
         category: categoryMap[
-          categoryId
+          categoryId as CategoryId
         ] as GetRetroFundingRoundProjectsCategory,
         //fix type when agora fixes it
       }).then((results: any) => {
