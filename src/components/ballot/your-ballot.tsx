@@ -1,4 +1,5 @@
-import { Link, LoaderIcon, Menu } from 'lucide-react';
+import { LoaderIcon, Menu } from 'lucide-react';
+import Link from 'next/link';
 import { useState, useMemo, useEffect } from 'react';
 
 import { Separator } from '@/components/ui/separator';
@@ -183,6 +184,7 @@ export function YourBallot() {
   };
 
   const displayProjects = searchTerm ? filteredProjects : projectList;
+  console.log('displayProjects', displayProjects);
 
   const isMovable =
     distributionMethod === DistributionMethod.TOP_TO_BOTTOM ||
