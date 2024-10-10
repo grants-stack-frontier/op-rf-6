@@ -65,7 +65,7 @@ export function ProjectsSidebar({ id }: { id: CategoryId }) {
           {(intersection?.intersectionRatio ?? 0) < 1 && (
             <Badge
               variant="outline"
-              className="animate-in fade-in zoom-in absolute bottom-2 left-1/2 -translate-x-1/2 bg-white"
+              className="animate-in fade-in zoom-in absolute bottom-2 left-1/2 -translate-x-1/2 bg-white dark:text-black"
             >
               More <RiArrowDownLine className="ml-2 size-3 " />
             </Badge>

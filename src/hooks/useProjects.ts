@@ -11,7 +11,6 @@ import {
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
 import {
-  type GetRetroFundingRoundProjects200,
   type GetRetroFundingRoundProjectsCategory,
   type Project,
 } from '@/__generated__/api/agora.schemas';
@@ -84,9 +83,9 @@ export function useProjectsByCategory(categoryId: CategoryId) {
         category: categoryMap[
           categoryId
         ] as GetRetroFundingRoundProjectsCategory,
-      }).then((results: getRetroFundingRoundProjectsResponse) => {
-        const res: GetRetroFundingRoundProjects200 = results.data;
-        return res.projects;
+        //fix type when agora fixes it
+      }).then((results: any) => {
+        return results.data.data as Project[];
       }),
   });
 }
