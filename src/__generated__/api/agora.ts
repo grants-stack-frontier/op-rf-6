@@ -90,7 +90,7 @@ import type {
   UpdateRetroFundingRoundProjectsBody,
   VotingToken,
 } from './agora.schemas';
-import { customFetch } from '../../lib/custom-fetch';
+import { customFetch } from '../../lib/customFetch';
 
 /**
  * Retrieves the full OAS/Swagger spec for the API in YAML.

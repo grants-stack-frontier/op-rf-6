@@ -13,9 +13,8 @@ import {
 import mixpanel from '@/lib/mixpanel';
 import { getToken } from '@/lib/token';
 
+import { UnifiedDialog } from '../common/unified-dialog';
 import { Button } from '../ui/button';
-
-import { UnifiedDialog } from './unified-dialog';
 
 import type { Address } from 'viem';
 

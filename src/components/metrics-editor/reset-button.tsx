@@ -4,11 +4,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
 import { useSaveProjects } from '@/hooks/useProjects';
 import { ImpactScore } from '@/types/project-scoring';
 
-import { useBallotRound5Context } from '../ballot/provider5';
 import { Button } from '../ui/button';
 import {
   Dialog,

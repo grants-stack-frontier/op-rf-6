@@ -7,8 +7,10 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { useProjectContext } from '@/contexts/ProjectContext';
 
-export function ProjectBreadcrumb({ id }: { id: string }) {
+export function ProjectBreadcrumb() {
+  const { id } = useProjectContext();
   return (
     <Breadcrumb className="mb-6">
       <BreadcrumbList>
