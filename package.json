@@ -55,7 +55,7 @@
     "react-hook-form": "^7.51.3",
     "react-markdown": "^9.0.1",
     "react-use": "^17.5.0",
-    "recharts": "^2.12.6",
+    "recharts": "^2.12.7",
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
     "tailwind-merge": "^2.3.0",
