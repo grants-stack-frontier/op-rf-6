@@ -5,10 +5,10 @@ import { useAccount } from 'wagmi';
 
 import { BudgetForm } from '@/components/budget/budget-form';
 import { InfoBox } from '@/components/budget/info-box';
-import { BudgetProvider } from '@/components/budget/provider';
 import { PageView } from '@/components/common/page-view';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { BudgetProvider } from '@/contexts/BudgetContext';
 
 export default function BudgetBallotPage() {
   const { isConnecting } = useAccount();

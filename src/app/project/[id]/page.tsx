@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { UnlockBallotDialog } from '@/components/ballot/unlock-ballot';
 import { LoadingDialog } from '@/components/common/loading-dialog';
 import { PageView } from '@/components/common/page-view';
 import { ProjectDetails } from '@/components/project-details';
 import { ProjectBreadcrumb } from '@/components/project-details/project-breadcrumb';
 import { ReviewSidebar } from '@/components/project-details/review-sidebar';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';

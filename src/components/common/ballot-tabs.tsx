@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { useBudgetContext } from '@/contexts/BudgetContext';
 import { cn } from '@/lib/utils';
 
-import { useBudgetContext } from '../budget/provider';
 import { Separator } from '../ui/separator';
 
 export function BallotBudgetTabs() {

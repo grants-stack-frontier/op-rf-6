@@ -1,8 +1,8 @@
 import { useAccount } from 'wagmi';
 
 import { NonBadgeholder, EmptyBallot } from '@/components/ballot/ballot-states';
-import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 
 import { YourBallot } from './your-ballot';
 

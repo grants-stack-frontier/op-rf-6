@@ -2,6 +2,7 @@ import { Link, LoaderIcon, Menu } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 
 import { Separator } from '@/components/ui/separator';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import {
   useSaveRound5Allocation,
@@ -25,7 +26,6 @@ import { Input } from '../ui/input';
 import { NumberInput } from '../ui/number-input';
 
 import { BallotSubmitButton } from './ballot-submit-button';
-import { useBallotRound5Context } from './provider5';
 import { SubmitRound5Dialog } from './submit-dialog5';
 import { WeightsError } from './weights-error';
 

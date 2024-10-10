@@ -4,9 +4,9 @@ import { ArrowDownToLineIcon } from 'lucide-react';
 import Image from 'next/image';
 
 import { votingEndDate } from '@/config';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 
 import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
-import { useBallotRound5Context } from '../ballot/provider5';
 import { downloadImage } from '../ballot/submit-dialog5';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';

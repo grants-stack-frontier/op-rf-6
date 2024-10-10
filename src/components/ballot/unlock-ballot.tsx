@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ComponentProps, useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/components/ballot/provider5';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 
 import { LoadingDialog } from '../common/loading-dialog';
 import {

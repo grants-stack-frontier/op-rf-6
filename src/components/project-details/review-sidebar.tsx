@@ -9,11 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
 import { ImpactScore } from '@/types/project-scoring';
 
-import { useBallotRound5Context } from '../ballot/provider5';
 import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';
 import { Skeleton } from '../ui/skeleton';

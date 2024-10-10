@@ -3,6 +3,7 @@
 import { type ComponentProps, useCallback, useRef } from 'react';
 import { useAccount } from 'wagmi';
 
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
@@ -25,8 +26,6 @@ import {
   DialogTitle,
 } from '../ui/dialog';
 import { toast } from '../ui/use-toast';
-
-import { useBallotRound5Context } from './provider5';
 
 export function ImportBallotDialog({
   isOpen,

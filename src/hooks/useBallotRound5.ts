@@ -11,9 +11,9 @@ import { useAccount, useSignMessage } from 'wagmi';
 
 import { submitRetroFundingBallot } from '@/__generated__/api/agora';
 import type { SubmitRetroFundingBallotBody } from '@/__generated__/api/agora.schemas';
-import { useBallotRound5Context } from '@/components/ballot/provider5';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { request } from '@/lib/request';
 import { Round5Ballot } from '@/types/ballot';
 

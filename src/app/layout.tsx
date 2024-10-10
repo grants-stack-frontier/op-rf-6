@@ -1,9 +1,9 @@
 import { Inter } from 'next/font/google';
 
-import { BallotRound5Provider } from '@/components/ballot/provider5';
-import { BudgetProvider } from '@/components/budget/provider';
 import { ThemeProvider } from '@/components/common/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { BallotRound5Provider } from '@/contexts/BallotRound5Context';
+import { BudgetProvider } from '@/contexts/BudgetContext';
 import { cn } from '@/lib/utils';
 
 import '@rainbow-me/rainbowkit/styles.css';
