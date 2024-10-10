@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useBudgetContext } from '../budget/provider';
 import { Separator } from '../ui/separator';
 
-export function BallotTabs() {
+export function BallotBudgetTabs() {
   const path = usePathname();
   const { error, allocations } = useBudgetContext();
   const isBallotDisabled = !!error || !Object.keys(allocations).length;

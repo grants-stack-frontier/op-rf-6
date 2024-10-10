@@ -6,11 +6,10 @@ import Image from 'next/image';
 import { votingEndDate } from '@/config';
 
 import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
+import { useBallotRound5Context } from '../ballot/provider5';
+import { downloadImage } from '../ballot/submit-dialog5';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-
-import { useBallotRound5Context } from './provider5';
-import { downloadImage } from './submit-dialog5';
 
 const monthNames = [
   'Jan',
