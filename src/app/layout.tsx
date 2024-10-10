@@ -1,6 +1,5 @@
 import { Inter } from 'next/font/google';
 
-import { BallotProvider } from '@/components/ballot/provider';
 import { BallotRound5Provider } from '@/components/ballot/provider5';
 import { BudgetProvider } from '@/components/budget/provider';
 import { ThemeProvider } from '@/components/common/theme-provider';
@@ -40,11 +39,9 @@ export default function RootLayout({
         >
           <Provider>
             <BallotRound5Provider>
-              <BallotProvider>
-                <BudgetProvider>
-                  <ClientLayout>{children}</ClientLayout>
-                </BudgetProvider>
-              </BallotProvider>
+              <BudgetProvider>
+                <ClientLayout>{children}</ClientLayout>
+              </BudgetProvider>
             </BallotRound5Provider>
           </Provider>
         </ThemeProvider>
