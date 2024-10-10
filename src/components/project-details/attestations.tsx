@@ -58,6 +58,11 @@ export function Attestations({ projectId }: { projectId?: string }) {
       )}
       <AttestationChartCard />
       <AttestationElectedGovernanceMembersCard />
+      <Link href={`#`} passHref>
+        <p className="text-sm line-height-5 text-[#404454]">
+          View all testimonials at metricsgarden.xyz/projects/project_title
+        </p>
+      </Link>
     </div>
   );
 }
