@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useProjectContext } from '@/contexts/ProjectContext';
 import { scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
 import { ImpactScore } from '@/types/project-scoring';
@@ -18,23 +19,15 @@ import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';
 import { Skeleton } from '../ui/skeleton';
 
-interface ReviewSidebarProps extends React.ComponentProps<typeof Card> {
-  onScoreSelect: (score: ImpactScore) => void;
-  isSaving: boolean;
-  isVoted: boolean;
-  currentProjectScore?: ImpactScore;
-  isLoading: boolean;
-}
+export function ReviewSidebar() {
+  const {
+    isLoading,
+    currentProjectScore,
+    isSaving,
+    isVoted,
+    handleScore: onScoreSelect,
+  } = useProjectContext();
 
-export function ReviewSidebar({
-  className,
-  onScoreSelect,
-  isVoted,
-  isSaving,
-  isLoading,
-  currentProjectScore,
-  ...props
-}: ReviewSidebarProps) {
   const { ballot } = useBallotRound5Context();
   const allProjectsScored = useMemo(() => {
     return ballot?.project_allocations?.length === ballot?.total_projects;
@@ -68,10 +61,7 @@ export function ReviewSidebar({
   }, []);
 
   return (
-    <Card
-      className={cn('w-[304px] h-[560px] sticky top-8', className)}
-      {...props}
-    >
+    <Card className="w-[304px] h-[560px] sticky top-8">
       <CardHeader>
         <CardTitle className="text-base font-medium text-center">
           {isVoted

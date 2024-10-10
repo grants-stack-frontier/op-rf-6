@@ -2,10 +2,11 @@
 import { RiLockUnlockFill } from '@remixicon/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { ComponentProps, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useProjectContext } from '@/contexts/ProjectContext';
 
 import { LoadingDialog } from '../common/loading-dialog';
 import {
@@ -17,13 +18,9 @@ import {
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 
-export function UnlockBallotDialog({
-  isOpen,
-  setOpen,
-}: {
-  isOpen: boolean;
-  setOpen: ComponentProps<typeof AlertDialog>['onOpenChange'];
-}) {
+export function UnlockBallotDialog() {
+  const { showUnlockDialog: isOpen, setShowUnlockDialog: setOpen } =
+    useProjectContext();
   const [isUnlockedLoading, setIsUnlockedLoading] = useState(false);
   const router = useRouter();
   const { address } = useAccount();
