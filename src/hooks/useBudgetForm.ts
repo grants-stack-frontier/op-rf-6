@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi';
 
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { useAllProjectsByCategory } from '@/hooks/useProjects';
-import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budget-helpers';
+import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budgetHelpers';
 import { categories } from '@/lib/categories';
 import type { CategoryId } from '@/types/various';
 
