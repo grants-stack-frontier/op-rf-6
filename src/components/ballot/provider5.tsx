@@ -57,6 +57,8 @@ export function BallotRound5Provider({ children }: PropsWithChildren) {
   const value = {
     ballot: localBallot,
     isPending,
+    isFetched,
+    refetch,
     ...editor,
     updateBallotState,
   };

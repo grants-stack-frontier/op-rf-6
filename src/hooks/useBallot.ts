@@ -14,19 +14,7 @@ import { useBallotContext } from '@/components/ballot/provider';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI } from '@/config';
 import { request } from '@/lib/request';
-import { Round4Ballot, Round5Ballot, Round4Allocation } from '@/types/ballot';
-
-export function useRound5Ballot(address?: string) {
-  return useQuery({
-    enabled: Boolean(address),
-    queryKey: ['ballot', address],
-    queryFn: async () =>
-      request
-        .get(`${agoraRoundsAPI}/ballots/${address}`)
-        .json<Round5Ballot[]>()
-        .then((r) => r?.[0] ?? null),
-  });
-}
+import { Round4Ballot, Round4Allocation } from '@/types/ballot';
 
 export function useBallot(address?: string) {
   return useQuery({
