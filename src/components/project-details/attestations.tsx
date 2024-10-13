@@ -20,6 +20,7 @@ import {
 } from '../ui/chart';
 import { Pie, PieChart } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Separator } from '../ui/separator';
 
 export function Attestations({ projectId }: { projectId?: string }) {
   const { data: attestations } = useAttestations({ projectId });
@@ -56,6 +57,12 @@ export function Attestations({ projectId }: { projectId?: string }) {
         </div>
       )}
       <AttestationChartCard />
+      <AttestationElectedGovernanceMembersCard />
+      <Link href={`#`} passHref>
+        <p className="text-sm line-height-5 text-[#404454]">
+          View all testimonials at metricsgarden.xyz/projects/project_title
+        </p>
+      </Link>
     </div>
   );
 }
@@ -141,6 +148,81 @@ function CannotLiveWithoutCard() {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function AttestationElectedGovernanceMembersCard() {
+  const attestations: {
+    name: string;
+    count: number;
+    rating: number;
+    sentiment: Sentiment;
+  }[] = [
+    { name: 'Anticapture Commision', count: 4, rating: 7.5, sentiment: 'extremelyUpset' },
+    { name: 'Code of Conduct Council', count: 1, rating: 10, sentiment: 'extremelyUpset' },
+    { name: 'Collective Feedback Commission', count: 1, rating: 6, sentiment: 'somewhatUpset' },
+    { name: 'Developer Advisory Board', count: 4, rating: 2.5, sentiment: 'neutral' },
+    { name: 'Grants Council', count: 2, rating: 7, sentiment: 'somewhatUpset' },
+    { name: 'Security Council', count: 2, rating: 8.5, sentiment: 'extremelyUpset' },
+  ]
+  const totalCount = useMemo(() => attestations.reduce((acc, val) => acc + val.count, 0), [attestations])
+
+  return (
+    <Card className="shadow-none">
+      <CardContent className="flex flex-col gap-3 p-8 pb-9">
+        <AttUserStarIcon />
+        <CardTitle className="text-xl">{totalCount} attestations from elected governance members</CardTitle>
+        <div className="text-sm flex flex-col">
+          {attestations.map((attestation, i) => (
+            <AttestationElectedGovernanceMembersListItem key={i} {...attestation} />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function AttestationElectedGovernanceMembersListItem(params: {
+  name: string,
+  count: number,
+  rating: number,
+  sentiment: Sentiment
+}) {
+  function renderSentiment(sentiment: Sentiment) {
+    if (sentiment === 'extremelyUpset') return (
+      <>
+        <p>Extremely upset</p>
+        <Image src={SobFaceEmoji} alt="Sob face emoji" width={14} height={14} />
+      </>
+    )
+    if (sentiment === 'somewhatUpset') return (
+      <>
+        <p>Somewhat upset</p>
+        <Image src={FrowningFaceEmoji} alt="Frowning face emoji" width={14} height={14} />
+      </>
+    )
+    if (sentiment === 'neutral') return (
+      <>
+        <p>Neutral</p>
+        <Image src={NeutralFaceEmoji} alt="Neutral face emoji" width={14} height={14} />
+      </>
+    )
+  }
+  return (
+    <div className="flex flex-row justify-between items-center gap-2 border-b border-[#E0E2EB] py-2">
+      <p>{params.name} ({params.count})</p>
+      <div className="flex flex-row items-center justify-end gap-2">
+        <div className="flex flex-row items-center gap-1">
+          <ThumbRatingIcon rating={params.rating} />
+          <p>{params.rating}</p>
+        </div>
+        <Separator orientation="vertical" className="h-4" />
+        <div className='flex flex-row items-center gap-1'>
+          {renderSentiment(params.sentiment)}
+          <p>if ceased to exist</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -477,6 +559,23 @@ export function AttUserIcon() {
   );
 }
 
+export function AttUserStarIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 14V22H4C4 17.5817 7.58172 14 12 14ZM18 21.5L15.0611 23.0451L15.6224 19.7725L13.2447 17.4549L16.5305 16.9775L18 14L19.4695 16.9775L22.7553 17.4549L20.3776 19.7725L20.9389 23.0451L18 21.5ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13Z"
+        fill="#3374DB"
+      />
+    </svg>
+  );
+}
+
 export function AttThumbsUpIcon() {
   return (
     <svg
@@ -509,4 +608,45 @@ export function AttStarIcon() {
       />
     </svg>
   );
+}
+
+export function ThumbRatingIcon({ rating }: { rating: number }) {
+  
+  function getColorFromRating(rating: number) {
+    if (rating >= 8) return '#3374DB'
+    if (rating >= 7) return '#69A0F7'
+    if (rating >= 3) return '#BCBFCD'
+    if (rating >= 2) return '#FF5C6C'
+    return '#FF0420'
+  }
+
+  if (rating >= 5) return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.33366 5.99998H3.33366V14H1.33366C0.965472 14 0.666992 13.7015 0.666992 13.3333V6.66665C0.666992 6.29846 0.965472 5.99998 1.33366 5.99998ZM4.86225 5.13805L9.12926 0.871073C9.24652 0.753773 9.43226 0.74058 9.56493 0.840106L10.1333 1.2664C10.4565 1.50875 10.6021 1.92169 10.5024 2.31311L9.73353 5.33331H14.0003C14.7367 5.33331 15.3337 5.93027 15.3337 6.66665V8.06953C15.3337 8.24373 15.2995 8.4162 15.2333 8.5772L13.1703 13.5871C13.0675 13.8369 12.824 14 12.5539 14H5.33366C4.96547 14 4.66699 13.7015 4.66699 13.3333V5.60946C4.66699 5.43265 4.73723 5.26308 4.86225 5.13805Z"
+        fill={getColorFromRating(rating)}
+      />
+    </svg>
+  )
+
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.667 10H12.667V2H14.667C15.0352 2 15.3337 2.29848 15.3337 2.66667V9.33333C15.3337 9.70153 15.0352 10 14.667 10ZM11.1384 10.8619L6.87139 15.1289C6.75413 15.2462 6.56842 15.2594 6.43571 15.1599L5.86733 14.7336C5.54419 14.4913 5.39858 14.0783 5.49823 13.6869L6.26711 10.6667H2.00033C1.26395 10.6667 0.666992 10.0697 0.666992 9.33333V7.93047C0.666992 7.75627 0.701112 7.5838 0.767419 7.4228L2.83033 2.41283C2.93319 2.16303 3.17664 2 3.44679 2H10.667C11.0352 2 11.3337 2.29848 11.3337 2.66667V10.3905C11.3337 10.5673 11.2634 10.7369 11.1384 10.8619Z"
+        fill={getColorFromRating(rating)}
+      />
+    </svg>
+  )
 }
