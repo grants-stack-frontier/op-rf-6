@@ -24,8 +24,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '../ui/chart';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Separator } from '../ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 export function Attestations({ projectId }: { projectId?: string }) {
   const { data: attestations } = useAttestations({ projectId });
@@ -163,66 +163,119 @@ function AttestationElectedGovernanceMembersCard() {
     rating: number;
     sentiment: Sentiment;
   }[] = [
-    { name: 'Anticapture Commision', count: 4, rating: 7.5, sentiment: 'extremelyUpset' },
-    { name: 'Code of Conduct Council', count: 1, rating: 10, sentiment: 'extremelyUpset' },
-    { name: 'Collective Feedback Commission', count: 1, rating: 6, sentiment: 'somewhatUpset' },
-    { name: 'Developer Advisory Board', count: 4, rating: 2.5, sentiment: 'neutral' },
+    {
+      name: 'Anticapture Commision',
+      count: 4,
+      rating: 7.5,
+      sentiment: 'extremelyUpset',
+    },
+    {
+      name: 'Code of Conduct Council',
+      count: 1,
+      rating: 10,
+      sentiment: 'extremelyUpset',
+    },
+    {
+      name: 'Collective Feedback Commission',
+      count: 1,
+      rating: 6,
+      sentiment: 'somewhatUpset',
+    },
+    {
+      name: 'Developer Advisory Board',
+      count: 4,
+      rating: 2.5,
+      sentiment: 'neutral',
+    },
     { name: 'Grants Council', count: 2, rating: 7, sentiment: 'somewhatUpset' },
-    { name: 'Security Council', count: 2, rating: 8.5, sentiment: 'extremelyUpset' },
-  ]
-  const totalCount = useMemo(() => attestations.reduce((acc, val) => acc + val.count, 0), [attestations])
+    {
+      name: 'Security Council',
+      count: 2,
+      rating: 8.5,
+      sentiment: 'extremelyUpset',
+    },
+  ];
+  const totalCount = useMemo(
+    () => attestations.reduce((acc, val) => acc + val.count, 0),
+    [attestations]
+  );
 
   return (
     <Card className="shadow-none">
       <CardContent className="flex flex-col gap-3 p-8 pb-9">
         <AttUserStarIcon />
-        <CardTitle className="text-xl">{totalCount} attestations from elected governance members</CardTitle>
+        <CardTitle className="text-xl">
+          {totalCount} attestations from elected governance members
+        </CardTitle>
         <div className="text-sm flex flex-col">
           {attestations.map((attestation, i) => (
-            <AttestationElectedGovernanceMembersListItem key={i} {...attestation} />
+            <AttestationElectedGovernanceMembersListItem
+              key={i}
+              {...attestation}
+            />
           ))}
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function AttestationElectedGovernanceMembersListItem(params: {
-  name: string,
-  count: number,
-  rating: number,
-  sentiment: Sentiment
+  name: string;
+  count: number;
+  rating: number;
+  sentiment: Sentiment;
 }) {
   function renderSentiment(sentiment: Sentiment) {
-    if (sentiment === 'extremelyUpset') return (
-      <>
-        <p>Extremely upset</p>
-        <Image src={SobFaceEmoji} alt="Sob face emoji" width={14} height={14} />
-      </>
-    )
-    if (sentiment === 'somewhatUpset') return (
-      <>
-        <p>Somewhat upset</p>
-        <Image src={FrowningFaceEmoji} alt="Frowning face emoji" width={14} height={14} />
-      </>
-    )
-    if (sentiment === 'neutral') return (
-      <>
-        <p>Neutral</p>
-        <Image src={NeutralFaceEmoji} alt="Neutral face emoji" width={14} height={14} />
-      </>
-    )
+    if (sentiment === 'extremelyUpset')
+      return (
+        <>
+          <p>Extremely upset</p>
+          <Image
+            src={SobFaceEmoji}
+            alt="Sob face emoji"
+            width={14}
+            height={14}
+          />
+        </>
+      );
+    if (sentiment === 'somewhatUpset')
+      return (
+        <>
+          <p>Somewhat upset</p>
+          <Image
+            src={FrowningFaceEmoji}
+            alt="Frowning face emoji"
+            width={14}
+            height={14}
+          />
+        </>
+      );
+    if (sentiment === 'neutral')
+      return (
+        <>
+          <p>Neutral</p>
+          <Image
+            src={NeutralFaceEmoji}
+            alt="Neutral face emoji"
+            width={14}
+            height={14}
+          />
+        </>
+      );
   }
   return (
     <div className="flex flex-row justify-between items-center gap-2 border-b border-[#E0E2EB] py-2">
-      <p>{params.name} ({params.count})</p>
+      <p>
+        {params.name} ({params.count})
+      </p>
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
           <ThumbRatingIcon rating={params.rating} />
           <p>{params.rating}</p>
         </div>
         <Separator orientation="vertical" className="h-4" />
-        <div className='flex flex-row items-center gap-1'>
+        <div className="flex flex-row items-center gap-1">
           {renderSentiment(params.sentiment)}
           <p>if ceased to exist</p>
         </div>
@@ -616,29 +669,29 @@ export function AttStarIcon() {
 }
 
 export function ThumbRatingIcon({ rating }: { rating: number }) {
-  
   function getColorFromRating(rating: number) {
-    if (rating >= 8) return '#3374DB'
-    if (rating >= 7) return '#69A0F7'
-    if (rating >= 3) return '#BCBFCD'
-    if (rating >= 2) return '#FF5C6C'
-    return '#FF0420'
+    if (rating >= 8) return '#3374DB';
+    if (rating >= 7) return '#69A0F7';
+    if (rating >= 3) return '#BCBFCD';
+    if (rating >= 2) return '#FF5C6C';
+    return '#FF0420';
   }
 
-  if (rating >= 5) return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M1.33366 5.99998H3.33366V14H1.33366C0.965472 14 0.666992 13.7015 0.666992 13.3333V6.66665C0.666992 6.29846 0.965472 5.99998 1.33366 5.99998ZM4.86225 5.13805L9.12926 0.871073C9.24652 0.753773 9.43226 0.74058 9.56493 0.840106L10.1333 1.2664C10.4565 1.50875 10.6021 1.92169 10.5024 2.31311L9.73353 5.33331H14.0003C14.7367 5.33331 15.3337 5.93027 15.3337 6.66665V8.06953C15.3337 8.24373 15.2995 8.4162 15.2333 8.5772L13.1703 13.5871C13.0675 13.8369 12.824 14 12.5539 14H5.33366C4.96547 14 4.66699 13.7015 4.66699 13.3333V5.60946C4.66699 5.43265 4.73723 5.26308 4.86225 5.13805Z"
-        fill={getColorFromRating(rating)}
-      />
-    </svg>
-  )
+  if (rating >= 5)
+    return (
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.33366 5.99998H3.33366V14H1.33366C0.965472 14 0.666992 13.7015 0.666992 13.3333V6.66665C0.666992 6.29846 0.965472 5.99998 1.33366 5.99998ZM4.86225 5.13805L9.12926 0.871073C9.24652 0.753773 9.43226 0.74058 9.56493 0.840106L10.1333 1.2664C10.4565 1.50875 10.6021 1.92169 10.5024 2.31311L9.73353 5.33331H14.0003C14.7367 5.33331 15.3337 5.93027 15.3337 6.66665V8.06953C15.3337 8.24373 15.2995 8.4162 15.2333 8.5772L13.1703 13.5871C13.0675 13.8369 12.824 14 12.5539 14H5.33366C4.96547 14 4.66699 13.7015 4.66699 13.3333V5.60946C4.66699 5.43265 4.73723 5.26308 4.86225 5.13805Z"
+          fill={getColorFromRating(rating)}
+        />
+      </svg>
+    );
 
   return (
     <svg
@@ -653,5 +706,5 @@ export function ThumbRatingIcon({ rating }: { rating: number }) {
         fill={getColorFromRating(rating)}
       />
     </svg>
-  )
+  );
 }
