@@ -60,11 +60,6 @@ export function useSession() {
     queryKey: ['session'],
     queryFn: async () => {
       const accessToken = getToken();
-      /**
-       * isBadgeholder: true | false,
-       * category: string,
-       * siwe: { address, chainId, nonce }
-       */
 
       const user = accessToken
         ? decodeJwt<{

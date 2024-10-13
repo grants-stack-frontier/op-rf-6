@@ -1,24 +1,29 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { Pie, PieChart } from 'recharts';
 
 import { Heading } from '@/components/ui/headings';
-import mixpanel from '@/lib/mixpanel';
-
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { useAttestations } from '@/hooks/useAttestations';
-import { useMemo, useState } from 'react';
-import Image from 'next/image';
-import SobFaceEmoji from '../../../public/sob-face-emoji.svg';
-import FrowningFaceEmoji from '../../../public/slightly-frowning-face-emoji.svg';
+// import mixpanel from '@/lib/mixpanel';
+
 import NeutralFaceEmoji from '../../../public/neutral-face-emoji.svg';
+import FrowningFaceEmoji from '../../../public/slightly-frowning-face-emoji.svg';
+import SobFaceEmoji from '../../../public/sob-face-emoji.svg';
+import {
+  Card,
+  CardContent,
+  // CardHeader,
+  CardTitle,
+} from '../ui/card';
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
+  // ChartLegend,
+  // ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '../ui/chart';
-import { Pie, PieChart } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Separator } from '../ui/separator';
 
@@ -135,12 +140,12 @@ function CannotLiveWithoutCard() {
     <Card className="shadow-none">
       <CardContent className="flex flex-col gap-4 p-8 pb-9">
         <AttStarIcon />
-        <CardTitle className="text-xl">Can't live without</CardTitle>
+        <CardTitle className="text-xl">Can&apos;t live without</CardTitle>
         <div className="text-sm line-height-5">
           <p>
             One of the top projects that{' '}
-            <span className="font-semibold">Citizens & Top Delegates</span>{' '}
-            can't live without.
+            <span className="font-semibold">Citizens &amp; Top Delegates</span>{' '}
+            can&apos;t live without.
           </p>
           <Link href={`#`} passHref>
             <p className="text-xs line-height-4 mt-2">View methodology</p>

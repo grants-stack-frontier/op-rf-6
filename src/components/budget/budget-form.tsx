@@ -6,13 +6,13 @@ import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/ago
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useBudgetContext } from '@/contexts/BudgetContext';
 import { useBudget } from '@/hooks/useBudget';
 import { Category } from '@/types/categories';
 
 import { Slider } from '../ui/slider';
 
 import { CategoryItem } from './category-item';
-import { useBudgetContext } from './provider';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =

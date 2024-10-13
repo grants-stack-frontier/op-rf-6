@@ -1,30 +1,18 @@
 import { RetroFunding5BallotSubmissionContent } from '@/__generated__/api/agora.schemas';
 
-import { ProjectAllocation } from './metrics';
-
 import type { CategoryId } from './various';
-
-export type Round4Ballot = {
-  address: string;
-  allocations: Round4Allocation[];
-  project_allocations: ProjectAllocation[];
-  updated_at: string;
-  published_at: string;
-  os_multiplier: number;
-  os_only: boolean;
-  status: 'SUBMITTED';
-};
-export type Round4Allocation = {
-  metric_id: string;
-  allocation: number;
-  locked?: boolean;
-};
 
 export type Round5Allocation = {
   category_slug: CategoryId;
   allocation: number;
   locked: boolean;
 };
+
+export interface ProjectAllocationState extends Round5ProjectAllocation {
+  allocationInput: string;
+  positionInput: string;
+  description?: string;
+}
 
 export type Round5ProjectAllocation = {
   project_id: string;
@@ -63,5 +51,3 @@ export type Round5CategoryAllocation = {
   allocation: number;
   locked: boolean;
 };
-
-export type Ballot<T extends 4 | 5> = T extends 4 ? Round4Ballot : Round5Ballot;
