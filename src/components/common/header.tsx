@@ -38,7 +38,7 @@ export function Header() {
       </Link>
       <div className="hidden sm:flex items-center gap-2 divide-x space-x-2 text-sm">
         <div className="flex flex-col lg:flex-row items-center h-8">
-          <p>Round 5: OP Stack</p>
+          <p>Round 6: Governance</p>
         </div>
         <div className="flex flex-col lg:flex-row items-center h-8">
           <VotingEndsIn className="pl-4" date={votingEndDate} />

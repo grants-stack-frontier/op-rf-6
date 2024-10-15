@@ -96,7 +96,7 @@ export function BudgetForm() {
               <span className="text-red-500">*</span>
             </p>
             <p className="text-[14px] font-normal text-gray-600">
-              Round 5 rewards impact made to the OP Stack from Oct 2023 - Aug
+              Round 6 rewards impact made to the Optimism Governance from Oct 2023 - Aug
               2024.
             </p>
             <div className="flex items-center my-6">

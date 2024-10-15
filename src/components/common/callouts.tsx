@@ -15,7 +15,7 @@ export function Callouts() {
   if (Number(seconds) < 0) {
     return (
       <div className="bg-accent-foreground text-center p-3 text-white dark:text-black">
-        Voting in Retro Funding Round 5 has closed
+        Voting in Retro Funding Round 6 has closed
       </div>
     );
   }

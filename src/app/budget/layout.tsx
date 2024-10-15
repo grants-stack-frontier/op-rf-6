@@ -10,7 +10,6 @@ export default function BudgetLayout({
     <>
       <div className="flex-1 space-y-6">
         <PostSubmissionBanner />
-        <BallotBudgetTabs />
         {children}
       </div>
     </>

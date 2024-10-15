@@ -16,7 +16,7 @@ export default function Home() {
   const { address } = useAccount();
   const slides = [
     {
-      title: 'Welcome badgeholders and guest voters',
+      title: 'Here’s what’s to expect',
       description:
         'In this round of voting, you’ll propose the overall budget, score projects from high to low impact, and allocate rewards.',
       image: onboard1,
@@ -28,13 +28,13 @@ export default function Home() {
       image: onboard2,
     },
     {
-      title: 'Then, you’ll score projects in one category',
+      title: 'Next, you’ll score projects in one category',
       description:
         'Within one of the categories (randomly assigned), you’ll score projects from high to low impact. If you have a conflict of interest, you’ll declare it rather than scoring the project.',
       image: onboard3,
     },
     {
-      title: 'Lastly, you’ll allocate rewards',
+      title: 'Finally, you’ll allocate rewards',
       description: `Now that you’re familiar with the projects in your category, you can allocate rewards across them.`,
       image: onboard4,
     },
@@ -48,16 +48,15 @@ export default function Home() {
     <div className="max-w-screen-md mx-auto flex flex-1">
       <Background />
       <PageView title="Welcome" />
-      <Card className="w-full bg-white dark:bg-card px-8 py-16 flex flex-col items-center rounded-3xl gap-6">
-        <Badge variant="secondary">Welcome</Badge>
+      <div className="w-full bg-white dark:bg-card px-8 py-16 flex flex-col items-center rounded-3xl gap-6 border-none">
         <WelcomeCarousel slides={slides} />
-      </Card>
+      </div>
     </div>
   );
 }
 
 function Background() {
   return (
-    <div className="w-screen h-screen fixed inset-0 -z-10 bg-cover bg-gray-100 dark:bg-black" />
+    <div className="w-screen h-screen fixed inset-0 -z-10 bg-cover bg-white dark:bg-card" />
   );
 }
