@@ -8,7 +8,7 @@ import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
   useDistributionMethodFromLocalStorage,
-  useRound5Ballot,
+  useBallot,
 } from '@/hooks/useBallotRound5';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
@@ -54,7 +54,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const { ballot, reset } = useBallotRound5Context();
   const { mutateAsync: saveProjects } = useSaveProjects();
   const { address } = useAccount();
-  const { refetch } = useRound5Ballot(address);
+  const { refetch } = useBallot(address);
   const { data: session } = useSession();
   const { data: projects } = useProjectsByCategory(
     session?.category as CategoryId

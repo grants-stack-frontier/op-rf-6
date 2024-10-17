@@ -13,7 +13,7 @@ import { useAccount } from 'wagmi';
 
 import { useSession } from '@/hooks/useAuth';
 import {
-  useRound5Ballot,
+  useBallot,
   useSaveRound5Position,
   useRound5BallotWeightSum,
   useDistributionMethodFromLocalStorage,
@@ -22,7 +22,7 @@ import {
   useIsSavingRound5Ballot,
   useSaveRound5Allocation,
 } from '@/hooks/useBallotRound5';
-import { useBallotRound5Editor } from '@/hooks/useBallotRound5Editor';
+import { useBallotEditor } from '@/hooks/useBallotRound5Editor';
 import { useBudget } from '@/hooks/useBudget';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
@@ -35,7 +35,7 @@ import {
 import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/various';
 
-type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {
+type BallotContext = ReturnType<typeof useBallotEditor> & {
   isPending: boolean;
   ballot?: Round5Ballot | undefined;
   updateBallotState: () => Promise<void>;
@@ -69,21 +69,21 @@ type BallotRound5Context = ReturnType<typeof useBallotRound5Editor> & {
   isSavingBallot: boolean;
 };
 
-const BallotRound5Context = createContext({} as BallotRound5Context);
+const BallotRound5Context = createContext({} as BallotContext);
 
-export function BallotRound5Provider({ children }: PropsWithChildren) {
+export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
   const {
     data: ballot,
     isFetched,
     isPending,
     refetch,
-  } = useRound5Ballot(address);
+  } = useBallot(address);
   const [localBallot, setLocalBallot] = useState<Round5Ballot | undefined>(
     ballot
   );
 
-  const editor = useBallotRound5Editor();
+  const editor = useBallotEditor();
 
   const { data: session } = useSession();
   const votingCategory = session?.category as CategoryId;

@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { votingEndDate } from '@/config';
-import { useRound5Ballot, useSubmitBallot } from '@/hooks/useBallotRound5';
+import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
 import { formatDate } from '@/lib/utils';
 import { Round5Ballot } from '@/types/ballot';
 
@@ -29,7 +29,7 @@ export function SubmitRound5Dialog({
   >(ballot?.status === 'SUBMITTED' ? 'submit' : 'init');
   const { address } = useAccount();
 
-  const { refetch: refetchBallot } = useRound5Ballot(address);
+  const { refetch: refetchBallot } = useBallot(address);
   const queryClient = useQueryClient();
 
   useEffect(() => {

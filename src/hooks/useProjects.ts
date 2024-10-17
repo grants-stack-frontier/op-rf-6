@@ -11,11 +11,12 @@ import {
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
 import {
+  GetRetroFundingRoundProjectsParams,
   type GetRetroFundingRoundProjectsCategory,
   type Project,
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
-import { agoraRoundsAPI } from '@/config';
+import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
 import { ProjectsParams, ProjectsResponse } from '@/types/projects';
@@ -27,14 +28,14 @@ export const categoryMap: Record<CategoryId, string> = {
   OP_STACK_TOOLING: 'op_tooling',
 };
 
-export function useProjects(params?: ProjectsParams) {
+export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
   const { limit, offset, category } = params ?? {};
   return useQuery({
     queryKey: ['projects', limit, offset, category],
     queryFn: async () => {
       if (limit !== undefined) {
         const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(5, {
+          await getRetroFundingRoundProjects(ROUND, {
             limit,
             offset,
             category: category ?? 'all',
@@ -49,7 +50,7 @@ export function useProjects(params?: ProjectsParams) {
       let hasMoreData = true;
       while (hasMoreData) {
         const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(5, {
+          await getRetroFundingRoundProjects(ROUND, {
             limit: pageLimit,
             offset: currentOffset,
             category: category ?? 'all',
@@ -78,7 +79,7 @@ export function useProjectsByCategory(categoryId?: CategoryId) {
   return useQuery({
     queryKey: ['projects-by-category', categoryId],
     queryFn: async () =>
-      getRetroFundingRoundProjects(5, {
+      getRetroFundingRoundProjects(ROUND, {
         limit: 100,
         category: categoryMap[
           categoryId as CategoryId
@@ -103,7 +104,7 @@ export function useSaveProjectImpact() {
       impact: ImpactScore;
     }) => {
       return updateRetroFundingRoundProjectImpact(
-        5,
+        ROUND,
         address as string,
         projectId,
         impact as number
@@ -170,7 +171,7 @@ export function useProjectById(projectId: string) {
   return useQuery({
     queryKey: ['projects-by-id', projectId],
     queryFn: async () =>
-      getRetroFundingRoundProjectById(5, projectId).then(
+      getRetroFundingRoundProjectById(ROUND, projectId).then(
         (results: getRetroFundingRoundProjectByIdResponse) => {
           return results.data;
         }
@@ -193,7 +194,7 @@ export function useAllProjectsByCategory() {
         let hasMoreData = true;
         while (hasMoreData) {
           const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(5, {
+            await getRetroFundingRoundProjects(ROUND, {
               limit: pageLimit,
               offset: currentOffset,
               category: category as GetRetroFundingRoundProjectsCategory,
