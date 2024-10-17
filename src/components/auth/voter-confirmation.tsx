@@ -52,7 +52,7 @@ function VoterIsSelected({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       title="You've been selected to vote in this round of Retro Funding"
       description="You're in a special group of badgeholders and guest voters participating in this round. Thanks in advance for your efforts."
-      emoji="✅"
+      sunny
     >
       <Button
         type="button"

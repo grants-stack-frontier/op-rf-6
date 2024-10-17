@@ -66,7 +66,7 @@ export function ReviewSidebar() {
         <CardTitle className="text-base font-medium text-center">
           {isVoted
             ? "You've already voted on this project"
-            : "How would you score this project's impact on the OP Stack?"}
+            : "How would you score this project's impact on Optimism Governance?"}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">

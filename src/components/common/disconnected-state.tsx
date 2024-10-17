@@ -36,7 +36,7 @@ export const DisconnectedState = () => {
       <section className="flex flex-col items-center gap-4">
         <video
           ref={videoRef}
-          className="max-w-lg w-full"
+          className="max-w-[350px] w-full"
           autoPlay
           muted
           loop
@@ -44,13 +44,10 @@ export const DisconnectedState = () => {
         />
         <div className="flex flex-col items-center gap-4">
           <div className="uppercase tracking-widest">Vote</div>
-          <Heading variant={'h2'}>Retro Funding Round 5: OP Stack</Heading>
-          <Text className="text-center">
-            Retroactive Public Goods Funding (Retro Funding) 5 will reward
-            contributors to the OP Stack, including core Ethereum infrastructure
-            that supports or underpins the OP Stack, advancements in OP Stack
-            research and development, and tooling which supports its
-            accessibility and usability.
+          <Heading variant={'h2'}>Retro Funding Round 6: OP Stack</Heading>
+          <Text className="text-center max-w-[640px] text-lg">
+            In this round of Retro Funding, badgeholders will vote on impact to
+            Optimism Governance.
           </Text>
           <ConnectButton />
         </div>

@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi';
 
 import { BudgetForm } from '@/components/budget/budget-form';
 import { InfoBox } from '@/components/budget/info-box';
+import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
 import { PageView } from '@/components/common/page-view';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -37,6 +38,7 @@ export default function BudgetBallotPage() {
     <BudgetProvider>
       <div className="flex flex-row gap-12">
         <section className="flex-grow max-w-[720px] space-y-6">
+          <BallotBudgetTabs />
           <p className="text-gray-600">
             Decide on the budget for this round, and then decide how much should
             go to each category. You can return to this step at any time before

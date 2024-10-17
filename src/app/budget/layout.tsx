@@ -1,4 +1,4 @@
-import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
+// import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
 import { PostSubmissionBanner } from '@/components/common/post-submission-banner';
 
 export default function BudgetLayout({
@@ -10,7 +10,6 @@ export default function BudgetLayout({
     <>
       <div className="flex-1 space-y-6">
         <PostSubmissionBanner />
-        <BallotBudgetTabs />
         {children}
       </div>
     </>

@@ -1,11 +1,8 @@
 import { RiArrowDownLine, RiErrorWarningFill } from '@remixicon/react';
 import { useRef } from 'react';
 
-import { useProjects } from '@/hooks/useProjects';
-
 export function InfoBox() {
   const contentRef = useRef<HTMLDivElement>(null);
-  const projects = useProjects();
 
   const handleScroll = () => {
     if (contentRef.current) {
@@ -31,7 +28,7 @@ export function InfoBox() {
       </div>
       <div className="flex items-center mb-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Helpful information for Round 5 budgeting
+          Helpful information for Round 6 budgeting
         </h2>
       </div>
 
@@ -41,26 +38,8 @@ export function InfoBox() {
       >
         <div className="space-y-6 pr-1 pb-12">
           <p>
-            The Optimism Foundation initially set the Round 5 budget to 8M OP.
-            They decided on this budget after reviewing the results from Round
-            3—where 40+ OP Stack projects were allocated 6.5M+ OP by voters.
-          </p>
-          <p>
-            Estimating that the impact within the OP Stack category has
-            increased since round 3, the Foundation set a higher budget of 8M
-            OP.
-          </p>
-          <p>
-            However, less projects have qualified for the round than expected.
-            In total, there are {projects.data?.length} eligible projects across
-            all categories.
-          </p>
-          <p className="font-bold text-gray-900 dark:text-white">
-            Additional context
-          </p>
-          <p>
-            To help you determine a Round 5 budget, it&apos;s useful to
-            reference existing data on Optimism grant allocations:
+            To help you determine a Round 6 budget, it’s useful to reference
+            existing data on Optimism grant allocations:
           </p>
           <ol className="list-decimal pl-5 space-y-2">
             <li>
@@ -72,8 +51,10 @@ export function InfoBox() {
               proactive grants for OP Stack contributions
             </li>
             <li>
-              The Foundation has made a 250k OP grant to build Zero Knowledge
-              proofs for the OP Stack
+              The Foundation has made a 250k OP grant to{' '}
+              <span className="underline">
+                build Zero Knowledge proofs for the OP Stack
+              </span>
             </li>
           </ol>
           <p>
