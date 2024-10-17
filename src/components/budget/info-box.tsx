@@ -1,11 +1,8 @@
 import { RiArrowDownLine, RiErrorWarningFill } from '@remixicon/react';
 import { useRef } from 'react';
 
-import { useProjects } from '@/hooks/useProjects';
-
 export function InfoBox() {
   const contentRef = useRef<HTMLDivElement>(null);
-  const projects = useProjects();
 
   const handleScroll = () => {
     if (contentRef.current) {

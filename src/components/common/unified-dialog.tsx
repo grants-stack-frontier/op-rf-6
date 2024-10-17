@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 import {
@@ -7,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import Image from 'next/image';
+
 
 interface UnifiedDialogProps {
   open: boolean;
