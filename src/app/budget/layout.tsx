@@ -1,4 +1,4 @@
-import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
+// import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
 import { PostSubmissionBanner } from '@/components/common/post-submission-banner';
 
 export default function BudgetLayout({

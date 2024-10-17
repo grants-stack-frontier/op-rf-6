@@ -46,8 +46,8 @@ export const DisconnectedState = () => {
           <div className="uppercase tracking-widest">Vote</div>
           <Heading variant={'h2'}>Retro Funding Round 6: OP Stack</Heading>
           <Text className="text-center max-w-[640px] text-lg">
-            In this round of Retro Funding, badgeholders will vote on impact
-            to Optimism Governance.
+            In this round of Retro Funding, badgeholders will vote on impact to
+            Optimism Governance.
           </Text>
           <ConnectButton />
         </div>

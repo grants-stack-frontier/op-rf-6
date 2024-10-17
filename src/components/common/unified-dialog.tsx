@@ -9,7 +9,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-
 interface UnifiedDialogProps {
   open: boolean;
   onClose: () => void;
@@ -40,12 +39,7 @@ export const UnifiedDialog: React.FC<UnifiedDialogProps> = ({
           )}
           {sunny && (
             <div className="flex justify-center items-center mb-4">
-              <Image
-                src="/sunny.svg"
-                alt="Sunny"
-                width={80}
-                height={80}
-              />
+              <Image src="/sunny.svg" alt="Sunny" width={80} height={80} />
             </div>
           )}
           <DialogTitle className="text-[#0F111A] dark:text-white text-center text-xl font-semibold leading-7 mb-4">

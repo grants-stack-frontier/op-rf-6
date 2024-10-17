@@ -51,8 +51,10 @@ export function InfoBox() {
               proactive grants for OP Stack contributions
             </li>
             <li>
-              The Foundation has made a 250k OP grant to <span className='underline'>build Zero Knowledge
-              proofs for the OP Stack</span>
+              The Foundation has made a 250k OP grant to{' '}
+              <span className="underline">
+                build Zero Knowledge proofs for the OP Stack
+              </span>
             </li>
           </ol>
           <p>
