@@ -20,6 +20,7 @@ import { SocialLinksList } from './social-links';
 export function ProjectDetails() {
   const { project, isLoading } = useProjectContext();
   const {
+    id,
     profileAvatarUrl,
     name,
     projectCoverImageUrl,
@@ -31,12 +32,13 @@ export function ProjectDetails() {
     links,
     grantsAndFunding,
     pricingModel,
+    impactMetrics,
     impactStatement,
     // testimonials,
     contracts,
     team,
-    projectId,
   } = project ?? {};
+  console.log({ project });
   return (
     <>
       {isLoading ? (
@@ -70,7 +72,7 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          <Attestations projectId={projectId} />
+          <Attestations projectId={id} metrics={impactMetrics} />
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

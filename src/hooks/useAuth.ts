@@ -65,6 +65,7 @@ export function useSession() {
         ? decodeJwt<{
             siwe: { address: Address };
             isBadgeholder?: boolean;
+            isCitizen?: boolean;
             category?: string;
           }>(accessToken)
         : null;

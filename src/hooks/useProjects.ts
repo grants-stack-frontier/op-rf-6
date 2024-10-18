@@ -19,7 +19,7 @@ import { toast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
-import { ProjectsParams, ProjectsResponse } from '@/types/projects';
+import { ProjectsResponse } from '@/types/projects';
 import type { CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {

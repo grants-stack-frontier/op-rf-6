@@ -9,6 +9,7 @@ import React, {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { Project } from '@/__generated__/api/agora.schemas';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
@@ -19,8 +20,8 @@ import { CategoryId } from '@/types/various';
 
 interface ProjectContextType {
   id: string;
-  project: any;
-  projects: any[];
+  project: Project | undefined;
+  projects: Project[];
   isLoading: boolean;
   isUserCategory: boolean;
   walletAddress: Address | undefined;
@@ -47,10 +48,7 @@ export const ProjectProvider: React.FC<{
 
   const [showUnlockDialog, setShowUnlockDialog] = useState(false);
 
-  const currentProject = useMemo(
-    () => (project ? { ...project } : undefined),
-    [project]
-  );
+  const currentProject = useMemo(() => project ?? undefined, [project]);
 
   const walletAddress: Address | undefined = useMemo(
     () => session?.siwe?.address,
