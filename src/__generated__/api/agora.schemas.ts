@@ -26,11 +26,13 @@ Live and stable.
 - **contracts**: Data for the current onchain contracts
 - **projects** Round 5 Projects with mock data
 - **RetroFundingBallots** Round 5 Ballots with mock data
-
-Not Live.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
+
+Not Live.
+- 0.3.0: Round 6 mock projects data
+- 0.3.1: Round 6 production release with real data
 
 ### Release Schedule
 
@@ -44,7 +46,10 @@ Not Live.
 | OP 0.2.0 | LIVE   | Aug 10th |
 | OP 0.2.1 | LIVE   | Aug 26th |
 | OP 0.2.2 | LIVE   | Sep 4th |
-| OP 0.2.3 | ON TRACK   | Sep 20th |
+| OP 0.2.3 | LIVE   | Sep 20th |
+|----------|---------|---------------|
+| OP 0.3.0 | ON TRACK   | Oct 11th |
+| OP 0.3.1 | ON TRACK   | Oct 25th |
  * OpenAPI spec version: 0.2.1
  */
 export type PutImactMetricCommentVoteBody = {
@@ -141,6 +146,9 @@ export const GetRetroFundingRoundProjectsCategory = {
   eth_core: 'eth_core',
   op_tooling: 'op_tooling',
   op_rnd: 'op_rnd',
+  gov_infra: 'gov_infra',
+  gov_analytics: 'gov_analytics',
+  gov_leadership: 'gov_leadership',
 } as const;
 
 export type GetRetroFundingRoundProjectsParams = {
@@ -172,7 +180,7 @@ export type SubmitRetroFundingBallotBody =
   | RetroFunding4BallotSubmission
   | RetroFunding5BallotSubmission;
 
-export type GetRetroFundingRoundBallotById200 = Round5Ballot | Round4Ballot;
+export type GetRetroFundingRoundBallotById200 = Ballot | Round4Ballot;
 
 export type GetRetroFundingRounds200 = {
   metadata?: PageMetadata;
@@ -255,12 +263,7 @@ export const GetProposalsFilter = {
   everything: 'everything',
 } as const;
 
-export type GetDelegateVotes200 = {
-  metadata?: PageMetadata;
-  votes?: Vote[];
-};
-
-export type GetDelegateVotesParams = {
+export type GetProposalsParams = {
   /**
    * Limits the number of returned results.
    */
@@ -269,11 +272,21 @@ export type GetDelegateVotesParams = {
    * Offset from which start returned results.
    */
   offset?: OffsetParamParameter;
+  /**
+ * The desired method by which returned votes will be filtered. Supported values are: 'relevant', 'everything'
+
+ */
+  filter?: GetProposalsFilter;
+};
+
+export type GetDelegateVotes200 = {
+  metadata?: PageMetadata;
+  votes?: Vote[];
 };
 
 export type GetDelegates200 = {
   data?: DelegateChunk[];
-  metadata?: PageMetadata;
+  meta?: PageMetadata;
 };
 
 export type GetDelegatesSort =
@@ -316,7 +329,7 @@ export type OffsetParamParameter = number;
  */
 export type LimitParamParameter = number;
 
-export type GetProposalsParams = {
+export type GetDelegateVotesParams = {
   /**
    * Limits the number of returned results.
    */
@@ -325,11 +338,6 @@ export type GetProposalsParams = {
    * Offset from which start returned results.
    */
   offset?: OffsetParamParameter;
-  /**
- * The desired method by which returned votes will be filtered. Supported values are: 'relevant', 'everything'
-
- */
-  filter?: GetProposalsFilter;
 };
 
 export type GetDelegatesParams = {
@@ -347,23 +355,6 @@ export type GetDelegatesParams = {
  */
   sort?: GetDelegatesSort;
 };
-
-export type RetroFunding5BallotSubmissionContentProjectsAllocationItem = {
-  [key: string]: unknown;
-};
-
-export type RetroFunding5BallotSubmissionContentCategoryAllocationItem = {
-  [key: string]: unknown;
-};
-
-/**
- * @summary Fields required for ballot submission
- */
-export interface RetroFunding5BallotSubmissionContent {
-  budget?: number;
-  category_allocation?: RetroFunding5BallotSubmissionContentCategoryAllocationItem[];
-  projects_allocation?: RetroFunding5BallotSubmissionContentProjectsAllocationItem[];
-}
 
 /**
  * An object containing the information required to submit a ballot.
@@ -383,6 +374,23 @@ export interface RetroFunding5BallotSubmission {
    * @pattern ^0x[a-fA-F0-9]{130}$
    */
   signature?: string;
+}
+
+export type RetroFunding5BallotSubmissionContentProjectsAllocationItem = {
+  [key: string]: unknown;
+};
+
+export type RetroFunding5BallotSubmissionContentCategoryAllocationItem = {
+  [key: string]: unknown;
+};
+
+/**
+ * @summary Fields required for ballot submission
+ */
+export interface RetroFunding5BallotSubmissionContent {
+  budget?: number;
+  category_allocation?: RetroFunding5BallotSubmissionContentCategoryAllocationItem[];
+  projects_allocation?: RetroFunding5BallotSubmissionContentProjectsAllocationItem[];
 }
 
 export type RetroFunding4BallotSubmissionBallotContentAllocationsItem = {
@@ -415,11 +423,10 @@ export interface RetroFunding4BallotSubmission {
   signature?: string;
 }
 
-export type Round5BallotStatus =
-  (typeof Round5BallotStatus)[keyof typeof Round5BallotStatus];
+export type BallotStatus = (typeof BallotStatus)[keyof typeof BallotStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const Round5BallotStatus = {
+export const BallotStatus = {
   NOT_STARTED: 'NOT STARTED',
   RANKED: 'RANKED',
   PENDING_SUBMISSION: 'PENDING SUBMISSION',
@@ -434,6 +441,26 @@ export const Round4BallotStatus = {
   PENDING: 'PENDING',
   SUBMITTED: 'SUBMITTED',
 } as const;
+
+/**
+ * A ballot for RetroFunding Round 4, including information about the ballot.
+
+ * @summary A ballot for RetroFunding Round 4
+ */
+export interface Round4Ballot {
+  /**
+   * Address of the voter
+   * @summary Address of the voter
+   */
+  address?: string;
+  allocations?: RetroFundingBallotMetricsAllocation[];
+  created_at?: string;
+  projects_allocation?: RetroFundingBallot4ProjectsAllocation[];
+  published_at?: string;
+  round_id?: number;
+  status?: Round4BallotStatus;
+  updated_at?: string;
+}
 
 export type RetroFundingBallotCategoriesAllocationCategorySlug =
   (typeof RetroFundingBallotCategoriesAllocationCategorySlug)[keyof typeof RetroFundingBallotCategoriesAllocationCategorySlug];
@@ -473,11 +500,11 @@ export interface RetroFundingBallot5ProjectsAllocation {
 }
 
 /**
- * A ballot for RetroFunding Round 5, including information about the ballot.
+ * A ballot for RetroFunding Round 5 & 6, including information about the ballot.
 
- * @summary A ballot for RetroFunding Round 5
+ * @summary A ballot for RetroFunding Round 5 & 6
  */
-export interface Round5Ballot {
+export interface Ballot {
   /**
    * Address of the voter
    * @summary Address of the voter
@@ -495,7 +522,7 @@ export interface Round5Ballot {
   projects_to_be_evaluated?: string[];
   published_at?: string;
   round_id?: number;
-  status?: Round5BallotStatus;
+  status?: BallotStatus;
   /** Total number of projects that the voter has to evaluate. This is the length of the projects_to_be_evaluated array.
    */
   total_projects?: number;
@@ -533,26 +560,6 @@ export interface RetroFundingBallotMetricsAllocation {
 }
 
 /**
- * A ballot for RetroFunding Round 4, including information about the ballot.
-
- * @summary A ballot for RetroFunding Round 4
- */
-export interface Round4Ballot {
-  /**
-   * Address of the voter
-   * @summary Address of the voter
-   */
-  address?: string;
-  allocations?: RetroFundingBallotMetricsAllocation[];
-  created_at?: string;
-  projects_allocation?: RetroFundingBallot4ProjectsAllocation[];
-  published_at?: string;
-  round_id?: number;
-  status?: Round4BallotStatus;
-  updated_at?: string;
-}
-
-/**
  * Information about the organization behind a project, including name and avatar.
 
  * @summary Organization information for a project
@@ -581,16 +588,30 @@ export type ProjectPricingModel = {
 };
 
 export type ProjectImpactStatementStatement = {
-  create?: {
-    answer?: string;
-    question?: string;
-  }[];
+  answer?: string;
+  question?: string;
 };
 
 export type ProjectImpactStatement = {
   category?: string;
   statement?: ProjectImpactStatementStatement;
   subcategory?: string[];
+};
+
+export type ProjectImpactMetricsPercentageDistributions = {
+  citizens?: ProjectImpactMetricsPercentageDistributionsCitizens;
+  top_delegates?: ProjectImpactMetricsPercentageDistributionsTopDelegates;
+};
+
+export type ProjectImpactMetrics = {
+  avg_nps_score?: number;
+  cant_live_without_superlative?: string;
+  count_citizen_attestations?: number;
+  count_delegate_attestations?: number;
+  count_total_attestations?: number;
+  elected_governance_reviews?: ProjectImpactMetricsElectedGovernanceReviews;
+  most_positive_superlative?: string;
+  percentage_distributions?: ProjectImpactMetricsPercentageDistributions;
 };
 
 /**
@@ -612,6 +633,7 @@ export interface Project {
   github?: ProjectGithubItem[];
   grantsAndFunding?: ProjectGrantsAndFunding;
   id?: string;
+  impactMetrics?: ProjectImpactMetrics;
   impactStatement?: ProjectImpactStatement;
   links?: string[];
   name?: string;
@@ -623,8 +645,46 @@ export interface Project {
   projectId?: string;
   socialLinks?: SocialLinks;
   team?: string[];
-  testimonials?: string[] | string;
 }
+
+export type ProjectImpactMetricsPercentageDistributionsTopDelegates = {
+  extremely_upset?: number;
+  neutral?: number;
+  somewhat_upset?: number;
+};
+
+export type ProjectImpactMetricsPercentageDistributionsCitizens = {
+  extremely_upset?: number;
+  neutral?: number;
+  somewhat_upset?: number;
+};
+
+export type ProjectImpactMetricsElectedGovernanceReviewsOptimismGrantsCouncilMember =
+  {
+    avg_nps_score?: number;
+    avg_pmf_score?: number;
+    count_attestations?: number;
+  };
+
+export type ProjectImpactMetricsElectedGovernanceReviewsCodeOfConductCouncilMember =
+  {
+    avg_nps_score?: number;
+    avg_pmf_score?: number;
+    count_attestations?: number;
+  };
+
+export type ProjectImpactMetricsElectedGovernanceReviewsAnticaptureCommissionMember =
+  {
+    avg_nps_score?: number;
+    avg_pmf_score?: number;
+    count_attestations?: number;
+  };
+
+export type ProjectImpactMetricsElectedGovernanceReviews = {
+  anticapture_commission_member?: ProjectImpactMetricsElectedGovernanceReviewsAnticaptureCommissionMember;
+  code_of_conduct_council_member?: ProjectImpactMetricsElectedGovernanceReviewsCodeOfConductCouncilMember;
+  optimism_grants_council_member?: ProjectImpactMetricsElectedGovernanceReviewsOptimismGrantsCouncilMember;
+};
 
 export type ProjectGrantsAndFundingVentureFundingItem = {
   amount?: string;
@@ -649,35 +709,9 @@ export type ProjectGrantsAndFunding = {
   grants?: ProjectGrantsAndFundingGrantsItem[];
   revenue?: ProjectGrantsAndFundingRevenueItem[];
   ventureFunding?: ProjectGrantsAndFundingVentureFundingItem[];
-  investment?: {
-    amount?: string;
-    details?: string;
-  }[];
 };
 
-export type ProjectGithubItemOneOf = {
-  age_of_project_years?: number;
-  fork_count?: number;
-  forked_by_top_devs?: number;
-  forked_events?: number;
-  fulltime_developer_average_6_months?: number;
-  new_contributor_count_6_months?: number;
-  repo_rank?: number;
-  star_count?: number;
-  starred_by_top_devs?: number;
-  starred_events?: number;
-  trust_rank_for_repo_in_category?: string;
-  num_contributors?: string;
-  num_trusted_contributors?: string;
-  num_contributors_last_6_months?: string;
-  num_stars?: string;
-  num_trusted_stars?: string;
-  trust_weighted_stars?: string;
-  num_forks?: string;
-  num_trusted_forks?: string;
-  trust_weighted_forks?: string;
-  license?: string;
-};
+export type ProjectGithubItemOneOf = { [key: string]: unknown };
 
 export type ProjectGithubItem = string | ProjectGithubItemOneOf;
 
@@ -703,8 +737,6 @@ export type ProjectContractsItemAllOf = {
    */
   deploymentTxHash?: string;
 };
-
-export type ProjectContractsItem = Contract & ProjectContractsItemAllOf;
 
 /**
  * A category for a RetroFunding project, including information about the category.
@@ -890,6 +922,8 @@ export interface Contract {
    */
   chainId?: string;
 }
+
+export type ProjectContractsItem = Contract & ProjectContractsItemAllOf;
 
 export type VotingTokenAllOf = {
   /**

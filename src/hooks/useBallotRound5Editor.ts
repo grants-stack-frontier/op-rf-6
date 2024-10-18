@@ -4,17 +4,17 @@ import { useCallback, useState } from 'react';
 import { Round5ProjectAllocation } from '@/types/ballot';
 import type { CategoryId } from '@/types/various';
 
-type BallotRound5State = Record<
+type BallotState = Record<
   string,
   { allocation: number; locked: boolean }
 >;
 
-export function useBallotRound5Editor() {
-  const [state, setState] = useState<BallotRound5State>({});
+export function useBallotEditor() {
+  const [state, setState] = useState<BallotState>({});
 
   const setInitialState = useCallback(
     (allocations: Round5ProjectAllocation[] = []) => {
-      const ballot: BallotRound5State = Object.fromEntries(
+      const ballot: BallotState = Object.fromEntries(
         allocations.map((m) => [
           m.project_id,
           { allocation: m.allocation, locked: false },
@@ -57,7 +57,7 @@ export function useBallotRound5Editor() {
   return { set, inc, dec, add, reset, state };
 }
 
-function calculateBalancedAmounts(state: BallotRound5State): BallotRound5State {
+function calculateBalancedAmounts(state: BallotState): BallotState {
   // Autobalance non-locked fields
   const locked = Object.entries(state).filter(([_, m]) => m.locked);
   const nonLocked = Object.entries(state).filter(([_, m]) => !m.locked);

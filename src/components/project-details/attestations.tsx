@@ -1,10 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Pie, PieChart } from 'recharts';
 
+import { ProjectImpactMetrics, ProjectImpactMetricsElectedGovernanceReviews, ProjectImpactMetricsPercentageDistributions } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
-import { useAttestations } from '@/hooks/useAttestations';
 // import mixpanel from '@/lib/mixpanel';
 
 import NeutralFaceEmoji from '../../../public/neutral-face-emoji.svg';
@@ -27,16 +29,14 @@ import {
 import { Separator } from '../ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
-export function Attestations({ projectId }: { projectId?: string }) {
-  const { data: attestations } = useAttestations({ projectId });
-
-  // if (!attestations) return null;
-
+export function Attestations({ projectId, metrics }: { projectId?: string, metrics?: ProjectImpactMetrics }) {
   const notableRecognition = useMemo(() => {
-    const mostPositive = true;
-    const cannotLiveWithout = true;
+    const mostPositive = Boolean(metrics?.most_positive_superlative?.toLowerCase() === 'true');
+    const cannotLiveWithout = Boolean(metrics?.cant_live_without_superlative?.toLowerCase() === 'true');
     return { mostPositive, cannotLiveWithout };
-  }, [attestations]);
+  }, [metrics]);
+
+  if (!metrics) return null;
 
   return (
     <div className="flex flex-col gap-2 mt-12">
@@ -49,8 +49,12 @@ export function Attestations({ projectId }: { projectId?: string }) {
         category.
       </p>
       <div className="grid grid-cols-2 gap-2">
-        <AttestationCard />
-        <RecommendationRatingCard />
+        <AttestationCard
+          citizensCount={metrics?.count_citizen_attestations}
+          delegatesCount={metrics?.count_delegate_attestations}
+          totalCount={metrics?.count_total_attestations}
+        />
+        <RecommendationRatingCard rating={metrics?.avg_nps_score} />
       </div>
       {(notableRecognition.mostPositive ||
         notableRecognition.cannotLiveWithout) && (
@@ -61,28 +65,43 @@ export function Attestations({ projectId }: { projectId?: string }) {
           {notableRecognition.cannotLiveWithout && <CannotLiveWithoutCard />}
         </div>
       )}
-      <AttestationChartCard />
-      <AttestationElectedGovernanceMembersCard />
-      <Link href={`#`} passHref>
+      <AttestationChartCard
+        sentimentData={metrics.percentage_distributions}
+        counts={{
+          citizens: metrics.count_citizen_attestations,
+          delegates: metrics.count_delegate_attestations,
+          total: metrics.count_total_attestations,
+        }}
+      />
+      <AttestationElectedGovernanceMembersCard reviews={metrics.elected_governance_reviews} />
+      <Link href={`https://metricsgarden.xyz/projects/${projectId}`} passHref>
         <p className="text-sm line-height-5 text-[#404454]">
-          View all testimonials at metricsgarden.xyz/projects/project_title
+          View all testimonials at metricsgarden.xyz/projects/{projectId}
         </p>
       </Link>
     </div>
   );
 }
 
-function AttestationCard() {
+function AttestationCard({
+  citizensCount,
+  delegatesCount,
+  totalCount,
+}: {
+  citizensCount?: number;
+  delegatesCount?: number;
+  totalCount?: number
+}) {
   return (
     <Card className="shadow-none">
       <CardContent className="flex flex-col gap-4 p-8 pb-9">
         <AttUserIcon />
-        <CardTitle className="text-xl">100 attestations</CardTitle>
+        <CardTitle className="text-xl">{totalCount ?? (citizensCount ?? 0) + (delegatesCount ?? 0)} attestations</CardTitle>
         <div className="text-sm line-height-5">
           <p>
             By{' '}
             <span className="font-semibold">
-              Citizens (68) & Top Delegates* (32).
+              Citizens ({citizensCount ?? 0}) & Top Delegates* ({delegatesCount ?? 0}).
             </span>
           </p>
           <p>
@@ -97,12 +116,17 @@ function AttestationCard() {
   );
 }
 
-function RecommendationRatingCard() {
+function RecommendationRatingCard({
+  rating,
+}: {
+  rating?: number;
+}) {
+  const roundedRating = rating ? Number(rating.toFixed(1)) : 0;
   return (
     <Card className="shadow-none">
       <CardContent className="flex flex-col gap-4 p-8 pb-9">
         <AttThumbsUpIcon />
-        <CardTitle className="text-xl">9.8 out of 10</CardTitle>
+        <CardTitle className="text-xl">{roundedRating} out of 10</CardTitle>
         <div className="text-sm line-height-5">
           <p>
             <span className="font-semibold">Citizens & Top Delegates</span> are{' '}
@@ -156,45 +180,63 @@ function CannotLiveWithoutCard() {
   );
 }
 
-function AttestationElectedGovernanceMembersCard() {
-  const attestations: {
-    name: string;
-    count: number;
-    rating: number;
-    sentiment: Sentiment;
-  }[] = [
-    {
-      name: 'Anticapture Commision',
-      count: 4,
-      rating: 7.5,
-      sentiment: 'extremelyUpset',
-    },
-    {
-      name: 'Code of Conduct Council',
-      count: 1,
-      rating: 10,
-      sentiment: 'extremelyUpset',
-    },
-    {
-      name: 'Collective Feedback Commission',
-      count: 1,
-      rating: 6,
-      sentiment: 'somewhatUpset',
-    },
-    {
-      name: 'Developer Advisory Board',
-      count: 4,
-      rating: 2.5,
-      sentiment: 'neutral',
-    },
-    { name: 'Grants Council', count: 2, rating: 7, sentiment: 'somewhatUpset' },
-    {
-      name: 'Security Council',
-      count: 2,
-      rating: 8.5,
-      sentiment: 'extremelyUpset',
-    },
-  ];
+function AttestationElectedGovernanceMembersCard({
+  reviews,
+}: {
+  reviews?: ProjectImpactMetricsElectedGovernanceReviews
+}) {
+  function getSentiment(pmf_score: number): Sentiment {
+    if (pmf_score >= 4) return 'extremely_upset';
+    if (pmf_score >= 3) return 'somewhat_upset';
+    return 'neutral';
+  }
+
+  const attestations = useMemo(() => {
+    return reviews ? Object.entries(reviews).map(([name, review]) => ({
+      name: name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      count: review.count_attestations ?? 0,
+      rating: review.avg_nps_score ?? 0,
+      sentiment: getSentiment(review.avg_pmf_score ?? 0),
+    })) : [];
+  }, [reviews])
+  // const attestations: {
+  //   name: string;
+  //   count: number;
+  //   rating: number;
+  //   sentiment: Sentiment;
+  // }[] = [
+  //   {
+  //     name: 'Anticapture Commision',
+  //     count: 4,
+  //     rating: 7.5,
+  //     sentiment: 'extremely_upset',
+  //   },
+  //   {
+  //     name: 'Code of Conduct Council',
+  //     count: 1,
+  //     rating: 10,
+  //     sentiment: 'extremely_upset',
+  //   },
+  //   {
+  //     name: 'Collective Feedback Commission',
+  //     count: 1,
+  //     rating: 6,
+  //     sentiment: 'somewhat_upset',
+  //   },
+  //   {
+  //     name: 'Developer Advisory Board',
+  //     count: 4,
+  //     rating: 2.5,
+  //     sentiment: 'neutral',
+  //   },
+  //   { name: 'Grants Council', count: 2, rating: 7, sentiment: 'somewhat_upset' },
+  //   {
+  //     name: 'Security Council',
+  //     count: 2,
+  //     rating: 8.5,
+  //     sentiment: 'extremely_upset',
+  //   },
+  // ];
   const totalCount = useMemo(
     () => attestations.reduce((acc, val) => acc + val.count, 0),
     [attestations]
@@ -227,7 +269,7 @@ function AttestationElectedGovernanceMembersListItem(params: {
   sentiment: Sentiment;
 }) {
   function renderSentiment(sentiment: Sentiment) {
-    if (sentiment === 'extremelyUpset')
+    if (sentiment === 'extremely_upset')
       return (
         <>
           <p>Extremely upset</p>
@@ -239,7 +281,7 @@ function AttestationElectedGovernanceMembersListItem(params: {
           />
         </>
       );
-    if (sentiment === 'somewhatUpset')
+    if (sentiment === 'somewhat_upset')
       return (
         <>
           <p>Somewhat upset</p>
@@ -284,38 +326,46 @@ function AttestationElectedGovernanceMembersListItem(params: {
   );
 }
 
-type Sentiment = 'extremelyUpset' | 'somewhatUpset' | 'neutral';
+type Sentiment = 'extremely_upset' | 'somewhat_upset' | 'neutral';
 
-function AttestationChartCard() {
+function AttestationChartCard({
+  sentimentData,
+  counts,
+}: {
+  sentimentData?: ProjectImpactMetricsPercentageDistributions,
+  counts?: {
+    citizens?: number,
+    delegates?: number,
+    total?: number,
+  }
+}) {
   const [selectedTab, setSelectedTab] = useState<
     'all' | 'citizens' | 'delegates'
   >('all');
-  const sentimentData = {
-    citizens: {
-      extremelyUpset: 90,
-      somewhatUpset: 8,
-      neutral: 2,
-    },
-    delegates: {
-      extremelyUpset: 10,
-      somewhatUpset: 5,
-      neutral: 85,
-    },
-  };
+  
+  const weights = useMemo(() => {
+    const total = (counts?.citizens ?? 0) + (counts?.delegates ?? 0);
+    return {
+      citizens: counts?.citizens ? counts.citizens / total : 0,
+      delegates: counts?.delegates ? counts.delegates / total : 0,
+    }
+  }, [counts])
 
   const mostCommonSentiment = useMemo(() => {
     const combinedData = {
-      extremelyUpset:
-        sentimentData.citizens.extremelyUpset +
-        sentimentData.delegates.extremelyUpset,
-      somewhatUpset:
-        sentimentData.citizens.somewhatUpset +
-        sentimentData.delegates.somewhatUpset,
-      neutral: sentimentData.citizens.neutral + sentimentData.delegates.neutral,
+      extremely_upset:
+        (sentimentData?.citizens?.extremely_upset ?? 0) * weights.citizens +
+        (sentimentData?.top_delegates?.extremely_upset ?? 0) * weights.delegates,
+      somewhat_upset:
+        (sentimentData?.citizens?.somewhat_upset ?? 0) * weights.citizens +
+        (sentimentData?.top_delegates?.somewhat_upset ?? 0) * weights.delegates,
+      neutral:
+        (sentimentData?.citizens?.neutral ?? 0) * weights.citizens +
+        (sentimentData?.top_delegates?.neutral ?? 0) * weights.delegates,
     };
     const maxValue = Math.max(
-      combinedData.extremelyUpset,
-      combinedData.somewhatUpset,
+      combinedData.extremely_upset,
+      combinedData.somewhat_upset,
       combinedData.neutral
     );
     return Object.entries(combinedData).find(
@@ -326,54 +376,57 @@ function AttestationChartCard() {
   const legendData = useMemo(() => {
     let total: number;
     switch (selectedTab) {
+      // Change to weighted by citizen/delegate counts
       case 'all': {
         total =
-          Object.values(sentimentData.citizens).reduce(
+          Object.values(sentimentData?.citizens ?? {}).reduce(
             (acc, val) => acc + val,
             0
           ) +
-          Object.values(sentimentData.delegates).reduce(
+          Object.values(sentimentData?.top_delegates ?? {}).reduce(
             (acc, val) => acc + val,
             0
           );
         return {
-          extremelyUpset:
-            ((sentimentData.citizens.extremelyUpset +
-              sentimentData.delegates.extremelyUpset) /
-              total) *
+          extremely_upset:
+            ((sentimentData?.citizens?.extremely_upset ?? 0) * weights.citizens +
+              (sentimentData?.top_delegates?.extremely_upset ?? 0) * weights.delegates) *
             100,
-          somewhatUpset:
-            ((sentimentData.citizens.somewhatUpset +
-              sentimentData.delegates.somewhatUpset) /
-              total) *
+          somewhat_upset:
+            ((sentimentData?.citizens?.somewhat_upset ?? 0) * weights.citizens +
+              (sentimentData?.top_delegates?.somewhat_upset ?? 0) * weights.delegates) *
             100,
           neutral:
-            ((sentimentData.citizens.neutral +
-              sentimentData.delegates.neutral) /
-              total) *
+            ((sentimentData?.citizens?.neutral ?? 0) * weights.citizens +
+              (sentimentData?.top_delegates?.neutral ?? 0) * weights.delegates) *
             100,
         };
       }
       case 'citizens':
-        total = Object.values(sentimentData.citizens).reduce(
+        total = Object.values(sentimentData?.citizens ?? {}).reduce(
           (acc, val) => acc + val,
           0
         );
         return {
-          extremelyUpset: (sentimentData.citizens.extremelyUpset / total) * 100,
-          somewhatUpset: (sentimentData.citizens.somewhatUpset / total) * 100,
-          neutral: (sentimentData.citizens.neutral / total) * 100,
+          extremely_upset:
+            (sentimentData?.citizens?.extremely_upset ?? 0) / total * 100,
+          somewhat_upset:
+            (sentimentData?.citizens?.somewhat_upset ?? 0) / total * 100,
+          neutral:
+            (sentimentData?.citizens?.neutral ?? 0) / total * 100,
         };
       case 'delegates':
-        total = Object.values(sentimentData.delegates).reduce(
+        total = Object.values(sentimentData?.top_delegates ?? {}).reduce(
           (acc, val) => acc + val,
           0
         );
         return {
-          extremelyUpset:
-            (sentimentData.delegates.extremelyUpset / total) * 100,
-          somewhatUpset: (sentimentData.delegates.somewhatUpset / total) * 100,
-          neutral: (sentimentData.delegates.neutral / total) * 100,
+          extremely_upset:
+            (sentimentData?.top_delegates?.extremely_upset ?? 0) / total * 100,
+          somewhat_upset:
+            (sentimentData?.top_delegates?.somewhat_upset ?? 0) / total * 100,
+          neutral:
+            (sentimentData?.top_delegates?.neutral ?? 0) / total * 100,
         };
     }
   }, [selectedTab, sentimentData]);
@@ -381,9 +434,9 @@ function AttestationChartCard() {
   const chartData = useMemo(() => {
     function getFill(sentiment: Sentiment) {
       switch (sentiment) {
-        case 'extremelyUpset':
+        case 'extremely_upset':
           return '#3374DB';
-        case 'somewhatUpset':
+        case 'somewhat_upset':
           return '#AAC9FD';
         case 'neutral':
           return '#D6E4FF';
@@ -391,14 +444,14 @@ function AttestationChartCard() {
     }
     switch (selectedTab) {
       case 'all': {
-        const citizens = Object.entries(sentimentData.citizens).map(
+        const citizens = Object.entries(sentimentData?.citizens ?? {}).map(
           ([sentiment, value]) => ({
             sentiment,
             value,
             fill: getFill(sentiment as Sentiment),
           })
         );
-        const delegates = Object.entries(sentimentData.delegates).map(
+        const delegates = Object.entries(sentimentData?.top_delegates ?? {}).map(
           ([sentiment, value]) => ({
             sentiment,
             value,
@@ -412,7 +465,7 @@ function AttestationChartCard() {
         });
       }
       case 'citizens':
-        return Object.entries(sentimentData.citizens).map(
+        return Object.entries(sentimentData?.citizens ?? {}).map(
           ([sentiment, value]) => ({
             sentiment,
             value,
@@ -420,7 +473,7 @@ function AttestationChartCard() {
           })
         );
       case 'delegates':
-        return Object.entries(sentimentData.delegates).map(
+        return Object.entries(sentimentData?.top_delegates ?? {}).map(
           ([sentiment, value]) => ({
             sentiment,
             value,
@@ -428,7 +481,7 @@ function AttestationChartCard() {
           })
         );
       default:
-        return Object.entries(sentimentData.citizens).map(
+        return Object.entries(sentimentData?.citizens ?? {}).map(
           ([sentiment, value]) => ({
             sentiment,
             value,
@@ -439,11 +492,11 @@ function AttestationChartCard() {
   }, [selectedTab, sentimentData]);
 
   const config = {
-    ['extremely-upset']: {
+    ['extremely_upset']: {
       label: 'Extremely upset',
       color: '#3374DB',
     },
-    ['somewhat-upset']: {
+    ['somewhat_upset']: {
       label: 'Somewhat upset',
       color: '#AAC9FD',
     },
@@ -518,7 +571,7 @@ function AttestationChartCard() {
 }
 
 function SentimentHeader({ sentiment }: { sentiment: Sentiment }) {
-  if (sentiment === 'extremelyUpset')
+  if (sentiment === 'extremely_upset')
     return (
       <>
         <Image src={SobFaceEmoji} alt="Sob face emoji" />
@@ -528,7 +581,7 @@ function SentimentHeader({ sentiment }: { sentiment: Sentiment }) {
         </CardTitle>
       </>
     );
-  if (sentiment === 'somewhatUpset')
+  if (sentiment === 'somewhat_upset')
     return (
       <>
         <Image src={FrowningFaceEmoji} alt="Frowning face emoji" />
@@ -567,7 +620,7 @@ function SentimentChartLegend({
             className="absolute ml-2.5"
           />
         </div>
-        <p>Extremely upset: {legendData.extremelyUpset}%</p>
+        <p>Extremely upset: {legendData.extremely_upset.toFixed(1)}%</p>
       </div>
       <div className="flex flex-row items-center gap-5">
         <div className="flex flex-row items-center">
@@ -580,7 +633,7 @@ function SentimentChartLegend({
             className="absolute ml-2.5"
           />
         </div>
-        <p>Somewhat upset: {legendData.somewhatUpset}%</p>
+        <p>Somewhat upset: {legendData.somewhat_upset.toFixed(1)}%</p>
       </div>
       <div className="flex flex-row items-center gap-5">
         <div className="flex flex-row items-center">
@@ -593,7 +646,7 @@ function SentimentChartLegend({
             className="absolute ml-2.5"
           />
         </div>
-        <p>Neutral: {legendData.neutral}%</p>
+        <p>Neutral: {legendData.neutral.toFixed(1)}%</p>
       </div>
     </div>
   );

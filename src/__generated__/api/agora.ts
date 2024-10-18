@@ -26,11 +26,13 @@ Live and stable.
 - **contracts**: Data for the current onchain contracts
 - **projects** Round 5 Projects with mock data
 - **RetroFundingBallots** Round 5 Ballots with mock data
-
-Not Live.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
+
+Not Live.
+- 0.3.0: Round 6 mock projects data
+- 0.3.1: Round 6 production release with real data
 
 ### Release Schedule
 
@@ -44,12 +46,16 @@ Not Live.
 | OP 0.2.0 | LIVE   | Aug 10th |
 | OP 0.2.1 | LIVE   | Aug 26th |
 | OP 0.2.2 | LIVE   | Sep 4th |
-| OP 0.2.3 | ON TRACK   | Sep 20th |
+| OP 0.2.3 | LIVE   | Sep 20th |
+|----------|---------|---------------|
+| OP 0.3.0 | ON TRACK   | Oct 11th |
+| OP 0.3.1 | ON TRACK   | Oct 25th |
  * OpenAPI spec version: 0.2.1
  */
 import type {
   AddImpactMetricToRetroFundingBallotBody,
   AuthToken,
+  Ballot,
   Comment,
   CommentVote,
   Contract,
@@ -81,7 +87,6 @@ import type {
   RetroFundingImpactMetric,
   RetroFundingRound,
   Round4Ballot,
-  Round5Ballot,
   SIWEVerificationBody,
   SubmitRetroFundingBallot200,
   SubmitRetroFundingBallotBody,
@@ -829,7 +834,7 @@ export const addImpactMetricToRetroFundingBallot = async (
  * @summary Updates all projects data for a specific RetroFunding ballot
  */
 export type updateRetroFundingRoundProjectsResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -863,7 +868,7 @@ export const updateRetroFundingRoundProjects = async (
  * @summary Updates allocation for a specific project for a RetroFunding round
  */
 export type updateRetroFundingRoundProjectAllocationResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -903,7 +908,7 @@ export const updateRetroFundingRoundProjectAllocation = async (
  * @summary Updates impact for a specific project for a RetroFunding round
  */
 export type updateRetroFundingRoundProjectImpactResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -943,7 +948,7 @@ export const updateRetroFundingRoundProjectImpact = async (
  * @summary Updates position for a specific project for a RetroFunding round
  */
 export type updateRetroFundingRoundProjectPositionResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -983,7 +988,7 @@ export const updateRetroFundingRoundProjectPosition = async (
  * @summary Updates a category allocation for a specific RetroFunding ballot
  */
 export type updateRetroFundingRoundCategoryAllocationResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -1019,7 +1024,7 @@ export const updateRetroFundingRoundCategoryAllocation = async (
  * @summary Updates a budget allocation for a specific RetroFunding ballot
  */
 export type updateRetroFundingRoundBudgetAllocationResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
@@ -1056,7 +1061,7 @@ export const updateRetroFundingRoundBudgetAllocation = async (
  * @summary Updates the distribution method for a specific RetroFunding ballot
  */
 export type updateRetroFundingBallotDistributionMethodResponse = {
-  data: Round5Ballot;
+  data: Ballot;
   status: number;
 };
 
