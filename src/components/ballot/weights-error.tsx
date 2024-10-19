@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 
+import { votingEndDate } from '@/config';
 import {
   useRound5BallotWeightSum,
   useDistributionMethodFromLocalStorage,
 } from '@/hooks/useBallotRound5';
 import { useBudget } from '@/hooks/useBudget';
+
+import { useVotingTimeLeft } from '../common/voting-ends-in';
 
 export function WeightsError() {
   const allocationSum = useRound5BallotWeightSum();
@@ -12,10 +15,19 @@ export function WeightsError() {
     return 100 - allocationSum;
   }, [allocationSum]);
 
+  const [seconds] = useVotingTimeLeft(votingEndDate);
   const { data: distributionMethod } = useDistributionMethodFromLocalStorage();
   const {
     getBudget: { data: budgetData },
   } = useBudget(5);
+
+  if (Number(seconds) < 0) {
+    return (
+      <span className="text-sm text-destructive">
+        Voting has closed! Results will be announced shortly.
+      </span>
+    );
+  }
 
   if (!distributionMethod)
     return (

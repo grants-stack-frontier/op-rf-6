@@ -13,7 +13,7 @@ import {
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
-import { mainnet, optimism } from 'wagmi/chains';
+import { optimism } from 'wagmi/chains';
 import '@/lib/mixpanel';
 
 function makeQueryClient() {
@@ -45,7 +45,7 @@ const { wallets } = getDefaultWallets();
 const config = getDefaultConfig({
   appName: 'OP Round 6',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID!,
-  chains: [mainnet, optimism],
+  chains: [optimism],
   wallets: [
     ...wallets,
     {
