@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/common/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { BallotRound5Provider } from '@/contexts/BallotRound5Context';
+import { BallotProvider } from '@/contexts/BallotRound5Context';
 import { BudgetProvider } from '@/contexts/BudgetContext';
 import { cn } from '@/lib/utils';
 
@@ -38,11 +38,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Provider>
-            <BallotRound5Provider>
+            <BallotProvider>
               <BudgetProvider>
                 <ClientLayout>{children}</ClientLayout>
               </BudgetProvider>
-            </BallotRound5Provider>
+            </BallotProvider>
           </Provider>
         </ThemeProvider>
         <Toaster />

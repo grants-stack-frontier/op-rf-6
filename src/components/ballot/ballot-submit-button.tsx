@@ -3,7 +3,6 @@ import { ComponentProps } from 'react';
 import { votingEndDate } from '@/config';
 import { useRound5BallotWeightSum } from '@/hooks/useBallotRound5';
 import { useBudget } from '@/hooks/useBudget';
-import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
 
 import { useVotingTimeLeft } from '../common/voting-ends-in';
 import { Button } from '../ui/button';
@@ -12,7 +11,6 @@ import { DisabledTooltip } from '../ui/tooltip';
 export function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
   const allocationSum = useRound5BallotWeightSum();
   const [seconds] = useVotingTimeLeft(votingEndDate);
-  const isBadgeholder = useIsBadgeholder();
   const {
     getBudget: { data: budgetData },
   } = useBudget(5);
@@ -26,8 +24,10 @@ export function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
     return null;
   }
 
+  const votingExpired = Number(seconds) < 0;
+
   const isDisabled =
-    allocationSum !== 100 || isBudgetIncomplete || !isBadgeholder;
+    allocationSum !== 100 || isBudgetIncomplete || votingExpired;
 
   let tooltipMessage = '';
   if (isDisabled) {
@@ -35,8 +35,8 @@ export function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
       tooltipMessage = 'Ensure your allocation sums to 100%.';
     } else if (isBudgetIncomplete) {
       tooltipMessage = 'Ensure your budget is complete.';
-    } else if (!isBadgeholder) {
-      tooltipMessage = 'You must be a badgeholder to submit.';
+    } else if (votingExpired) {
+      tooltipMessage = 'Voting has closed.';
     }
   }
 

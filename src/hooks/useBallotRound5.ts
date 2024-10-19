@@ -12,12 +12,12 @@ import { useAccount, useSignMessage } from 'wagmi';
 import { submitRetroFundingBallot } from '@/__generated__/api/agora';
 import type { SubmitRetroFundingBallotBody } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
-import { agoraRoundsAPI } from '@/config';
+import { agoraRoundsAPI, ROUND } from '@/config';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { request } from '@/lib/request';
 import { Round5Ballot } from '@/types/ballot';
 
-export function useRound5Ballot(address?: string) {
+export function useBallot(address?: string) {
   return useQuery({
     enabled: Boolean(address),
     queryKey: ['ballot-round5', address],
@@ -62,7 +62,7 @@ export function useSaveRound5Allocation() {
 export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
   const { toast } = useToast();
   const { address } = useAccount();
-  const { refetch } = useRound5Ballot(address);
+  const { refetch } = useBallot(address);
   const { signMessageAsync } = useSignMessage();
   const queryClient = useQueryClient();
 
@@ -78,7 +78,7 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
 
       if (address) {
         try {
-          submission = await submitRetroFundingBallot(5, address, {
+          submission = await submitRetroFundingBallot(ROUND, address, {
             address,
             ballot_content,
             signature,
