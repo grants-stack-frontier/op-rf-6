@@ -11,7 +11,7 @@ import {
 } from '@/__generated__/api/agora';
 import type {
   RetroFundingBallotCategoriesAllocation,
-  Round5Ballot,
+  Ballot,
 } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
 import type { Round5Allocation } from '@/types/various';
@@ -28,7 +28,7 @@ export function useBudget(roundId: number) {
       if (!address) throw new Error('No address provided');
       return getRetroFundingRoundBallotById(roundId, address).then(
         (response: getRetroFundingRoundBallotByIdResponse) => {
-          const ballot = response.data as Round5Ballot;
+          const ballot = response.data as Ballot;
           return {
             budget: ballot.budget,
             allocations:
@@ -51,7 +51,7 @@ export function useBudget(roundId: number) {
         address,
         allocation
       ).then((response: updateRetroFundingRoundCategoryAllocationResponse) => {
-        const updatedBallot = response.data as Round5Ballot;
+        const updatedBallot = response.data as Ballot;
         // Update the query data with the full structure
         queryClient.setQueryData(
           ['budget', address, roundId],
