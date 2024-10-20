@@ -27,20 +27,15 @@ type SaveProjectsParams = {
 };
 
 export function useProjectsByCategory(categoryId?: CategoryId) {
-  return useGetRetroFundingRoundProjects(
-    ROUND,
-    {
-      limit: 100,
-      category: categoryMap[
-        categoryId as CategoryId
-      ] as GetRetroFundingRoundProjectsCategory,
-    },
-    {
-      query: {
-        select: (data) => data.projects,
-      },
-    }
-  );
+  return useGetRetroFundingRoundProjects(ROUND, {
+    limit: 100,
+    category: categoryMap[
+      categoryId as CategoryId
+    ] as GetRetroFundingRoundProjectsCategory,
+  }) as {
+    data: Project[];
+    isPending: boolean;
+  };
 }
 
 export function useAllProjectsByCategory() {
