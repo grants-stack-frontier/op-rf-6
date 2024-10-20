@@ -6,107 +6,78 @@ import opRnd from '../../public/op_rnd.svg';
 import opTooling from '../../public/op_tooling.svg';
 
 export const categoryNames: Record<string, string> = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'Ethereum Core Contributions',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP Stack Research & Development',
-  OP_STACK_TOOLING: 'OP Stack Tooling',
+  GOVERNANCE_INFRA_AND_TOOLING: 'Governance Infrastructure & Tooling',
+  GOVERNANCE_ANALYTICS: 'Governance Analytics',
+  GOVERNANCE_LEADERSHIP: 'Governance Leadership',
 };
 
 export const categories: Category[] = [
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.ETHEREUM_CORE_CONTRIBUTIONS,
-    name: 'Ethereum Core Contributions',
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_INFRA_AND_TOOLING,
+    name: 'Governance Infrastructure & Tooling',
     image: ethCore.src,
     description:
-      'Ethereum Core Contributions are infrastructure which supports, or is a dependency, of the OP Stack.',
+      'Infrastructure and tooling that powered governance or that made the usage of governance infrastructure more accessible.',
     examples: [
-      'Smart contract languages',
-      'Ethereum consensus & execution clients',
-      'EVM',
-      'Ethereum testnets',
-      'Cryptography research',
+      'Work on Optimism Governor contracts',
+      'Optimism Governance voting clients and interfaces',
+      'work on Optimism identity and reputation infrastructure',
+      'Retro Funding voting clients and sign up.',
     ],
     eligibility: {
       eligible_projects: [
-        'Ethereum client implementations',
-        'Infrastructure to test and deploy chains',
-        'Languages that are dedicated to the development of smart contracts',
-        'Research that informs Ethereum core development',
+        'Governance Infrastructure: Technical infrastructure that powers the voting process within Optimism Governance',
+        'Governance Tooling: Tools that are used by Delegates or Citizens to participate in Optimism Governance',
+        'Grants Tooling: Tools that support the Token House grants process, including the operation of the Grants Council. Tools which power or support the Retro Funding process.',
       ],
       not_eligible_projects: [
-        'Projects that are used to develop or deploy contracts or apps, including in the development and deployment of Optimism contracts, may be rewarded in Retro Funding 7: Dev Tooling, and are not in scope for this category.',
-        'Extended Ethereum related tooling that is not listed under eligibility, including analytics/data infrastructure, frontend libraries, indexers and more. These may be rewarded in Retro Funding 7: Dev Tooling and are not in scope for this category.',
-        'Generic Ethereum related research that does not inform Ethereum core development',
+        'Non-Optimism related governance tooling: Tools that have not been used in Optimism Governance',
+        'Resources for Governance Onboarding: Documentation, educational videos or other resources that are dedicated to explaining Optimism Governance',
       ],
     },
-    projects: [
-      {
-        name: 'Ethereum',
-        description:
-          'Ethereum is a decentralized, open-source blockchain with smart contract functionality.',
-      },
-    ],
   },
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_RESEARCH_AND_DEVELOPMENT,
-    name: 'OP Stack Research & Development',
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_ANALYTICS,
+    name: 'Governance Analytics',
     image: opRnd.src,
     description:
-      'Direct research & development contributions to the OP Stack, and contributions that support protocol upgrades',
+      'Analytics that enabled accountability, provided transparency into Collective operations, promoted improved performance, or aided in the design of the Collective.',
     examples: [
-      'Optimism Protocol upgrades',
-      'OP Stack Client Implementations',
-      'modules & mods',
-      'audits and Fault Proof VM implementations',
+      'Governance performance reports',
+      'Finance and Grant related analytics & reports',
+      'Delegate/Citizen voting power and activity analytics.',
     ],
     eligibility: {
       eligible_projects: [
-        'Work on core components of the OP Stack, including client implementations, modules, and modifications.',
-        'Research or development that introduces new features, improvements, or capabilities to the OP Stack.',
-        'Security audits specifically on the OP Stack or its components.',
+        'Optimism Governance related Analytics: Analyses of the performance of Optimism governance, including governance participation, grant allocation and more',
       ],
       not_eligible_projects: [
-        'Optimism Monorepo contributions by non-core devs: Only Optimism Monorepo 11 contributions by core devs may be rewarded within Retro Funding 5. Commits to the monorepo are currently mainly done by Optimism core devs and the core dev program is not developed enough to support outside contributions to the monorepo yet. As the core dev program evolves, more contributions to the monorepo may become eligible.',
-        'Submissions to the Optimism Bug Bounty Programs are not eligible to participate in this round.',
+        'Analytics infrastructure or reports which are not related to Optimism Governance',
       ],
     },
-    projects: [
-      {
-        name: 'Optimism Monorepo',
-        description:
-          'The Optimism Monorepo is the source code repository for the Optimism Protocol.',
-      },
-    ],
   },
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.OP_STACK_TOOLING,
-    name: 'OP Stack Tooling',
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_LEADERSHIP,
+    name: 'Governance Leadership',
     image: opTooling.src,
     description:
-      'Efforts that improve the usability and accessibility of the OP Stack through tooling enhancements.',
+      'DDemonstrated leadership in the Collective, including but not limited to, hosting community calls and/or participation in councils, boards and commissions beyond executing on basic responsibilities outlined in Token House Charters.',
     examples: [
-      'Integration and load testing infrastructure',
-      'scripts for running an Optimism node',
-      'RaaS providers',
-      'OP Stack tutorials & documentation',
+      'Various Optimism Governance Councils',
+      'Commissions and Boards',
+      'governance process facilitation',
     ],
     eligibility: {
       eligible_projects: [
-        'Tools that facilitate the deployment, operation, or testing of the OP Stack. This includes integration tools, load testing infrastructure, and scripts for node management.',
-        'Services for deploying and hosting an OP Chain',
-        'Documentation and tutorials which aid in understanding of the OP Stack’s components and its development',
+        'Councils, Commissions and Advisory Boards; NERD programs focused exclusively on core governance responsibilities (GovNERDs). This includes Security Council, Grants Council, Developer Advisory Board, Code of Conduct Council, Anticapture Commission, Collective Feedback Commissions and GovNERDs.',
+        'Governance facilitation of critical governance processes and/or experiments such as community calls, proposal creation or review sessions, deliberations or similar',
       ],
       not_eligible_projects: [
-        'Projects that are used to develop or deploy contracts or apps, including in the development and deployment of Optimism contracts, may be rewarded in Retro Funding 7: Dev Tooling, and are not in scope for this category.',
-        'Extended tooling that is not listed under eligibility, including analytics/data infrastructure, frontend libraries, indexers and more. These may be rewarded in Retro Funding 7: Dev Tooling and are not in scope for this category.',
-        'Documentation and tutorials which are not about the OP Stack’s components or development, such as non technical tutorials about Optimism.',
+        'Governance onboarding and promotion initiatives.',
+        'Delegate or Citizen governance participation, including forum engagement, participation in calls & workshops, participation in survey and other activities which are part of the responsibilities of citizens and delegates. These activities are rewarded separately as part of the Retro Governance Participation Rewards 10',
+        'Each of the above mentioned Councils, Commissions, Advisory Boards and NERD programs are required to submit one application as a group, individual participation within one of the groups is not eligible. The allocation of rewards among group members should be proposed by the team Lead and is subject to the consensus mechanism of that group outlined in their internal operating procedures',
+        'Governance Leadership within Governance Season 4 is not considered within this round, as it was already rewarded in Retro Funding 3.',
       ],
     },
-    projects: [
-      {
-        name: 'OP Stack',
-        description:
-          'The OP Stack is the set of tools and libraries that enable the development of Optimistic Rollup chains.',
-      },
-    ],
   },
 ];

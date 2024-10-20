@@ -11,15 +11,11 @@ import { ConflictsSection } from '@/components/ballot/conflicts-section';
 import { PageView } from '@/components/common/page-view';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
-import { useProjects } from '@/hooks/useProjects';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 export default function BallotPage() {
   const { address, isConnecting } = useAccount();
-  const { state, ballot, isPending } = useBallotRound5Context();
-  const { data: projects } = useProjects();
-
-  console.log({ ballot, projects });
+  const { state, ballot, isPending } = useBallotContext();
 
   let content;
 
@@ -30,7 +26,9 @@ export default function BallotPage() {
   } else {
     const isEmptyBallot = !Object.keys(state).length;
     const needImpactScoring =
-      ballot && ballot.projects_to_be_evaluated.length > 0;
+      ballot &&
+      ballot.projects_to_be_evaluated &&
+      ballot.projects_to_be_evaluated.length > 0;
 
     if (isEmptyBallot || needImpactScoring) {
       content = <EmptyBallot />;

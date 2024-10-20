@@ -3,18 +3,18 @@
 import { useMemo } from 'react';
 
 import { Text } from '@/components/ui/text';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 import { Progress } from '../ui/progress';
 
 export function ScoringProgressBar() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
 
   const quantities = useMemo(() => {
     if (ballot) {
       return {
-        total: ballot.total_projects,
-        toBeEvaluated: ballot.projects_to_be_evaluated.length,
+        total: ballot.total_projects ?? 0,
+        toBeEvaluated: ballot.projects_to_be_evaluated?.length ?? 0,
       };
     }
     return {
@@ -23,15 +23,13 @@ export function ScoringProgressBar() {
     };
   }, [ballot]);
 
+  const progressValue = quantities.total
+    ? ((quantities.total - quantities.toBeEvaluated) / quantities.total) * 100
+    : 0;
+
   return (
     <>
-      <Progress
-        value={
-          ((quantities.total - quantities.toBeEvaluated) / quantities.total) *
-          100
-        }
-        className="w-60"
-      />
+      <Progress value={progressValue} className="w-60" />
       <Text className="text-center max-w-lg mx-auto text-sm text-muted-foreground">
         You&apos;ve scored {quantities.total - quantities.toBeEvaluated} of{' '}
         {quantities.total} projects

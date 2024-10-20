@@ -4,8 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
-import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
+import { useBallotContext } from '@/contexts/BallotContext';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 import { useSaveProjects } from '@/hooks/useProjects';
 import { ImpactScore } from '@/types/project-scoring';
 
@@ -22,28 +22,33 @@ import {
 
 export function ResetButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const { ballot } = useBallotRound5Context();
-  const { mutateAsync: saveProjects, isPending } = useSaveProjects();
+  const { ballot } = useBallotContext();
+  const saveProjects = useSaveProjects();
+  const [isPending, setIsPending] = useState(false);
   const { reset: resetDistributionMethod } =
     useDistributionMethodFromLocalStorage();
   const { address } = useAccount();
   const queryClient = useQueryClient();
 
   const handleReset = async () => {
-    if (!ballot?.project_allocations || !address) return;
+    if (!ballot?.projects_allocations || !address) return;
+    setIsPending(true);
     await saveProjects({
-      projects: ballot.project_allocations.map((project) => ({
-        project_id: project.project_id,
-        allocation: '0',
-        impact: project.impact as ImpactScore,
-      })),
+      projects: ballot.projects_allocations
+        .filter((project) => project.project_id)
+        .map((project) => ({
+          project_id: project.project_id as string,
+          allocation: '0',
+          impact: project.impact as ImpactScore,
+        })),
       action: 'reset',
     });
 
     resetDistributionMethod();
 
-    queryClient.invalidateQueries({ queryKey: ['ballot-round5', address] });
+    queryClient.invalidateQueries({ queryKey: ['ballot-round6', address] });
 
+    setIsPending(false);
     setIsOpen(false);
   };
 

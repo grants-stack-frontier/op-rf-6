@@ -4,7 +4,7 @@ import { ArrowDownToLineIcon } from 'lucide-react';
 import Image from 'next/image';
 
 import { votingEndDate } from '@/config';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { downloadImage } from '../ballot/submit-dialog5';
@@ -31,20 +31,20 @@ const getMonthName = (monthNumber: number) => {
 };
 
 export function PostSubmissionBanner() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
 
-  if (!ballot || ballot.status !== 'SUBMITTED' || !ballot.submitted_at)
+  if (!ballot || ballot.status !== 'SUBMITTED' || !ballot.updated_at)
     return null;
 
   const dueDate = `${getMonthName(votingEndDate.getMonth() + 1)} ${votingEndDate.getDate()}`;
-  const submittedDate = new Date(ballot.submitted_at).toLocaleDateString(
+  const submittedDate = new Date(ballot.updated_at).toLocaleDateString(
     'en-US',
     {
       month: 'short',
       day: 'numeric',
     }
   );
-  const submittedTime = new Date(ballot.submitted_at).toLocaleTimeString(
+  const submittedTime = new Date(ballot.updated_at).toLocaleTimeString(
     'en-US',
     {
       hour: 'numeric',

@@ -6,15 +6,13 @@ import { useAccount } from 'wagmi';
 import {
   getRetroFundingRoundBallotById,
   updateRetroFundingRoundCategoryAllocation,
-  type getRetroFundingRoundBallotByIdResponse,
-  type updateRetroFundingRoundCategoryAllocationResponse,
 } from '@/__generated__/api/agora';
 import type {
   RetroFundingBallotCategoriesAllocation,
   Ballot,
+  UpdateRetroFundingRoundCategoryAllocationBody,
 } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
-import type { Round5Allocation } from '@/types/various';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();
@@ -27,8 +25,8 @@ export function useBudget(roundId: number) {
     queryFn: async () => {
       if (!address) throw new Error('No address provided');
       return getRetroFundingRoundBallotById(roundId, address).then(
-        (response: getRetroFundingRoundBallotByIdResponse) => {
-          const ballot = response.data as Ballot;
+        (response) => {
+          const ballot = response as Ballot;
           return {
             budget: ballot.budget,
             allocations:
@@ -44,23 +42,23 @@ export function useBudget(roundId: number) {
 
   const saveAllocation = useMutation({
     mutationKey: ['save-budget', roundId],
-    mutationFn: async (allocation: Round5Allocation) => {
+    mutationFn: async (
+      allocation: UpdateRetroFundingRoundCategoryAllocationBody
+    ) => {
       if (!address) throw new Error('No address provided');
       return updateRetroFundingRoundCategoryAllocation(
         roundId,
         address,
         allocation
-      ).then((response: updateRetroFundingRoundCategoryAllocationResponse) => {
-        const updatedBallot = response.data as Ballot;
-        // Update the query data with the full structure
+      ).then((ballot) => {
         queryClient.setQueryData(
           ['budget', address, roundId],
           (_: unknown) => ({
-            budget: updatedBallot.budget,
-            allocations: updatedBallot.category_allocations,
+            budget: ballot.budget,
+            allocations: ballot.category_allocations,
           })
         );
-        return updatedBallot.category_allocations;
+        return ballot.category_allocations;
       });
     },
     onError: () =>

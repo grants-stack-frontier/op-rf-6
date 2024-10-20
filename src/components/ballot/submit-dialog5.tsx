@@ -5,11 +5,12 @@ import Image from 'next/image';
 import { ComponentProps, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { useGetRetroFundingRoundBallotById } from '@/__generated__/api/agora';
+import { Ballot } from '@/__generated__/api/agora.schemas';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { votingEndDate } from '@/config';
-import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
+import { useSubmitBallot } from '@/hooks/useBallot';
 import { formatDate } from '@/lib/utils';
-import { Round5Ballot } from '@/types/ballot';
 
 import VotingSuccess_OPStack from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { Button } from '../ui/button';
@@ -17,19 +18,22 @@ import { Heading } from '../ui/headings';
 import { Text } from '../ui/text';
 
 import { Feedback, Form } from './feedback-form';
-import { exportRound5Ballot } from './import-ballot5';
+import { exportBallot } from './import-ballot5';
 
-export function SubmitRound5Dialog({
+export function SubmitDialog({
   open,
   ballot,
   onOpenChange,
-}: ComponentProps<typeof Dialog> & { ballot?: Round5Ballot }) {
+}: ComponentProps<typeof Dialog> & { ballot?: Ballot }) {
   const [feedbackProgress, setFeedbackProgress] = useState<
     'init' | 'in_progress' | 'submit' | 'done'
   >(ballot?.status === 'SUBMITTED' ? 'submit' : 'init');
   const { address } = useAccount();
 
-  const { refetch: refetchBallot } = useBallot(address);
+  const { refetch: refetchBallot } = useGetRetroFundingRoundBallotById(
+    6,
+    address ?? ''
+  );
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -42,7 +46,7 @@ export function SubmitRound5Dialog({
     onSuccess: async () => {
       setFeedbackProgress('done');
       await queryClient.invalidateQueries({
-        queryKey: ['ballot-round5', address],
+        queryKey: ['ballot-round6', address],
       });
       await refetchBallot();
     },
@@ -101,7 +105,7 @@ export function SubmitRound5Dialog({
                     variant="destructive"
                     isLoading={submit.isPending}
                     disabled={submit.isPending}
-                    onClick={() => submit.mutate()}
+                    onClick={() => submit.mutateAsync()}
                   >
                     Submit ballot
                   </Button>
@@ -144,7 +148,7 @@ export function SubmitRound5Dialog({
                     isLoading={submit.isPending}
                     disabled={submit.isPending}
                     onClick={() =>
-                      exportRound5Ballot(ballot?.project_allocations ?? [])
+                      exportBallot(ballot?.projects_allocations ?? [])
                     }
                   >
                     Export your ballot

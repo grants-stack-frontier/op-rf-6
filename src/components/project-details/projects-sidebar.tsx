@@ -18,7 +18,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Skeleton } from '../ui/skeleton';
 
 export function ProjectsSidebar({ id }: { id: CategoryId }) {
-  const { data: projects, isPending } = useProjectsByCategory(id);
+  const { data: projects, isPending } = useProjectsByCategory(id ?? 'all');
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
     root: null,

@@ -9,10 +9,15 @@ import React, {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { Project } from '@/__generated__/api/agora.schemas';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useGetRetroFundingRoundProjectById } from '@/__generated__/api/agora';
+import {
+  Project,
+  RetroFundingBallot5ProjectsAllocation,
+} from '@/__generated__/api/agora.schemas';
+import { ROUND } from '@/config';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
-import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
+import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
 import { ImpactScore } from '@/types/project-scoring';
@@ -40,10 +45,11 @@ export const ProjectProvider: React.FC<{
   id: string;
 }> = ({ children, id }) => {
   const { data: session } = useSession();
-  const { data: project, isPending: isProjectLoading } = useProjectById(id);
+  const { data: project, isPending: isProjectLoading } =
+    useGetRetroFundingRoundProjectById(ROUND, id);
   const { data: projects, isPending: isProjectsLoading } =
-    useProjectsByCategory(project?.applicationCategory as CategoryId);
-  const { ballot } = useBallotRound5Context();
+    useProjectsByCategory(project?.applicationCategory ?? 'all');
+  const { ballot } = useBallotContext();
   const { address } = useAccount();
 
   const [showUnlockDialog, setShowUnlockDialog] = useState(false);
@@ -83,7 +89,7 @@ export const ProjectProvider: React.FC<{
   const isLastProject = useMemo(() => {
     if (!ballot || !sortedProjects) return false;
     return (
-      (ballot.project_allocations?.length ?? 0) === sortedProjects.length - 1
+      (ballot.projects_allocations?.length ?? 0) === sortedProjects.length - 1
     );
   }, [ballot, sortedProjects]);
 
@@ -134,8 +140,8 @@ export const ProjectProvider: React.FC<{
 
   const currentProjectScore = useMemo(() => {
     if (!ballot || !currentProject) return undefined;
-    const allocation = ballot.project_allocations?.find(
-      (p: { project_id: string }) =>
+    const allocation = ballot.projects_allocations?.find(
+      (p: RetroFundingBallot5ProjectsAllocation) =>
         p.project_id === currentProject.applicationId
     );
     return allocation ? (allocation.impact as ImpactScore) : undefined;

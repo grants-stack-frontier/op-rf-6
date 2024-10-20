@@ -9,13 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
-import { exportRound5Ballot, ImportBallotDialog } from './import-ballot5';
+import { exportBallot, ImportBallotDialog } from './import-ballot5';
 
 export function BallotFilter() {
   const [isOpen, setOpen] = useState(false);
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
 
   return (
     <div className="flex gap-2">
@@ -34,9 +34,7 @@ export function BallotFilter() {
             Import ballot
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
-              exportRound5Ballot(ballot?.project_allocations ?? [])
-            }
+            onClick={() => exportBallot(ballot?.projects_allocations ?? [])}
           >
             Export ballot
           </DropdownMenuItem>

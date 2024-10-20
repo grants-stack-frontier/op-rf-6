@@ -1,182 +1,43 @@
-'use client';
-
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 
 import {
-  getRetroFundingRoundProjectById,
-  type getRetroFundingRoundProjectByIdResponse,
   getRetroFundingRoundProjects,
-  type getRetroFundingRoundProjectsResponse,
-  updateRetroFundingRoundProjectImpact,
+  useGetRetroFundingRoundProjects,
+  useUpdateRetroFundingRoundProjects,
 } from '@/__generated__/api/agora';
 import {
-  GetRetroFundingRoundProjectsParams,
+  Project,
+  UpdateRetroFundingRoundProjectsBodyProjectsItem,
   type GetRetroFundingRoundProjectsCategory,
-  type Project,
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
-import { agoraRoundsAPI, ROUND } from '@/config';
-import { request } from '@/lib/request';
-import { ImpactScore } from '@/types/project-scoring';
-import { ProjectsResponse } from '@/types/projects';
+import { ROUND } from '@/config';
 import type { CategoryId } from '@/types/various';
 
-export const categoryMap: Record<CategoryId, string> = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'op_rnd',
-  OP_STACK_TOOLING: 'op_tooling',
+export const categoryMap: Record<string, string> = {
+  GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
+  GOVERNANCE_ANALYTICS: 'gov_analytics',
+  GOVERNANCE_LEADERSHIP: 'gov_leadership',
 };
 
-export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
-  const { limit, offset, category } = params ?? {};
-  return useQuery({
-    queryKey: ['projects', limit, offset, category],
-    queryFn: async () => {
-      if (limit !== undefined) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit,
-            offset,
-            category: category ?? 'all',
-          });
-        return results.data?.projects ?? [];
-      }
+type SaveProjectsParams = {
+  projects: UpdateRetroFundingRoundProjectsBodyProjectsItem[];
+  action?: 'reset' | 'import';
+};
 
-      const allProjects: Project[] = [];
-      let currentOffset = offset ?? 0;
-      const pageLimit = 100;
+export function useProjectsByCategory(categoryId?: string) {
+  const category = categoryMap[
+    categoryId as CategoryId
+  ] as GetRetroFundingRoundProjectsCategory;
 
-      let hasMoreData = true;
-      while (hasMoreData) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit: pageLimit,
-            offset: currentOffset,
-            category: category ?? 'all',
-          });
-
-        const res: ProjectsResponse = results.data;
-
-        if (!res.data || res.data.length === 0) {
-          hasMoreData = false;
-        } else {
-          allProjects.push(...res.data);
-          currentOffset += pageLimit;
-
-          if (res.data.length < pageLimit) {
-            hasMoreData = false;
-          }
-        }
-      }
-
-      return allProjects;
-    },
-  });
-}
-
-export function useProjectsByCategory(categoryId?: CategoryId) {
-  return useQuery({
-    queryKey: ['projects-by-category', categoryId],
-    queryFn: async () =>
-      getRetroFundingRoundProjects(ROUND, {
-        limit: 100,
-        category: categoryMap[
-          categoryId as CategoryId
-        ] as GetRetroFundingRoundProjectsCategory,
-        //fix type when agora fixes it
-      }).then((results: any) => {
-        return results.data.data as Project[];
-      }),
-  });
-}
-
-export function useSaveProjectImpact() {
-  const { address } = useAccount();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ['save-project-impact'],
-    mutationFn: async ({
-      projectId,
-      impact,
-    }: {
-      projectId: string;
-      impact: ImpactScore;
-    }) => {
-      return updateRetroFundingRoundProjectImpact(
-        ROUND,
-        address as string,
-        projectId,
-        impact as number
-      ).then((r) => {
-        queryClient.setQueryData(['ballot-round5', address], r.data);
-        return r;
-      });
-    },
-    onSuccess: () =>
-      toast({
-        title: 'Impact score was saved successfully!',
-        variant: 'default',
-      }),
-    onError: () =>
-      toast({
-        title: 'Error saving impact score',
-        variant: 'destructive',
-      }),
-  });
-}
-
-export function useSaveProjects() {
-  const { address } = useAccount();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ['save-projects'],
-    mutationFn: async ({
-      projects,
-    }: {
-      projects: {
-        project_id: string;
-        allocation: string;
-        impact: 0 | 1 | 2 | 3 | 4 | 5 | 999;
-      }[];
-      action?: 'reset' | 'import';
-    }) => {
-      await request
-        .post(`${agoraRoundsAPI}/ballots/${address}/projects`, {
-          json: { projects },
-        })
-        .json<any>()
-        .then((r) => {
-          queryClient.setQueryData(['ballot-round5', address], r);
-          return r;
-        });
-    },
-    onMutate: () => {
-      toast({ title: 'Loading', loading: true });
-    },
-    onError: (_, { action }) => {
-      if (action === 'reset') {
-        toast({ variant: 'destructive', title: 'Error resetting ballot' });
-      } else if (action === 'import') {
-        toast({ variant: 'destructive', title: 'Error importing ballot' });
-      } else {
-        toast({ variant: 'destructive', title: 'Error saving ballot' });
-      }
-    },
-  });
-}
-
-export function useProjectById(projectId: string) {
-  return useQuery({
-    queryKey: ['projects-by-id', projectId],
-    queryFn: async () =>
-      getRetroFundingRoundProjectById(ROUND, projectId).then(
-        (results: getRetroFundingRoundProjectByIdResponse) => {
-          return results.data;
-        }
-      ),
-  });
+  return useGetRetroFundingRoundProjects(ROUND, {
+    limit: 100,
+    category,
+  }) as {
+    data: Project[];
+    isPending: boolean;
+  };
 }
 
 export function useAllProjectsByCategory() {
@@ -193,22 +54,19 @@ export function useAllProjectsByCategory() {
 
         let hasMoreData = true;
         while (hasMoreData) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(ROUND, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category as GetRetroFundingRoundProjectsCategory,
-            });
+          const res = (await getRetroFundingRoundProjects(ROUND, {
+            limit: pageLimit,
+            offset: currentOffset,
+            category: category as GetRetroFundingRoundProjectsCategory,
+          })) as Project[];
 
-          const res: ProjectsResponse = results.data;
-
-          if (!res.data || res.data.length === 0) {
+          if (!res || res.length === 0) {
             hasMoreData = false;
           } else {
-            allProjects.push(...res.data);
+            allProjects.push(...res);
             currentOffset += pageLimit;
 
-            if (res.data.length < pageLimit) {
+            if (res.length < pageLimit) {
               hasMoreData = false;
             }
           }
@@ -220,4 +78,52 @@ export function useAllProjectsByCategory() {
       return projectsByCategory;
     },
   });
+}
+
+export function useSaveProjects() {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+
+  const updateProjects = useUpdateRetroFundingRoundProjects();
+
+  const saveProjects = async ({ projects, action }: SaveProjectsParams) => {
+    try {
+      toast({ title: 'Loading', loading: true });
+
+      const response = await updateProjects.mutateAsync({
+        roundId: ROUND,
+        addressOrEnsName: address as string,
+        data: {
+          projects,
+        },
+      });
+
+      queryClient.setQueryData(['ballot-round6', address], response);
+
+      toast({
+        title:
+          action === 'reset'
+            ? 'Ballot reset successfully'
+            : action === 'import'
+              ? 'Ballot imported successfully'
+              : 'Projects saved successfully',
+        variant: 'default',
+      });
+
+      return response;
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title:
+          action === 'reset'
+            ? 'Error resetting ballot'
+            : action === 'import'
+              ? 'Error importing ballot'
+              : 'Error saving ballot',
+      });
+      throw error;
+    }
+  };
+
+  return saveProjects;
 }

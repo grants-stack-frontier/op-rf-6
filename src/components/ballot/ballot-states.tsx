@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useDisconnect, useSession } from '@/hooks/useAuth';
 import { categoryNames } from '@/lib/categories';
 import type { CategoryId } from '@/types/various';
@@ -18,15 +18,15 @@ import { Progress } from '../ui/progress';
 import { Separator } from '../ui/separator';
 
 export function EmptyBallot() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const { data: session } = useSession();
   const votingCategory = session?.category;
 
   const quantities = useMemo(() => {
     if (ballot) {
       return {
-        total: ballot.total_projects,
-        toBeEvaluated: ballot.projects_to_be_evaluated.length,
+        total: ballot.total_projects ?? 0,
+        toBeEvaluated: ballot.projects_to_be_evaluated?.length ?? 0,
       };
     }
     return {
@@ -62,7 +62,9 @@ export function EmptyBallot() {
           {quantities.total} projects
         </Text>
         <div className="flex gap-2">
-          <Link href={`/project/${ballot?.projects_to_be_evaluated[0]}`}>
+          <Link
+            href={`/project/${ballot?.projects_to_be_evaluated?.[0] ?? ''}`}
+          >
             <Button variant="destructive">Score projects</Button>
           </Link>
           {/* <Button variant="outline" onClick={() => setOpen(true)}>

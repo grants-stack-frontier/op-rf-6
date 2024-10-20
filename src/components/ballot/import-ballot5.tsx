@@ -3,19 +3,17 @@
 import { type ComponentProps, useCallback, useRef } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useGetRetroFundingRoundBallotById } from '@/__generated__/api/agora';
+import { RetroFundingBallot5ProjectsAllocation } from '@/__generated__/api/agora.schemas';
+import { ROUND } from '@/config';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
-import {
-  DistributionMethod,
-  useDistributionMethodFromLocalStorage,
-  useBallot,
-} from '@/hooks/useBallotRound5';
+import { DistributionMethod } from '@/hooks/useBallot';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
-import { Round5ProjectAllocation } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
-import type { CategoryId } from '@/types/various';
 
 import { Button } from '../ui/button';
 import {
@@ -51,14 +49,12 @@ export function ImportBallotDialog({
 }
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
-  const { ballot, reset } = useBallotRound5Context();
-  const { mutateAsync: saveProjects } = useSaveProjects();
+  const { ballot, reset } = useBallotContext();
+  const saveProjects = useSaveProjects();
   const { address } = useAccount();
-  const { refetch } = useBallot(address);
+  const { refetch } = useGetRetroFundingRoundBallotById(ROUND, address ?? '');
   const { data: session } = useSession();
-  const { data: projects } = useProjectsByCategory(
-    session?.category as CategoryId
-  );
+  const { data: projects } = useProjectsByCategory(session?.category ?? 'all');
   const { update } = useDistributionMethodFromLocalStorage();
 
   const ref = useRef<HTMLInputElement>(null);
@@ -66,7 +62,8 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parseCSV<Round5ProjectAllocation>(csvString);
+      const { data } =
+        parseCSV<RetroFundingBallot5ProjectsAllocation>(csvString);
       const allocations = data.map(({ project_id, allocation, impact }) => ({
         project_id,
         allocation: Number(allocation).toString(),
@@ -80,20 +77,19 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
       }
 
       reset(
-        allocations.map((alloc) => ({
-          project_id: alloc.project_id,
-          allocation: Number(alloc.allocation),
-          impact: alloc.impact,
-          name: ballot?.project_allocations.find(
+        allocations.map((alloc) => {
+          const project = ballot?.projects_allocations?.find(
             (p) => p.project_id === alloc.project_id
-          )?.name,
-          image: ballot?.project_allocations.find(
-            (p) => p.project_id === alloc.project_id
-          )?.image,
-          position: ballot?.project_allocations.find(
-            (p) => p.project_id === alloc.project_id
-          )?.position,
-        })) as Round5ProjectAllocation[]
+          );
+          return {
+            project_id: alloc.project_id,
+            allocation: Number(alloc.allocation),
+            impact: alloc.impact,
+            name: project?.name,
+            image: project?.image,
+            position: project?.position,
+          };
+        })
       );
 
       mixpanel.track('Import CSV', { ballotSize: allocations.length });
@@ -117,7 +113,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           });
         });
     },
-    [ballot, reset]
+    [ballot, reset, projects, refetch, onClose, update]
   );
 
   return (
@@ -145,24 +141,25 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  const { ballot } = useBallotRound5Context();
-  const emptyBallot: any[] = ballot
-    ? ballot.project_allocations.map((alloc) => ({
-        project_id: alloc.project_id,
-        name: alloc.name,
-        allocation: 0,
-        impact: alloc.impact,
-      }))
-    : [{ project_id: '0x0', name: 'Some project', allocation: 0, impact: 0 }];
+  const { ballot } = useBallotContext();
+  const emptyBallot: RetroFundingBallot5ProjectsAllocation[] =
+    ballot?.projects_allocations
+      ? ballot.projects_allocations.map((alloc) => ({
+          project_id: alloc.project_id || '0x0',
+          name: alloc.name || 'Unnamed project',
+          allocation: 0,
+          impact: alloc.impact || 0,
+        }))
+      : [{ project_id: '0x0', name: 'Some project', allocation: 0, impact: 0 }];
 
   return (
-    <Button variant="outline" onClick={() => exportRound5Ballot(emptyBallot)}>
+    <Button variant="outline" onClick={() => exportBallot(emptyBallot)}>
       Download ballot template
     </Button>
   );
 }
 
-export function exportRound5Ballot(ballot: Round5ProjectAllocation[]) {
+export function exportBallot(ballot: RetroFundingBallot5ProjectsAllocation[]) {
   const csv = format(
     ballot.map((alloc) => ({
       project_id: alloc.project_id,

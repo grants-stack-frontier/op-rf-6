@@ -6,12 +6,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { DistributionMethod, useDistributionMethod } from '@/hooks/useBallot';
 import {
-  DistributionMethod,
-  saveDistributionMethodToLocalStorage,
-  useDistributionMethod,
   useDistributionMethodFromLocalStorage,
-} from '@/hooks/useBallotRound5';
+  saveDistributionMethodToLocalStorage,
+} from '@/hooks/useDistributionMethod';
 import { cn } from '@/lib/utils';
 
 import Custom from '../../../public/chart-custom.svg';

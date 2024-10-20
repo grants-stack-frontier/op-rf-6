@@ -105,9 +105,9 @@ export type UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  GOVERNANCE_INFRA_AND_TOOLING: 'GOVERNANCE_INFRA_AND_TOOLING',
+  GOVERNANCE_ANALYTICS: 'GOVERNANCE_ANALYTICS',
+  GOVERNANCE_LEADERSHIP: 'GOVERNANCE_LEADERSHIP',
 } as const;
 
 export type UpdateRetroFundingRoundCategoryAllocationBody = {
@@ -467,9 +467,9 @@ export type RetroFundingBallotCategoriesAllocationCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RetroFundingBallotCategoriesAllocationCategorySlug = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  GOVERNANCE_INFRA_AND_TOOLING: 'GOVERNANCE_INFRA_AND_TOOLING',
+  GOVERNANCE_ANALYTICS: 'GOVERNANCE_ANALYTICS',
+  GOVERNANCE_LEADERSHIP: 'GOVERNANCE_LEADERSHIP',
 } as const;
 
 /**
@@ -605,12 +605,12 @@ export type ProjectImpactMetricsPercentageDistributions = {
 
 export type ProjectImpactMetrics = {
   avg_nps_score?: number;
-  cant_live_without_superlative?: string;
+  cant_live_without_superlative?: boolean;
   count_citizen_attestations?: number;
   count_delegate_attestations?: number;
   count_total_attestations?: number;
   elected_governance_reviews?: ProjectImpactMetricsElectedGovernanceReviews;
-  most_positive_superlative?: string;
+  most_positive_superlative?: boolean;
   percentage_distributions?: ProjectImpactMetricsPercentageDistributions;
 };
 
@@ -709,14 +709,8 @@ export type ProjectGrantsAndFunding = {
   grants?: ProjectGrantsAndFundingGrantsItem[];
   revenue?: ProjectGrantsAndFundingRevenueItem[];
   ventureFunding?: ProjectGrantsAndFundingVentureFundingItem[];
-  investment?: {
-    amount?: string;
-    details?: string;
-  }[];
-  investments?: {
-    amount?: string;
-    details?: string;
-  }[];
+  investments?: ProjectGrantsAndFundingVentureFundingItem[];
+  investment?: ProjectGrantsAndFundingVentureFundingItem[];
 };
 
 export type ProjectGithubItemOneOf = { [key: string]: unknown };

@@ -4,12 +4,8 @@ import { useState, useEffect } from 'react';
 import { SiweMessage } from 'siwe';
 import { useAccount, useChainId, useSignMessage } from 'wagmi';
 
-import {
-  useDisconnect,
-  useNonce,
-  useSession,
-  useVerify,
-} from '@/hooks/useAuth';
+import { useGetNonce } from '@/__generated__/api/agora';
+import { useDisconnect, useSession, useVerify } from '@/hooks/useAuth';
 import mixpanel from '@/lib/mixpanel';
 
 import { Button } from '../ui/button';
@@ -23,7 +19,7 @@ import {
 
 export function SignMessage() {
   const [isLoading, setIsLoading] = useState(true);
-  const { data: nonce } = useNonce();
+  const { data: nonce } = useGetNonce();
   const { data: session, isLoading: isSessionLoading } = useSession();
   const { address } = useAccount();
   const verify = useVerify();
@@ -53,7 +49,9 @@ export function SignMessage() {
         statement: 'Sign in to Agora with Ethereum',
       }).prepareMessage();
       const signature = await sign.signMessageAsync({ message });
-      verify.mutate({ signature, message, nonce });
+      verify.mutate({
+        data: { signature, message, nonce },
+      });
     }
   }
 
