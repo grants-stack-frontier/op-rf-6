@@ -83,11 +83,6 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
             ballot_content,
             signature,
           });
-          if (submission.status !== 200) {
-            throw new Error('Failed submitting ballot', {
-              cause: submission.status,
-            });
-          }
         } catch (error) {
           console.error(error);
           throw new Error('Error submitting ballot');
