@@ -6,8 +6,6 @@ import { useAccount } from 'wagmi';
 import {
   getRetroFundingRoundBallotById,
   updateRetroFundingRoundCategoryAllocation,
-  type getRetroFundingRoundBallotByIdResponse,
-  type updateRetroFundingRoundCategoryAllocationResponse,
 } from '@/__generated__/api/agora';
 import type {
   RetroFundingBallotCategoriesAllocation,
@@ -27,8 +25,8 @@ export function useBudget(roundId: number) {
     queryFn: async () => {
       if (!address) throw new Error('No address provided');
       return getRetroFundingRoundBallotById(roundId, address).then(
-        (response: getRetroFundingRoundBallotByIdResponse) => {
-          const ballot = response.data as Ballot;
+        (response) => {
+          const ballot = response as Ballot;
           return {
             budget: ballot.budget,
             allocations:
@@ -50,17 +48,15 @@ export function useBudget(roundId: number) {
         roundId,
         address,
         allocation
-      ).then((response: updateRetroFundingRoundCategoryAllocationResponse) => {
-        const updatedBallot = response.data as Ballot;
-        // Update the query data with the full structure
+      ).then((ballot) => {
         queryClient.setQueryData(
           ['budget', address, roundId],
           (_: unknown) => ({
-            budget: updatedBallot.budget,
-            allocations: updatedBallot.category_allocations,
+            budget: ballot.budget,
+            allocations: ballot.category_allocations,
           })
         );
-        return updatedBallot.category_allocations;
+        return ballot.category_allocations;
       });
     },
     onError: () =>
