@@ -15,6 +15,7 @@ import { useBudget } from './useBudget';
 export function useBudgetForm() {
   const { address } = useAccount();
   const allProjectsByCategory = useAllProjectsByCategory();
+  console.log('allProjectsByCategory', allProjectsByCategory.data);
   const { getBudget, saveAllocation } = useBudget(ROUND);
   const [totalBudget, setTotalBudget] = useState<number>(8000000);
   const [allocations, setAllocations] = useState<Record<string, number>>({});

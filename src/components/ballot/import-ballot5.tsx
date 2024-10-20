@@ -92,22 +92,16 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
             image: project?.image,
             position: project?.position,
           };
-        }) as RetroFundingBallot5ProjectsAllocation[]
+        })
       );
 
       mixpanel.track('Import CSV', { ballotSize: allocations.length });
 
       saveProjects({
-        projects: allocations
-          .filter((alloc) => !!alloc.project_id)
-          .map((alloc) => ({
-            project_id: alloc.project_id as string,
-            allocation: alloc.allocation,
-            impact: alloc.impact,
-          }))
-          .filter((alloc) =>
-            projects?.some((p) => p.applicationId === alloc.project_id)
-          ),
+        projects: allocations.filter(
+          (alloc) =>
+            !!projects?.find((p) => p.applicationId === alloc.project_id)
+        ),
         action: 'import',
       })
         .then(() => {

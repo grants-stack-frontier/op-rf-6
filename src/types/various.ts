@@ -1,7 +1,8 @@
 export type CategoryId =
-  | 'ETHEREUM_CORE_CONTRIBUTIONS'
-  | 'OP_STACK_RESEARCH_AND_DEVELOPMENT'
-  | 'OP_STACK_TOOLING';
+  // | 'GOV_INFRA'
+  // | 'GOV_ANALYTICS'
+  // | 'GOV_LEADERSHIP'
+  'GOV_INFRA' | 'GOV_ANALYTICS' | 'GOV_LEADERSHIP';
 
 export type FeedbackForm = {
   address: string;

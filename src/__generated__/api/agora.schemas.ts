@@ -105,9 +105,9 @@ export type UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  GOV_INFRA: 'GOV_INFRA',
+  GOV_ANALYTICS: 'GOV_ANALYTICS',
+  GOV_LEADERSHIP: 'GOV_LEADERSHIP',
 } as const;
 
 export type UpdateRetroFundingRoundCategoryAllocationBody = {
@@ -467,9 +467,9 @@ export type RetroFundingBallotCategoriesAllocationCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RetroFundingBallotCategoriesAllocationCategorySlug = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  GOV_INFRA: 'GOV_INFRA',
+  GOV_ANALYTICS: 'GOV_ANALYTICS',
+  GOV_LEADERSHIP: 'GOV_LEADERSHIP',
 } as const;
 
 /**

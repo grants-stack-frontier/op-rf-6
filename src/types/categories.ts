@@ -10,8 +10,4 @@ export type Category = {
     eligible_projects: string[];
     not_eligible_projects: string[];
   };
-  projects: {
-    name: string;
-    description: string;
-  }[];
 };

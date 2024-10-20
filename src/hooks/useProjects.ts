@@ -16,9 +16,9 @@ import { ROUND } from '@/config';
 import type { CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'op_rnd',
-  OP_STACK_TOOLING: 'op_tooling',
+  GOV_INFRA: 'gov_infra',
+  GOV_ANALYTICS: 'gov_analytics',
+  GOV_LEADERSHIP: 'gov_leadership',
 };
 
 type SaveProjectsParams = {
@@ -57,19 +57,20 @@ export function useAllProjectsByCategory() {
 
         let hasMoreData = true;
         while (hasMoreData) {
-          const res = await getRetroFundingRoundProjects(ROUND, {
+          const res = (await getRetroFundingRoundProjects(ROUND, {
             limit: pageLimit,
             offset: currentOffset,
             category: category as GetRetroFundingRoundProjectsCategory,
-          });
+          })) as Project[];
 
-          if (!res.projects || res.projects.length === 0) {
+          console.log('res', res);
+          if (!res || res.length === 0) {
             hasMoreData = false;
           } else {
-            allProjects.push(...res.projects);
+            allProjects.push(...res);
             currentOffset += pageLimit;
 
-            if (res.projects.length < pageLimit) {
+            if (res.length < pageLimit) {
               hasMoreData = false;
             }
           }
