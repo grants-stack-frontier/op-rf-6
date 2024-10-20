@@ -16,7 +16,6 @@ export default defineConfig({
         },
         query: {
           useQuery: true,
-          useInfinite: true,
         },
       },
     },
