@@ -9,25 +9,18 @@ import {
 import { useMemo } from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
 
-import { submitRetroFundingBallot } from '@/__generated__/api/agora';
-import type { SubmitRetroFundingBallotBody } from '@/__generated__/api/agora.schemas';
+import {
+  submitRetroFundingBallot,
+  useGetRetroFundingRoundBallotById,
+} from '@/__generated__/api/agora';
+import type {
+  Ballot,
+  SubmitRetroFundingBallotBody,
+} from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI, ROUND } from '@/config';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { request } from '@/lib/request';
-import { Round5Ballot } from '@/types/ballot';
-
-export function useBallot(address?: string) {
-  return useQuery({
-    enabled: Boolean(address),
-    queryKey: ['ballot-round5', address],
-    queryFn: async () =>
-      request
-        .get(`${agoraRoundsAPI}/ballots/${address}`)
-        .json<Round5Ballot>()
-        .then((r) => r ?? null),
-  });
-}
 
 export function useSaveRound5Allocation() {
   const { toast } = useToast();
@@ -46,7 +39,7 @@ export function useSaveRound5Allocation() {
           `${agoraRoundsAPI}/ballots/${address}/projects/${allocation.project_id}/allocation/${allocation.allocation}`,
           {}
         )
-        .json<Round5Ballot>()
+        .json<Ballot>()
         .then((r) => {
           queryClient.setQueryData(['ballot-round5', address], r);
           return r;
@@ -62,13 +55,14 @@ export function useSaveRound5Allocation() {
 export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
   const { toast } = useToast();
   const { address } = useAccount();
-  const { refetch } = useBallot(address);
+  const { refetch } = useGetRetroFundingRoundBallotById(6, address ?? '');
   const { signMessageAsync } = useSignMessage();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      const { data: ballot } = await refetch();
+      const { data } = await refetch();
+      const ballot = data as Ballot;
       const ballot_content = ballot?.payload_for_signature;
       const signature = await signMessageAsync({
         message: JSON.stringify(ballot_content),
@@ -134,7 +128,7 @@ export function useSaveRound5Position() {
           `${agoraRoundsAPI}/ballots/${address}/projects/${project.id}/position/${project.position}`,
           {}
         )
-        .json<Round5Ballot>();
+        .json<Ballot>();
     },
     onError: () =>
       toast({ variant: 'destructive', title: 'Error saving ballot' }),
@@ -225,7 +219,7 @@ export function useDistributionMethod() {
           `${agoraRoundsAPI}/ballots/${address}/distribution_method/${distribution_method}`,
           {}
         )
-        .json<Round5Ballot>()
+        .json<Ballot>()
         .then((r) => {
           queryClient.setQueryData(['ballot-round5', address], r);
           if (address) {
@@ -256,11 +250,11 @@ export function useRound5BallotWeightSum() {
   const { ballot } = useBallotRound5Context();
 
   const allocationSum = useMemo(() => {
-    if (!ballot || !ballot.project_allocations) return 0;
+    if (!ballot || !ballot.projects_allocations) return 0;
 
     let sum = 0;
-    for (let i = 0; i < ballot.project_allocations.length; i++) {
-      const allocation = ballot.project_allocations[i].allocation;
+    for (let i = 0; i < ballot.projects_allocations.length; i++) {
+      const allocation = ballot.projects_allocations[i].allocation ?? 0;
       sum += Math.round(allocation * 100);
     }
     return sum / 100;

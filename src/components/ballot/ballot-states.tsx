@@ -25,8 +25,8 @@ export function EmptyBallot() {
   const quantities = useMemo(() => {
     if (ballot) {
       return {
-        total: ballot.total_projects,
-        toBeEvaluated: ballot.projects_to_be_evaluated.length,
+        total: ballot.total_projects ?? 0,
+        toBeEvaluated: ballot.projects_to_be_evaluated?.length ?? 0,
       };
     }
     return {
@@ -62,7 +62,9 @@ export function EmptyBallot() {
           {quantities.total} projects
         </Text>
         <div className="flex gap-2">
-          <Link href={`/project/${ballot?.projects_to_be_evaluated[0]}`}>
+          <Link
+            href={`/project/${ballot?.projects_to_be_evaluated?.[0] ?? ''}`}
+          >
             <Button variant="destructive">Score projects</Button>
           </Link>
           {/* <Button variant="outline" onClick={() => setOpen(true)}>

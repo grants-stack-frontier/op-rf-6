@@ -30,13 +30,15 @@ export function ResetButton() {
   const queryClient = useQueryClient();
 
   const handleReset = async () => {
-    if (!ballot?.project_allocations || !address) return;
+    if (!ballot?.projects_allocations || !address) return;
     await saveProjects({
-      projects: ballot.project_allocations.map((project) => ({
-        project_id: project.project_id,
-        allocation: '0',
-        impact: project.impact as ImpactScore,
-      })),
+      projects: ballot.projects_allocations
+        .filter((project) => project.project_id)
+        .map((project) => ({
+          project_id: project.project_id as string,
+          allocation: '0',
+          impact: project.impact as ImpactScore,
+        })),
       action: 'reset',
     });
 

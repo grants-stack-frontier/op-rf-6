@@ -30,7 +30,7 @@ export function ReviewSidebar() {
 
   const { ballot } = useBallotRound5Context();
   const allProjectsScored = useMemo(() => {
-    return ballot?.project_allocations?.length === ballot?.total_projects;
+    return ballot?.projects_allocations?.length === ballot?.total_projects;
   }, [ballot]);
 
   const [isConflictOfInterestDialogOpen, setIsConflictOfInterestDialogOpen] =

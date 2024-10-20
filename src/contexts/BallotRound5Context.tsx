@@ -11,9 +11,13 @@ import {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useGetRetroFundingRoundBallotById } from '@/__generated__/api/agora';
+import {
+  Ballot,
+  RetroFundingBallot5ProjectsAllocation,
+} from '@/__generated__/api/agora.schemas';
 import { useSession } from '@/hooks/useAuth';
 import {
-  useBallot,
   useSaveRound5Position,
   useRound5BallotWeightSum,
   useDistributionMethodFromLocalStorage,
@@ -27,17 +31,13 @@ import { useBudget } from '@/hooks/useBudget';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
-import {
-  ProjectAllocationState,
-  Round5Ballot,
-  Round5ProjectAllocation,
-} from '@/types/ballot';
+import { ProjectAllocationState } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/various';
 
 type BallotContext = ReturnType<typeof useBallotEditor> & {
   isPending: boolean;
-  ballot?: Round5Ballot | undefined;
+  ballot?: Ballot | undefined;
   updateBallotState: () => Promise<void>;
   projectList: ProjectAllocationState[];
   conflicts: ProjectAllocationState[];
@@ -73,10 +73,10 @@ const BallotRound5Context = createContext({} as BallotContext);
 
 export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
-  const { data: ballot, isFetched, isPending, refetch } = useBallot(address);
-  const [localBallot, setLocalBallot] = useState<Round5Ballot | undefined>(
-    ballot
-  );
+  const { data, isFetched, isPending, refetch } =
+    useGetRetroFundingRoundBallotById(6, address ?? '');
+  const ballot = data as Ballot;
+  const [localBallot, setLocalBallot] = useState<Ballot | undefined>(ballot);
 
   const editor = useBallotEditor();
 
@@ -122,7 +122,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (isFetched) {
-      editor.reset(ballot?.project_allocations);
+      editor.reset(ballot?.projects_allocations);
     }
     setLocalBallot(ballot);
   }, [isFetched, ballot]);
@@ -132,7 +132,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
       const updatedBallot = {
         ...localBallot,
         projects_to_be_evaluated: [],
-        total_projects: localBallot.project_allocations.length,
+        total_projects: localBallot.projects_allocations?.length || 0,
       };
       setLocalBallot(updatedBallot);
       await refetch();
@@ -151,10 +151,13 @@ export function BallotProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     setProjectList(
-      sortAndPrepProjects(localBallot?.project_allocations || [], 'no-conflict')
+      sortAndPrepProjects(
+        localBallot?.projects_allocations || [],
+        'no-conflict'
+      )
     );
     setConflicts(
-      sortAndPrepProjects(localBallot?.project_allocations || [], 'conflict')
+      sortAndPrepProjects(localBallot?.projects_allocations || [], 'conflict')
     );
   }, [localBallot]);
 
@@ -162,12 +165,12 @@ export function BallotProvider({ children }: PropsWithChildren) {
     if (localBallot && distributionMethod === DistributionMethod.CUSTOM) {
       setProjectList(
         sortAndPrepProjects(
-          localBallot?.project_allocations || [],
+          localBallot?.projects_allocations || [],
           'no-conflict'
         )
       );
       setConflicts(
-        sortAndPrepProjects(localBallot?.project_allocations || [], 'conflict')
+        sortAndPrepProjects(localBallot?.projects_allocations || [], 'conflict')
       );
     } else if (
       localBallot &&
@@ -209,7 +212,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
   const isLastProject = useMemo(() => {
     if (!localBallot || !sortedProjects) return false;
     return (
-      (localBallot.project_allocations?.length ?? 0) ===
+      (localBallot.projects_allocations?.length ?? 0) ===
       sortedProjects.length - 1
     );
   }, [localBallot, sortedProjects]);
@@ -261,8 +264,9 @@ export function BallotProvider({ children }: PropsWithChildren) {
 
   const currentProjectScore = useMemo(() => {
     if (!localBallot || !projectList[0]) return undefined;
-    const allocation = localBallot.project_allocations?.find(
-      (p: { project_id: string }) => p.project_id === projectList[0].project_id
+    const allocation = localBallot.projects_allocations?.find(
+      (p: RetroFundingBallot5ProjectsAllocation) =>
+        p.project_id === projectList[0].project_id
     );
     return allocation ? (allocation.impact as ImpactScore) : undefined;
   }, [localBallot, projectList]);
@@ -279,7 +283,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
   const filteredProjects = useMemo(() => {
     if (searchTerm) {
       return projectList.filter((project) =>
-        project.name.toLowerCase().includes(searchTerm.toLowerCase())
+        project.name?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     return [];
@@ -296,12 +300,16 @@ export function BallotProvider({ children }: PropsWithChildren) {
           positionInput: (index + 1).toString(),
         }))
       );
-      savePosition({
-        id: removed.project_id,
-        position: newIndex,
-      }).then(() => {
-        redistribute(distributionMethod as DistributionMethod);
-      });
+      if (removed.project_id) {
+        savePosition({
+          id: removed.project_id,
+          position: newIndex,
+        }).then(() => {
+          if (distributionMethod) {
+            redistribute(distributionMethod);
+          }
+        });
+      }
     },
     [projectList, savePosition, redistribute, distributionMethod]
   );
@@ -329,10 +337,12 @@ export function BallotProvider({ children }: PropsWithChildren) {
 
         updateDistributionMethodLocally(DistributionMethod.CUSTOM);
 
-        saveAllocation({
-          project_id: project.project_id,
-          allocation: normalizedNewAllocation,
-        });
+        if (project.project_id) {
+          saveAllocation({
+            project_id: project.project_id,
+            allocation: normalizedNewAllocation,
+          });
+        }
       }
     },
     [projectList, updateDistributionMethodLocally, saveAllocation]
@@ -355,12 +365,14 @@ export function BallotProvider({ children }: PropsWithChildren) {
             positionInput: (i + 1).toString(),
           }))
         );
-        savePosition({
-          id: movedProject.project_id,
-          position: newIndex,
-        }).then(() => {
-          redistribute(distributionMethod as DistributionMethod);
-        });
+        if (movedProject.project_id) {
+          savePosition({
+            id: movedProject.project_id,
+            position: newIndex,
+          }).then(() => {
+            redistribute(distributionMethod as DistributionMethod);
+          });
+        }
       }
     },
     [projectList, savePosition, redistribute, distributionMethod]
@@ -375,15 +387,18 @@ export function BallotProvider({ children }: PropsWithChildren) {
   }, []);
 
   function sortAndPrepProjects(
-    newProjects: Round5ProjectAllocation[],
+    newProjects: RetroFundingBallot5ProjectsAllocation[],
     filter?: 'conflict' | 'no-conflict'
   ): ProjectAllocationState[] {
     const preparedProjects = newProjects
-      .sort((a, b) =>
-        distributionMethod === DistributionMethod.CUSTOM
-          ? Number(b.allocation) - Number(a.allocation)
-          : a.position - b.position
-      )
+      .sort((a, b) => {
+        if (distributionMethod === DistributionMethod.CUSTOM) {
+          return Number(b.allocation) - Number(a.allocation);
+        }
+        const positionA = a.position ?? Number.MAX_SAFE_INTEGER;
+        const positionB = b.position ?? Number.MAX_SAFE_INTEGER;
+        return positionA - positionB;
+      })
       .map((p, i) => {
         const fullProjectInfo = projects?.find(
           (project) =>

@@ -30,7 +30,9 @@ export default function BallotPage() {
   } else {
     const isEmptyBallot = !Object.keys(state).length;
     const needImpactScoring =
-      ballot && ballot.projects_to_be_evaluated.length > 0;
+      ballot &&
+      ballot.projects_to_be_evaluated &&
+      ballot.projects_to_be_evaluated.length > 0;
 
     if (isEmptyBallot || needImpactScoring) {
       content = <EmptyBallot />;

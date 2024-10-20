@@ -31,7 +31,7 @@ export function useMetricById(id: string) {
     queryKey: ['metrics', id],
     queryFn: async () =>
       getImpactMetricsOnRetroFundingRound(4).then((results) =>
-        results.data.find((m) => m['metric_id'] === id)
+        results.find((m) => m['metric_id'] === id)
       ),
   });
 }
@@ -49,7 +49,7 @@ export function useMetricIds() {
     queryKey: ['metric-ids'],
     queryFn: async () =>
       getImpactMetricsOnRetroFundingRound(4).then(
-        (results) => results.data.map((m) => m['metric_id']) ?? []
+        (results) => results.map((m) => m['metric_id']) ?? []
       ),
   });
 }

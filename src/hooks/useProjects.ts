@@ -5,9 +5,7 @@ import { useAccount } from 'wagmi';
 
 import {
   getRetroFundingRoundProjectById,
-  type getRetroFundingRoundProjectByIdResponse,
   getRetroFundingRoundProjects,
-  type getRetroFundingRoundProjectsResponse,
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
 import {
@@ -19,7 +17,6 @@ import { toast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
-import { ProjectsResponse } from '@/types/projects';
 import type { CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
@@ -34,13 +31,12 @@ export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
     queryKey: ['projects', limit, offset, category],
     queryFn: async () => {
       if (limit !== undefined) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit,
-            offset,
-            category: category ?? 'all',
-          });
-        return results.data?.projects ?? [];
+        const results = await getRetroFundingRoundProjects(ROUND, {
+          limit,
+          offset,
+          category: category ?? 'all',
+        });
+        return results?.projects ?? [];
       }
 
       const allProjects: Project[] = [];
@@ -49,22 +45,19 @@ export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
 
       let hasMoreData = true;
       while (hasMoreData) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit: pageLimit,
-            offset: currentOffset,
-            category: category ?? 'all',
-          });
+        const res = await getRetroFundingRoundProjects(ROUND, {
+          limit: pageLimit,
+          offset: currentOffset,
+          category: category ?? 'all',
+        });
 
-        const res: ProjectsResponse = results.data;
-
-        if (!res.data || res.data.length === 0) {
+        if (!res.projects || res.projects.length === 0) {
           hasMoreData = false;
         } else {
-          allProjects.push(...res.data);
+          allProjects.push(...res.projects);
           currentOffset += pageLimit;
 
-          if (res.data.length < pageLimit) {
+          if (res.projects.length < pageLimit) {
             hasMoreData = false;
           }
         }
@@ -108,9 +101,9 @@ export function useSaveProjectImpact() {
         address as string,
         projectId,
         impact as number
-      ).then((r) => {
-        queryClient.setQueryData(['ballot-round5', address], r.data);
-        return r;
+      ).then((ballot) => {
+        queryClient.setQueryData(['ballot-round5', address], ballot);
+        return ballot;
       });
     },
     onSuccess: () =>
@@ -171,11 +164,9 @@ export function useProjectById(projectId: string) {
   return useQuery({
     queryKey: ['projects-by-id', projectId],
     queryFn: async () =>
-      getRetroFundingRoundProjectById(ROUND, projectId).then(
-        (results: getRetroFundingRoundProjectByIdResponse) => {
-          return results.data;
-        }
-      ),
+      getRetroFundingRoundProjectById(ROUND, projectId).then((results) => {
+        return results;
+      }),
   });
 }
 
@@ -193,22 +184,19 @@ export function useAllProjectsByCategory() {
 
         let hasMoreData = true;
         while (hasMoreData) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(ROUND, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category as GetRetroFundingRoundProjectsCategory,
-            });
+          const res = await getRetroFundingRoundProjects(ROUND, {
+            limit: pageLimit,
+            offset: currentOffset,
+            category: category as GetRetroFundingRoundProjectsCategory,
+          });
 
-          const res: ProjectsResponse = results.data;
-
-          if (!res.data || res.data.length === 0) {
+          if (!res.projects || res.projects.length === 0) {
             hasMoreData = false;
           } else {
-            allProjects.push(...res.data);
+            allProjects.push(...res.projects);
             currentOffset += pageLimit;
 
-            if (res.data.length < pageLimit) {
+            if (res.projects.length < pageLimit) {
               hasMoreData = false;
             }
           }

@@ -82,7 +82,7 @@ export function ProjectItem({ project, index }: ProjectItemProps) {
               </p>
             </div>
             <div className="text-muted-foreground text-xs">
-              You scored: {impactScores[project.impact]}
+              You scored: {impactScores[project.impact ?? 0]}
             </div>
           </div>
         </div>

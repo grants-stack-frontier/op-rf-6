@@ -47,7 +47,7 @@ export function ConflictsSection() {
                   </p>
                 </div>
                 <div className="text-muted-foreground text-xs">
-                  You marked: {impactScores[proj.impact]}
+                  You marked: {impactScores[proj.impact ?? 0]}
                 </div>
               </div>
             </div>

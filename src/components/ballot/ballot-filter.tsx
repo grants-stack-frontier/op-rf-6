@@ -35,7 +35,7 @@ export function BallotFilter() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              exportRound5Ballot(ballot?.project_allocations ?? [])
+              exportRound5Ballot(ballot?.projects_allocations ?? [])
             }
           >
             Export ballot

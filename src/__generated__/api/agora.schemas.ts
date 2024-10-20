@@ -709,6 +709,8 @@ export type ProjectGrantsAndFunding = {
   grants?: ProjectGrantsAndFundingGrantsItem[];
   revenue?: ProjectGrantsAndFundingRevenueItem[];
   ventureFunding?: ProjectGrantsAndFundingVentureFundingItem[];
+  investment?: ProjectGrantsAndFundingVentureFundingItem[];
+  investments?: ProjectGrantsAndFundingVentureFundingItem[];
 };
 
 export type ProjectGithubItemOneOf = { [key: string]: unknown };

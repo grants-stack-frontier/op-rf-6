@@ -9,7 +9,10 @@ import React, {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { Project } from '@/__generated__/api/agora.schemas';
+import {
+  Project,
+  RetroFundingBallot5ProjectsAllocation,
+} from '@/__generated__/api/agora.schemas';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
@@ -83,7 +86,7 @@ export const ProjectProvider: React.FC<{
   const isLastProject = useMemo(() => {
     if (!ballot || !sortedProjects) return false;
     return (
-      (ballot.project_allocations?.length ?? 0) === sortedProjects.length - 1
+      (ballot.projects_allocations?.length ?? 0) === sortedProjects.length - 1
     );
   }, [ballot, sortedProjects]);
 
@@ -134,8 +137,8 @@ export const ProjectProvider: React.FC<{
 
   const currentProjectScore = useMemo(() => {
     if (!ballot || !currentProject) return undefined;
-    const allocation = ballot.project_allocations?.find(
-      (p: { project_id: string }) =>
+    const allocation = ballot.projects_allocations?.find(
+      (p: RetroFundingBallot5ProjectsAllocation) =>
         p.project_id === currentProject.applicationId
     );
     return allocation ? (allocation.impact as ImpactScore) : undefined;

@@ -1,13 +1,4 @@
-import {
-  PageMetadata,
-  GetRetroFundingRoundProjectsCategory,
-  Project,
-} from '@/__generated__/api/agora.schemas';
-
-export type ProjectsResponse = {
-  metadata?: PageMetadata;
-  data?: Project[];
-};
+import { GetRetroFundingRoundProjectsCategory } from '@/__generated__/api/agora.schemas';
 
 export interface ProjectsParams {
   limit?: number;

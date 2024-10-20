@@ -2,13 +2,12 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { Address } from 'viem';
 
-import { Project } from '@/__generated__/api/agora.schemas';
+import { Ballot, Project } from '@/__generated__/api/agora.schemas';
 import { getProjectsSkipped } from '@/lib/localStorage';
-import { Round5Ballot } from '@/types/ballot';
 
 export function useProjectSorting(
   projects: Project[] | undefined,
-  ballot: Round5Ballot | undefined,
+  ballot: Ballot | undefined,
   currentProject: Project | undefined,
   walletAddress: Address | undefined
 ) {
@@ -25,8 +24,8 @@ export function useProjectSorting(
     if (ballot) {
       return {
         total: ballot.total_projects,
-        votedCount: ballot.project_allocations?.length,
-        allocations: ballot.project_allocations,
+        votedCount: ballot.projects_allocations?.length,
+        allocations: ballot.projects_allocations,
         toBeEvaluated: ballot.projects_to_be_evaluated,
       };
     }
@@ -45,15 +44,13 @@ export function useProjectSorting(
       const aId = a.applicationId ?? '';
       const bId = b.applicationId ?? '';
 
-      const aVoted = projectsScored.allocations.some(
-        (p) => p.project_id === aId
-      );
-      const bVoted = projectsScored.allocations.some(
-        (p) => p.project_id === bId
-      );
+      const aVoted =
+        projectsScored.allocations?.some((p) => p.project_id === aId) ?? false;
+      const bVoted =
+        projectsScored.allocations?.some((p) => p.project_id === bId) ?? false;
 
-      const aSkipped = projectsSkipped.ids?.includes(aId) ?? false;
-      const bSkipped = projectsSkipped.ids?.includes(bId) ?? false;
+      const aSkipped = projectsSkipped.ids.includes(aId);
+      const bSkipped = projectsSkipped.ids.includes(bId);
 
       const aProcessed = aVoted || aSkipped;
       const bProcessed = bVoted || bSkipped;
@@ -64,12 +61,14 @@ export function useProjectSorting(
   }, [projects, ballot, projectsScored, projectsSkipped]);
 
   const isVoted = useMemo(() => {
-    if (!ballot || !projects || !projectsScored) return false;
+    if (!ballot || !projects) return false;
     const project = projects.find(
       (p) => p.applicationId === currentProject?.applicationId
     );
-    return ballot.project_allocations.some(
-      (p) => p.project_id === project?.applicationId
+    return (
+      ballot.projects_allocations?.some(
+        (p) => p.project_id === project?.applicationId
+      ) ?? false
     );
   }, [ballot, projects, projectsScored, currentProject]);
 
@@ -81,8 +80,10 @@ export function useProjectSorting(
         return (
           nextId !== currentProject?.applicationId &&
           !projectsSkipped.ids?.includes(nextId) &&
-          !projectsScored.allocations.some(
-            (allocation) => allocation.project_id === nextId
+          !(
+            projectsScored.allocations?.some(
+              (allocation) => allocation.project_id === nextId
+            ) ?? false
           )
         );
       });
