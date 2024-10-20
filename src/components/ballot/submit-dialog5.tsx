@@ -105,7 +105,7 @@ export function SubmitRound5Dialog({
                     variant="destructive"
                     isLoading={submit.isPending}
                     disabled={submit.isPending}
-                    onClick={() => submit.mutate()}
+                    onClick={() => submit.mutateAsync()}
                   >
                     Submit ballot
                   </Button>

@@ -9,13 +9,14 @@ import React, {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useGetRetroFundingRoundProjectById } from '@/__generated__/api/agora';
 import {
   Project,
   RetroFundingBallot5ProjectsAllocation,
 } from '@/__generated__/api/agora.schemas';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
-import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
+import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
 import { ImpactScore } from '@/types/project-scoring';
@@ -43,7 +44,8 @@ export const ProjectProvider: React.FC<{
   id: string;
 }> = ({ children, id }) => {
   const { data: session } = useSession();
-  const { data: project, isPending: isProjectLoading } = useProjectById(id);
+  const { data: project, isPending: isProjectLoading } =
+    useGetRetroFundingRoundProjectById(6, id);
   const { data: projects, isPending: isProjectsLoading } =
     useProjectsByCategory(project?.applicationCategory as CategoryId);
   const { ballot } = useBallotRound5Context();

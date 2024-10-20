@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { Ballot } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
-import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
   addSkippedProject,
   getProjectsSkipped,
@@ -10,6 +9,8 @@ import {
   setProjectsSkipped,
 } from '@/lib/localStorage';
 import { ImpactScore, ProjectsSkipped } from '@/types/project-scoring';
+
+import { useSaveProjectImpact } from './useProjectImpact';
 
 import type { Address } from 'viem';
 

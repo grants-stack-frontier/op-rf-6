@@ -27,7 +27,7 @@ export function useSaveRound5Allocation() {
         onError: () =>
           toast({ variant: 'destructive', title: 'Error saving ballot' }),
         onSuccess: (data) => {
-          queryClient.setQueryData(['ballot-round5', address], data);
+          queryClient.setQueryData(['ballot-round6', address], data);
         },
       },
     });
@@ -90,7 +90,7 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
     });
 
     await queryClient.invalidateQueries({
-      queryKey: ['ballot-round5', address],
+      queryKey: ['ballot-round6', address],
     });
     await refetch();
   };
@@ -121,7 +121,7 @@ export function useSaveRound5Position() {
   const { toast } = useToast();
   const { address } = useAccount();
 
-  const { mutate: updatePosition, ...updatePositionMutation } =
+  const { mutateAsync: updatePosition, ...updatePositionMutation } =
     useUpdateRetroFundingRoundProjectPosition({
       mutation: {
         onError: () =>
@@ -129,18 +129,25 @@ export function useSaveRound5Position() {
       },
     });
 
+  const mutateAsync = async (project: {
+    project_id: string;
+    position: number;
+  }) => {
+    if (!address) {
+      throw new Error('No address available');
+    }
+
+    return updatePosition({
+      roundId: ROUND,
+      addressOrEnsName: address,
+      projectId: project.project_id,
+      position: project.position,
+    });
+  };
+
   return {
     ...updatePositionMutation,
-    mutate: (project: { id: string; position: number }) => {
-      if (address) {
-        updatePosition({
-          roundId: ROUND,
-          addressOrEnsName: address,
-          projectId: project.id,
-          position: project.position,
-        });
-      }
-    },
+    mutateAsync,
   };
 }
 
@@ -198,7 +205,7 @@ export function useDistributionMethodFromLocalStorage() {
         distributionMethod: method as 'IMPACT_GROUPS' | 'TOP_TO_BOTTOM',
       });
       saveDistributionMethodToLocalStorage(method, address);
-      queryClient.setQueryData(['ballot-round5', address], (oldData: any) => ({
+      queryClient.setQueryData(['ballot-round6', address], (oldData: any) => ({
         ...oldData,
         distribution_method: method,
       }));
@@ -233,7 +240,7 @@ export function useDistributionMethod() {
           title: 'Error setting distribution method',
         }),
       onSuccess: (data) => {
-        queryClient.setQueryData(['ballot-round5', address], data);
+        queryClient.setQueryData(['ballot-round6', address], data);
         if (address) {
           const method = getDistributionMethodFromLocalStorage(address);
           if (method) {
@@ -261,7 +268,7 @@ export function useDistributionMethod() {
 }
 
 export function useIsSavingRound5Ballot() {
-  return Boolean(useIsMutating({ mutationKey: ['save-round5-ballot'] }));
+  return Boolean(useIsMutating({ mutationKey: ['save-round6-ballot'] }));
 }
 
 export function useRound5BallotWeightSum() {

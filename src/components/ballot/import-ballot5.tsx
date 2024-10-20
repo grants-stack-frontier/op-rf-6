@@ -52,7 +52,7 @@ export function ImportBallotDialog({
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const { ballot, reset } = useBallotRound5Context();
-  const { mutateAsync: saveProjects } = useSaveProjects();
+  const saveProjects = useSaveProjects();
   const { address } = useAccount();
   const { refetch } = useGetRetroFundingRoundBallotById(6, address ?? '');
   const { data: session } = useSession();

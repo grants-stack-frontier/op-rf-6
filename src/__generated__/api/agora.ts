@@ -52,14 +52,18 @@ Not Live.
 | OP 0.3.1 | ON TRACK   | Oct 25th |
  * OpenAPI spec version: 0.2.1
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -129,6 +133,103 @@ export const getSpec = (
 export const getGetSpecQueryKey = () => {
   return [`/api/agora/spec`] as const;
 };
+
+export const getGetSpecInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getSpec>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSpec>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetSpecQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSpec>>> = ({
+    signal,
+  }) => getSpec(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getSpec>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetSpecInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSpec>>
+>;
+export type GetSpecInfiniteQueryError = void;
+
+export function useGetSpecInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getSpec>>>,
+  TError = void,
+>(options: {
+  query: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSpec>>, TError, TData>
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getSpec>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetSpecInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getSpec>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSpec>>, TError, TData>
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getSpec>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetSpecInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getSpec>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSpec>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets this specification
+ */
+
+export function useGetSpecInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getSpec>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSpec>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetSpecInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetSpecQueryOptions = <
   TData = Awaited<ReturnType<typeof getSpec>>,
@@ -243,6 +344,103 @@ export const getNonce = (
 export const getGetNonceQueryKey = () => {
   return [`/api/agora/auth/nonce`] as const;
 };
+
+export const getGetNonceInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getNonce>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getNonce>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetNonceQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNonce>>> = ({
+    signal,
+  }) => getNonce(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getNonce>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetNonceInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getNonce>>
+>;
+export type GetNonceInfiniteQueryError = void;
+
+export function useGetNonceInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getNonce>>>,
+  TError = void,
+>(options: {
+  query: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getNonce>>, TError, TData>
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getNonce>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetNonceInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getNonce>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getNonce>>, TError, TData>
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getNonce>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetNonceInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getNonce>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getNonce>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets nonce for SIWE authentication
+ */
+
+export function useGetNonceInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getNonce>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof getNonce>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetNonceInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetNonceQueryOptions = <
   TData = Awaited<ReturnType<typeof getNonce>>,
@@ -442,6 +640,138 @@ export const getGetDelegatesQueryKey = (params?: GetDelegatesParams) => {
   return [`/api/agora/delegates`, ...(params ? [params] : [])] as const;
 };
 
+export const getGetDelegatesInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegates>>>,
+  TError = void,
+>(
+  params?: GetDelegatesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegates>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetDelegatesQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDelegates>>> = ({
+    signal,
+  }) => getDelegates(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDelegates>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDelegatesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDelegates>>
+>;
+export type GetDelegatesInfiniteQueryError = void;
+
+export function useGetDelegatesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegates>>>,
+  TError = void,
+>(
+  params: undefined | GetDelegatesParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegates>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegates>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegatesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegates>>>,
+  TError = void,
+>(
+  params?: GetDelegatesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegates>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegates>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegatesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegates>>>,
+  TError = void,
+>(
+  params?: GetDelegatesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegates>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a list of delegates
+ */
+
+export function useGetDelegatesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegates>>>,
+  TError = void,
+>(
+  params?: GetDelegatesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegates>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDelegatesInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetDelegatesQueryOptions = <
   TData = Awaited<ReturnType<typeof getDelegates>>,
   TError = void,
@@ -572,6 +902,148 @@ export const getDelegateByAddress = (
 export const getGetDelegateByAddressQueryKey = (addressOrEnsName: string) => {
   return [`/api/agora/delegates/${addressOrEnsName}`] as const;
 };
+
+export const getGetDelegateByAddressInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetDelegateByAddressQueryKey(addressOrEnsName);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDelegateByAddress>>
+  > = ({ signal }) =>
+    getDelegateByAddress(addressOrEnsName, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!addressOrEnsName,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDelegateByAddress>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDelegateByAddressInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDelegateByAddress>>
+>;
+export type GetDelegateByAddressInfiniteQueryError = void;
+
+export function useGetDelegateByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific delegate
+ */
+
+export function useGetDelegateByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDelegateByAddressInfiniteQueryOptions(
+    addressOrEnsName,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetDelegateByAddressQueryOptions = <
   TData = Awaited<ReturnType<typeof getDelegateByAddress>>,
@@ -746,6 +1218,155 @@ export const getGetDelegateVotesQueryKey = (
   ] as const;
 };
 
+export const getGetDelegateVotesInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateVotes>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  params?: GetDelegateVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetDelegateVotesQueryKey(addressOrEnsName, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDelegateVotes>>
+  > = ({ signal }) =>
+    getDelegateVotes(addressOrEnsName, params, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!addressOrEnsName,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDelegateVotes>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDelegateVotesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDelegateVotes>>
+>;
+export type GetDelegateVotesInfiniteQueryError = void;
+
+export function useGetDelegateVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateVotes>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  params: undefined | GetDelegateVotesParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateVotes>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateVotes>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateVotes>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  params?: GetDelegateVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateVotes>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateVotes>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateVotes>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  params?: GetDelegateVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a paginated list of votes for a delegate
+ */
+
+export function useGetDelegateVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateVotes>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  params?: GetDelegateVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDelegateVotesInfiniteQueryOptions(
+    addressOrEnsName,
+    params,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetDelegateVotesQueryOptions = <
   TData = Awaited<ReturnType<typeof getDelegateVotes>>,
   TError = void,
@@ -914,6 +1535,138 @@ export const getGetProposalsQueryKey = (params?: GetProposalsParams) => {
   return [`/api/agora/proposals`, ...(params ? [params] : [])] as const;
 };
 
+export const getGetProposalsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposals>>>,
+  TError = void,
+>(
+  params?: GetProposalsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposals>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProposalsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposals>>> = ({
+    signal,
+  }) => getProposals(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getProposals>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProposalsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProposals>>
+>;
+export type GetProposalsInfiniteQueryError = void;
+
+export function useGetProposalsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposals>>>,
+  TError = void,
+>(
+  params: undefined | GetProposalsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposals>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposals>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposals>>>,
+  TError = void,
+>(
+  params?: GetProposalsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposals>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposals>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposals>>>,
+  TError = void,
+>(
+  params?: GetProposalsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposals>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a list of proposals
+ */
+
+export function useGetProposalsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposals>>>,
+  TError = void,
+>(
+  params?: GetProposalsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposals>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProposalsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetProposalsQueryOptions = <
   TData = Awaited<ReturnType<typeof getProposals>>,
   TError = void,
@@ -1044,6 +1797,147 @@ export const getProposalById = (
 export const getGetProposalByIdQueryKey = (proposalId: string) => {
   return [`/api/agora/proposals/${proposalId}`] as const;
 };
+
+export const getGetProposalByIdInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalById>>>,
+  TError = void,
+>(
+  proposalId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetProposalByIdQueryKey(proposalId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposalById>>> = ({
+    signal,
+  }) => getProposalById(proposalId, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!proposalId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getProposalById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProposalByIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProposalById>>
+>;
+export type GetProposalByIdInfiniteQueryError = void;
+
+export function useGetProposalByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalById>>>,
+  TError = void,
+>(
+  proposalId: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposalById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalById>>>,
+  TError = void,
+>(
+  proposalId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposalById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalById>>>,
+  TError = void,
+>(
+  proposalId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific proposal
+ */
+
+export function useGetProposalByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalById>>>,
+  TError = void,
+>(
+  proposalId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProposalByIdInfiniteQueryOptions(
+    proposalId,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetProposalByIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getProposalById>>,
@@ -1213,6 +2107,154 @@ export const getGetProposalVotesQueryKey = (
     ...(params ? [params] : []),
   ] as const;
 };
+
+export const getGetProposalVotesInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalVotes>>>,
+  TError = void,
+>(
+  proposalId: string,
+  params?: GetProposalVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetProposalVotesQueryKey(proposalId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getProposalVotes>>
+  > = ({ signal }) =>
+    getProposalVotes(proposalId, params, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!proposalId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getProposalVotes>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProposalVotesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProposalVotes>>
+>;
+export type GetProposalVotesInfiniteQueryError = void;
+
+export function useGetProposalVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalVotes>>>,
+  TError = void,
+>(
+  proposalId: string,
+  params: undefined | GetProposalVotesParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalVotes>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposalVotes>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalVotes>>>,
+  TError = void,
+>(
+  proposalId: string,
+  params?: GetProposalVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalVotes>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposalVotes>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProposalVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalVotes>>>,
+  TError = void,
+>(
+  proposalId: string,
+  params?: GetProposalVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a paginated list of votes for a proposal
+ */
+
+export function useGetProposalVotesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProposalVotes>>>,
+  TError = void,
+>(
+  proposalId: string,
+  params?: GetProposalVotesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProposalVotes>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProposalVotesInfiniteQueryOptions(
+    proposalId,
+    params,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetProposalVotesQueryOptions = <
   TData = Awaited<ReturnType<typeof getProposalVotes>>,
@@ -1385,6 +2427,149 @@ export const getGetDelegateesByAddressQueryKey = (addressOrEnsName: string) => {
   return [`/api/agora/delegates/${addressOrEnsName}/delegatees`] as const;
 };
 
+export const getGetDelegateesByAddressInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateesByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateesByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetDelegateesByAddressQueryKey(addressOrEnsName);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDelegateesByAddress>>
+  > = ({ signal }) =>
+    getDelegateesByAddress(addressOrEnsName, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!addressOrEnsName,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDelegateesByAddress>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDelegateesByAddressInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDelegateesByAddress>>
+>;
+export type GetDelegateesByAddressInfiniteQueryError = void;
+
+export function useGetDelegateesByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateesByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateesByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateesByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateesByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateesByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateesByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegateesByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegateesByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateesByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateesByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets delegatees (delegating to) information for an address
+ */
+
+export function useGetDelegateesByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegateesByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegateesByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDelegateesByAddressInfiniteQueryOptions(
+    addressOrEnsName,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetDelegateesByAddressQueryOptions = <
   TData = Awaited<ReturnType<typeof getDelegateesByAddress>>,
   TError = void,
@@ -1551,6 +2736,149 @@ export const getGetDelegatorsByAddressQueryKey = (addressOrEnsName: string) => {
   return [`/api/agora/delegates/${addressOrEnsName}/delegators`] as const;
 };
 
+export const getGetDelegatorsByAddressInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegatorsByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetDelegatorsByAddressQueryKey(addressOrEnsName);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDelegatorsByAddress>>
+  > = ({ signal }) =>
+    getDelegatorsByAddress(addressOrEnsName, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!addressOrEnsName,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDelegatorsByAddressInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDelegatorsByAddress>>
+>;
+export type GetDelegatorsByAddressInfiniteQueryError = void;
+
+export function useGetDelegatorsByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegatorsByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegatorsByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegatorsByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetDelegatorsByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegatorsByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets delegator (delegating to) information for an address
+ */
+
+export function useGetDelegatorsByAddressInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDelegatorsByAddress>>>,
+  TError = void,
+>(
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDelegatorsByAddress>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDelegatorsByAddressInfiniteQueryOptions(
+    addressOrEnsName,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetDelegatorsByAddressQueryOptions = <
   TData = Awaited<ReturnType<typeof getDelegatorsByAddress>>,
   TError = void,
@@ -1712,6 +3040,123 @@ export const getGetGovernorContractQueryKey = () => {
   return [`/api/agora/contracts/governor`] as const;
 };
 
+export const getGetGovernorContractInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getGovernorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getGovernorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetGovernorContractQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getGovernorContract>>
+  > = ({ signal }) => getGovernorContract(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getGovernorContract>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetGovernorContractInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getGovernorContract>>
+>;
+export type GetGovernorContractInfiniteQueryError = void;
+
+export function useGetGovernorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getGovernorContract>>>,
+  TError = void,
+>(options: {
+  query: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getGovernorContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getGovernorContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetGovernorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getGovernorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getGovernorContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getGovernorContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetGovernorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getGovernorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getGovernorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets the governor contract address
+ */
+
+export function useGetGovernorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getGovernorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getGovernorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetGovernorContractInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetGovernorContractQueryOptions = <
   TData = Awaited<ReturnType<typeof getGovernorContract>>,
   TError = void,
@@ -1847,6 +3292,123 @@ export const getGetAlligatorContractQueryKey = () => {
   return [`/api/agora/contracts/alligator`] as const;
 };
 
+export const getGetAlligatorContractInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getAlligatorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getAlligatorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetAlligatorContractQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAlligatorContract>>
+  > = ({ signal }) => getAlligatorContract(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getAlligatorContract>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetAlligatorContractInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAlligatorContract>>
+>;
+export type GetAlligatorContractInfiniteQueryError = void;
+
+export function useGetAlligatorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAlligatorContract>>>,
+  TError = void,
+>(options: {
+  query: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getAlligatorContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getAlligatorContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetAlligatorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAlligatorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getAlligatorContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getAlligatorContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetAlligatorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAlligatorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getAlligatorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets the alligator contract address
+ */
+
+export function useGetAlligatorContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAlligatorContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getAlligatorContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetAlligatorContractInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetAlligatorContractQueryOptions = <
   TData = Awaited<ReturnType<typeof getAlligatorContract>>,
   TError = void,
@@ -1981,6 +3543,124 @@ export const getVotingTokenContract = (
 export const getGetVotingTokenContractQueryKey = () => {
   return [`/api/agora/contracts/token`] as const;
 };
+
+export const getGetVotingTokenContractInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getVotingTokenContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getVotingTokenContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetVotingTokenContractQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getVotingTokenContract>>
+  > = ({ signal }) => getVotingTokenContract(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getVotingTokenContract>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetVotingTokenContractInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getVotingTokenContract>>
+>;
+export type GetVotingTokenContractInfiniteQueryError = void;
+
+export function useGetVotingTokenContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getVotingTokenContract>>>,
+  TError = void,
+>(options: {
+  query: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getVotingTokenContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getVotingTokenContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetVotingTokenContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getVotingTokenContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getVotingTokenContract>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getVotingTokenContract>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetVotingTokenContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getVotingTokenContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getVotingTokenContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets the voting token contract address
+ */
+
+export function useGetVotingTokenContractInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getVotingTokenContract>>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getVotingTokenContract>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetVotingTokenContractInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetVotingTokenContractQueryOptions = <
   TData = Awaited<ReturnType<typeof getVotingTokenContract>>,
@@ -2119,6 +3799,138 @@ export const getGetProjectsQueryKey = (params?: GetProjectsParams) => {
   return [`/api/agora/projects`, ...(params ? [params] : [])] as const;
 };
 
+export const getGetProjectsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+  TError = void,
+>(
+  params?: GetProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProjectsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjects>>> = ({
+    signal,
+  }) => getProjects(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getProjects>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProjectsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProjects>>
+>;
+export type GetProjectsInfiniteQueryError = void;
+
+export function useGetProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+  TError = void,
+>(
+  params: undefined | GetProjectsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProjects>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+  TError = void,
+>(
+  params?: GetProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProjects>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+  TError = void,
+>(
+  params?: GetProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a list of projects
+ */
+
+export function useGetProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjects>>>,
+  TError = void,
+>(
+  params?: GetProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProjectsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetProjectsQueryOptions = <
   TData = Awaited<ReturnType<typeof getProjects>>,
   TError = void,
@@ -2254,6 +4066,142 @@ export const getGetRetroFundingRoundsQueryKey = (
     ...(params ? [params] : []),
   ] as const;
 };
+
+export const getGetRetroFundingRoundsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRounds>>>,
+  TError = void,
+>(
+  params?: GetRetroFundingRoundsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRounds>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetRetroFundingRoundsQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRetroFundingRounds>>
+  > = ({ signal }) => getRetroFundingRounds(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getRetroFundingRounds>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRetroFundingRoundsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRetroFundingRounds>>
+>;
+export type GetRetroFundingRoundsInfiniteQueryError = void;
+
+export function useGetRetroFundingRoundsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRounds>>>,
+  TError = void,
+>(
+  params: undefined | GetRetroFundingRoundsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRounds>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRounds>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRounds>>>,
+  TError = void,
+>(
+  params?: GetRetroFundingRoundsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRounds>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRounds>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRounds>>>,
+  TError = void,
+>(
+  params?: GetRetroFundingRoundsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRounds>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a list of RetroFunding rounds
+ */
+
+export function useGetRetroFundingRoundsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRounds>>>,
+  TError = void,
+>(
+  params?: GetRetroFundingRoundsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRounds>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRetroFundingRoundsInfiniteQueryOptions(
+    params,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetRetroFundingRoundsQueryOptions = <
   TData = Awaited<ReturnType<typeof getRetroFundingRounds>>,
@@ -2406,6 +4354,147 @@ export const getRetroFundingRoundById = (
 export const getGetRetroFundingRoundByIdQueryKey = (roundId: number) => {
   return [`/api/agora/retrofunding/rounds/${roundId}`] as const;
 };
+
+export const getGetRetroFundingRoundByIdInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRoundById>>>,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetRetroFundingRoundByIdQueryKey(roundId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRetroFundingRoundById>>
+  > = ({ signal }) => getRetroFundingRoundById(roundId, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!roundId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRetroFundingRoundByIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRetroFundingRoundById>>
+>;
+export type GetRetroFundingRoundByIdInfiniteQueryError = void;
+
+export function useGetRetroFundingRoundByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRoundById>>>,
+  TError = void,
+>(
+  roundId: number,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRoundById>>>,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRoundById>>>,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific RetroFunding round
+ */
+
+export function useGetRetroFundingRoundByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getRetroFundingRoundById>>>,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRetroFundingRoundByIdInfiniteQueryOptions(
+    roundId,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetRetroFundingRoundByIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getRetroFundingRoundById>>,
@@ -2576,6 +4665,170 @@ export const getGetRetroFundingRoundBallotByIdQueryKey = (
     `/api/agora/retrofunding/rounds/${roundId}/ballots/${addressOrEnsName}`,
   ] as const;
 };
+
+export const getGetRetroFundingRoundBallotByIdInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetRetroFundingRoundBallotByIdQueryKey(roundId, addressOrEnsName);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  > = ({ signal }) =>
+    getRetroFundingRoundBallotById(
+      roundId,
+      addressOrEnsName,
+      requestOptions,
+      signal
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && addressOrEnsName),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRetroFundingRoundBallotByIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+>;
+export type GetRetroFundingRoundBallotByIdInfiniteQueryError = void;
+
+export function useGetRetroFundingRoundBallotByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  addressOrEnsName: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundBallotByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundBallotByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific ballot for an RetroFunding round
+ */
+
+export function useGetRetroFundingRoundBallotByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  addressOrEnsName: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRetroFundingRoundBallotByIdInfiniteQueryOptions(
+    roundId,
+    addressOrEnsName,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetRetroFundingRoundBallotByIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getRetroFundingRoundBallotById>>,
@@ -2958,6 +5211,165 @@ export const getGetRetroFundingRoundProjectsQueryKey = (
   ] as const;
 };
 
+export const getGetRetroFundingRoundProjectsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  params?: GetRetroFundingRoundProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetRetroFundingRoundProjectsQueryKey(roundId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  > = ({ signal }) =>
+    getRetroFundingRoundProjects(roundId, params, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!roundId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRetroFundingRoundProjectsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+>;
+export type GetRetroFundingRoundProjectsInfiniteQueryError = void;
+
+export function useGetRetroFundingRoundProjectsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  params: undefined | GetRetroFundingRoundProjectsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundProjectsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  params?: GetRetroFundingRoundProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundProjectsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  params?: GetRetroFundingRoundProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a list of projects for an RetroFunding round
+ */
+
+export function useGetRetroFundingRoundProjectsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjects>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  params?: GetRetroFundingRoundProjectsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRetroFundingRoundProjectsInfiniteQueryOptions(
+    roundId,
+    params,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetRetroFundingRoundProjectsQueryOptions = <
   TData = Awaited<ReturnType<typeof getRetroFundingRoundProjects>>,
   TError = void,
@@ -3135,6 +5547,165 @@ export const getGetRetroFundingRoundProjectByIdQueryKey = (
     `/api/agora/retrofunding/rounds/${roundId}/projects/${projectId}`,
   ] as const;
 };
+
+export const getGetRetroFundingRoundProjectByIdInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetRetroFundingRoundProjectByIdQueryKey(roundId, projectId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  > = ({ signal }) =>
+    getRetroFundingRoundProjectById(roundId, projectId, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && projectId),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRetroFundingRoundProjectByIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+>;
+export type GetRetroFundingRoundProjectByIdInfiniteQueryError = void;
+
+export function useGetRetroFundingRoundProjectByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  projectId: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundProjectByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRetroFundingRoundProjectByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific project for an RetroFunding round
+ */
+
+export function useGetRetroFundingRoundProjectByIdInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRetroFundingRoundProjectByIdInfiniteQueryOptions(
+    roundId,
+    projectId,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetRetroFundingRoundProjectByIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getRetroFundingRoundProjectById>>,
@@ -4276,6 +6847,159 @@ export const getGetImpactMetricsOnRetroFundingRoundQueryKey = (
   return [`/api/agora/retrofunding/rounds/${roundId}/impactMetrics`] as const;
 };
 
+export const getGetImpactMetricsOnRetroFundingRoundInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetImpactMetricsOnRetroFundingRoundQueryKey(roundId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  > = ({ signal }) =>
+    getImpactMetricsOnRetroFundingRound(roundId, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!roundId,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetImpactMetricsOnRetroFundingRoundInfiniteQueryResult =
+  NonNullable<Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>>;
+export type GetImpactMetricsOnRetroFundingRoundInfiniteQueryError = void;
+
+export function useGetImpactMetricsOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricsOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricsOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets impact metrics for a specific RetroFunding round
+ */
+
+export function useGetImpactMetricsOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions =
+    getGetImpactMetricsOnRetroFundingRoundInfiniteQueryOptions(
+      roundId,
+      options
+    );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const getGetImpactMetricsOnRetroFundingRoundQueryOptions = <
   TData = Awaited<ReturnType<typeof getImpactMetricsOnRetroFundingRound>>,
   TError = void,
@@ -4447,6 +7171,171 @@ export const getGetImpactMetricOnRetroFundingRoundQueryKey = (
     `/api/agora/retrofunding/rounds/${roundId}/impactMetrics/${impactMetricId}`,
   ] as const;
 };
+
+export const getGetImpactMetricOnRetroFundingRoundInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetImpactMetricOnRetroFundingRoundQueryKey(roundId, impactMetricId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  > = ({ signal }) =>
+    getImpactMetricOnRetroFundingRound(
+      roundId,
+      impactMetricId,
+      requestOptions,
+      signal
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && impactMetricId),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetImpactMetricOnRetroFundingRoundInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+>;
+export type GetImpactMetricOnRetroFundingRoundInfiniteQueryError = void;
+
+export function useGetImpactMetricOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific impact metric for an RetroFunding round
+ */
+
+export function useGetImpactMetricOnRetroFundingRoundInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>
+  >,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions =
+    getGetImpactMetricOnRetroFundingRoundInfiniteQueryOptions(
+      roundId,
+      impactMetricId,
+      options
+    );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetImpactMetricOnRetroFundingRoundQueryOptions = <
   TData = Awaited<ReturnType<typeof getImpactMetricOnRetroFundingRound>>,
@@ -4721,6 +7610,167 @@ export const getGetImpactMetricCommentsQueryKey = (
     ...(params ? [params] : []),
   ] as const;
 };
+
+export const getGetImpactMetricCommentsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComments>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  params?: GetImpactMetricCommentsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComments>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetImpactMetricCommentsQueryKey(roundId, impactMetricId, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getImpactMetricComments>>
+  > = ({ signal }) =>
+    getImpactMetricComments(
+      roundId,
+      impactMetricId,
+      params,
+      requestOptions,
+      signal
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && impactMetricId),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getImpactMetricComments>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetImpactMetricCommentsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getImpactMetricComments>>
+>;
+export type GetImpactMetricCommentsInfiniteQueryError = void;
+
+export function useGetImpactMetricCommentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComments>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  params: undefined | GetImpactMetricCommentsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComments>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricComments>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComments>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  params?: GetImpactMetricCommentsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComments>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricComments>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComments>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  params?: GetImpactMetricCommentsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComments>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets comments on an impact metric
+ */
+
+export function useGetImpactMetricCommentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComments>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  params?: GetImpactMetricCommentsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComments>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetImpactMetricCommentsInfiniteQueryOptions(
+    roundId,
+    impactMetricId,
+    params,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetImpactMetricCommentsQueryOptions = <
   TData = Awaited<ReturnType<typeof getImpactMetricComments>>,
@@ -5014,6 +8064,167 @@ export const getGetImpactMetricCommentQueryKey = (
     `/api/agora/retrofunding/rounds/${roundId}/impactMetrics/${impactMetricId}/comments/${commentId}`,
   ] as const;
 };
+
+export const getGetImpactMetricCommentInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComment>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComment>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetImpactMetricCommentQueryKey(roundId, impactMetricId, commentId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getImpactMetricComment>>
+  > = ({ signal }) =>
+    getImpactMetricComment(
+      roundId,
+      impactMetricId,
+      commentId,
+      requestOptions,
+      signal
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && impactMetricId && commentId),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getImpactMetricComment>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetImpactMetricCommentInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getImpactMetricComment>>
+>;
+export type GetImpactMetricCommentInfiniteQueryError = void;
+
+export function useGetImpactMetricCommentInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComment>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComment>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricComment>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComment>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComment>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricComment>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComment>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComment>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets a specific comment on an impact metric
+ */
+
+export function useGetImpactMetricCommentInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricComment>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricComment>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetImpactMetricCommentInfiniteQueryOptions(
+    roundId,
+    impactMetricId,
+    commentId,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetImpactMetricCommentQueryOptions = <
   TData = Awaited<ReturnType<typeof getImpactMetricComment>>,
@@ -5410,6 +8621,167 @@ export const getGetImpactMetricCommentVoteQueryKey = (
     `/api/agora/retrofunding/rounds/${roundId}/impactMetrics/${impactMetricId}/comments/${commentId}/votes`,
   ] as const;
 };
+
+export const getGetImpactMetricCommentVoteInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricCommentVote>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetImpactMetricCommentVoteQueryKey(roundId, impactMetricId, commentId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getImpactMetricCommentVote>>
+  > = ({ signal }) =>
+    getImpactMetricCommentVote(
+      roundId,
+      impactMetricId,
+      commentId,
+      requestOptions,
+      signal
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(roundId && impactMetricId && commentId),
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetImpactMetricCommentVoteInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getImpactMetricCommentVote>>
+>;
+export type GetImpactMetricCommentVoteInfiniteQueryError = void;
+
+export function useGetImpactMetricCommentVoteInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricCommentVote>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentVoteInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricCommentVote>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetImpactMetricCommentVoteInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricCommentVote>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary Gets all votes for a speciffic comment
+ */
+
+export function useGetImpactMetricCommentVoteInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getImpactMetricCommentVote>>>,
+  TError = void,
+>(
+  roundId: number,
+  impactMetricId: string,
+  commentId: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getImpactMetricCommentVote>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetImpactMetricCommentVoteInfiniteQueryOptions(
+    roundId,
+    impactMetricId,
+    commentId,
+    options
+  );
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const getGetImpactMetricCommentVoteQueryOptions = <
   TData = Awaited<ReturnType<typeof getImpactMetricCommentVote>>,

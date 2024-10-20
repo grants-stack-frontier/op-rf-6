@@ -23,7 +23,8 @@ import {
 export function ResetButton() {
   const [isOpen, setIsOpen] = useState(false);
   const { ballot } = useBallotRound5Context();
-  const { mutateAsync: saveProjects, isPending } = useSaveProjects();
+  const saveProjects = useSaveProjects();
+  const [isPending, setIsPending] = useState(false);
   const { reset: resetDistributionMethod } =
     useDistributionMethodFromLocalStorage();
   const { address } = useAccount();
@@ -31,6 +32,7 @@ export function ResetButton() {
 
   const handleReset = async () => {
     if (!ballot?.projects_allocations || !address) return;
+    setIsPending(true);
     await saveProjects({
       projects: ballot.projects_allocations
         .filter((project) => project.project_id)
@@ -46,6 +48,7 @@ export function ResetButton() {
 
     queryClient.invalidateQueries({ queryKey: ['ballot-round5', address] });
 
+    setIsPending(false);
     setIsOpen(false);
   };
 

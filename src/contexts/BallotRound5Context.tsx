@@ -302,7 +302,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
       );
       if (removed.project_id) {
         savePosition({
-          id: removed.project_id,
+          project_id: removed.project_id,
           position: newIndex,
         }).then(() => {
           if (distributionMethod) {
@@ -367,7 +367,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
         );
         if (movedProject.project_id) {
           savePosition({
-            id: movedProject.project_id,
+            project_id: movedProject.project_id,
             position: newIndex,
           }).then(() => {
             redistribute(distributionMethod as DistributionMethod);
