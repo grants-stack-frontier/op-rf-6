@@ -15,10 +15,10 @@ import { toast } from '@/components/ui/use-toast';
 import { ROUND } from '@/config';
 import type { CategoryId } from '@/types/various';
 
-export const categoryMap: Record<CategoryId, string> = {
-  GOV_INFRA: 'gov_infra',
-  GOV_ANALYTICS: 'gov_analytics',
-  GOV_LEADERSHIP: 'gov_leadership',
+export const categoryMap: Record<string, string> = {
+  GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
+  GOVERNANCE_ANALYTICS: 'gov_analytics',
+  GOVERNANCE_LEADERSHIP: 'gov_leadership',
 };
 
 type SaveProjectsParams = {
@@ -26,12 +26,14 @@ type SaveProjectsParams = {
   action?: 'reset' | 'import';
 };
 
-export function useProjectsByCategory(categoryId?: CategoryId) {
+export function useProjectsByCategory(categoryId?: string) {
+  const category = categoryMap[
+    categoryId as CategoryId
+  ] as GetRetroFundingRoundProjectsCategory;
+
   return useGetRetroFundingRoundProjects(ROUND, {
     limit: 100,
-    category: categoryMap[
-      categoryId as CategoryId
-    ] as GetRetroFundingRoundProjectsCategory,
+    category,
   }) as {
     data: Project[];
     isPending: boolean;
@@ -58,7 +60,6 @@ export function useAllProjectsByCategory() {
             category: category as GetRetroFundingRoundProjectsCategory,
           })) as Project[];
 
-          console.log('res', res);
           if (!res || res.length === 0) {
             hasMoreData = false;
           } else {

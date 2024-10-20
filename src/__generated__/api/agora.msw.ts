@@ -1613,7 +1613,7 @@ export const getGetProjectsResponseMock = (
             undefined,
           ]),
           cant_live_without_superlative: faker.helpers.arrayElement([
-            faker.word.sample(),
+            faker.datatype.boolean(),
             undefined,
           ]),
           count_citizen_attestations: faker.helpers.arrayElement([
@@ -1685,7 +1685,7 @@ export const getGetProjectsResponseMock = (
             undefined,
           ]),
           most_positive_superlative: faker.helpers.arrayElement([
-            faker.word.sample(),
+            faker.datatype.boolean(),
             undefined,
           ]),
           percentage_distributions: faker.helpers.arrayElement([
@@ -1935,9 +1935,9 @@ export const getGetRetroFundingRoundBallotByIdResponseBallotMock = (
         ]),
         category_slug: faker.helpers.arrayElement([
           faker.helpers.arrayElement([
-            'GOV_INFRA',
-            'GOV_ANALYTICS',
-            'GOV_LEADERSHIP',
+            'GOVERNANCE_INFRA_AND_TOOLING',
+            'GOVERNANCE_ANALYTICS',
+            'GOVERNANCE_LEADERSHIP',
           ] as const),
           undefined,
         ]),
@@ -2356,7 +2356,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
             undefined,
           ]),
           cant_live_without_superlative: faker.helpers.arrayElement([
-            faker.word.sample(),
+            faker.datatype.boolean(),
             undefined,
           ]),
           count_citizen_attestations: faker.helpers.arrayElement([
@@ -2428,7 +2428,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
             undefined,
           ]),
           most_positive_superlative: faker.helpers.arrayElement([
-            faker.word.sample(),
+            faker.datatype.boolean(),
             undefined,
           ]),
           percentage_distributions: faker.helpers.arrayElement([
@@ -2654,7 +2654,7 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
         undefined,
       ]),
       cant_live_without_superlative: faker.helpers.arrayElement([
-        faker.word.sample(),
+        faker.datatype.boolean(),
         undefined,
       ]),
       count_citizen_attestations: faker.helpers.arrayElement([
@@ -2726,7 +2726,7 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
         undefined,
       ]),
       most_positive_superlative: faker.helpers.arrayElement([
-        faker.word.sample(),
+        faker.datatype.boolean(),
         undefined,
       ]),
       percentage_distributions: faker.helpers.arrayElement([
@@ -2944,9 +2944,9 @@ export const getUpdateRetroFundingRoundProjectsResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3055,9 +3055,9 @@ export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3166,9 +3166,9 @@ export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3277,9 +3277,9 @@ export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3388,9 +3388,9 @@ export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3499,9 +3499,9 @@ export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3610,9 +3610,9 @@ export const getUpdateRetroFundingBallotDistributionMethodResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'GOV_INFRA',
-          'GOV_ANALYTICS',
-          'GOV_LEADERSHIP',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),

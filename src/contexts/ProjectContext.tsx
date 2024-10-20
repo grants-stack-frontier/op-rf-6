@@ -48,7 +48,7 @@ export const ProjectProvider: React.FC<{
   const { data: project, isPending: isProjectLoading } =
     useGetRetroFundingRoundProjectById(ROUND, id);
   const { data: projects, isPending: isProjectsLoading } =
-    useProjectsByCategory(project?.applicationCategory as CategoryId);
+    useProjectsByCategory(project?.applicationCategory ?? 'all');
   const { ballot } = useBallotContext();
   const { address } = useAccount();
 

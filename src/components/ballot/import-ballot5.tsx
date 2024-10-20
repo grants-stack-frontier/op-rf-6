@@ -14,7 +14,6 @@ import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
 import { ImpactScore } from '@/types/project-scoring';
-import type { CategoryId } from '@/types/various';
 
 import { Button } from '../ui/button';
 import {
@@ -55,9 +54,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const { address } = useAccount();
   const { refetch } = useGetRetroFundingRoundBallotById(ROUND, address ?? '');
   const { data: session } = useSession();
-  const { data: projects } = useProjectsByCategory(
-    session?.category as CategoryId
-  );
+  const { data: projects } = useProjectsByCategory(session?.category ?? 'all');
   const { update } = useDistributionMethodFromLocalStorage();
 
   const ref = useRef<HTMLInputElement>(null);

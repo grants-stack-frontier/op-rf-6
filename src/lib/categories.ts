@@ -6,14 +6,14 @@ import opRnd from '../../public/op_rnd.svg';
 import opTooling from '../../public/op_tooling.svg';
 
 export const categoryNames: Record<string, string> = {
-  GOV_INFRA: 'Governance Infrastructure & Tooling',
-  GOV_ANALYTICS: 'Governance Analytics',
-  GOV_LEADERSHIP: 'Governance Leadership',
+  GOVERNANCE_INFRA_AND_TOOLING: 'Governance Infrastructure & Tooling',
+  GOVERNANCE_ANALYTICS: 'Governance Analytics',
+  GOVERNANCE_LEADERSHIP: 'Governance Leadership',
 };
 
 export const categories: Category[] = [
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOV_INFRA,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_INFRA_AND_TOOLING,
     name: 'Governance Infrastructure & Tooling',
     image: ethCore.src,
     description:
@@ -37,7 +37,7 @@ export const categories: Category[] = [
     },
   },
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOV_ANALYTICS,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_ANALYTICS,
     name: 'Governance Analytics',
     image: opRnd.src,
     description:
@@ -57,7 +57,7 @@ export const categories: Category[] = [
     },
   },
   {
-    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOV_LEADERSHIP,
+    id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_LEADERSHIP,
     name: 'Governance Leadership',
     image: opTooling.src,
     description:

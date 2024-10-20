@@ -41,12 +41,8 @@ export function Attestations({
   metrics?: ProjectImpactMetrics;
 }) {
   const notableRecognition = useMemo(() => {
-    const mostPositive = Boolean(
-      metrics?.most_positive_superlative?.toLowerCase() === 'true'
-    );
-    const cannotLiveWithout = Boolean(
-      metrics?.cant_live_without_superlative?.toLowerCase() === 'true'
-    );
+    const mostPositive = metrics?.most_positive_superlative === true;
+    const cannotLiveWithout = metrics?.cant_live_without_superlative === true;
     return { mostPositive, cannotLiveWithout };
   }, [metrics]);
 

@@ -9,7 +9,6 @@ export default function CategoryDetailsPage({
   params: { id: CategoryId };
 }) {
   const category = categories.find((cat) => cat.id === id);
-  console.log('category', category);
 
   if (!category) {
     return <div>Category not found</div>;

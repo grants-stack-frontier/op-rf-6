@@ -4,11 +4,11 @@ export function getBadgeClassName(
   category?: RetroFundingBallotCategoriesAllocationCategorySlug
 ): string {
   switch (category) {
-    case RetroFundingBallotCategoriesAllocationCategorySlug.GOV_INFRA:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_INFRA_AND_TOOLING:
       return 'bg-blue-500/25 text-blue-600';
-    case RetroFundingBallotCategoriesAllocationCategorySlug.GOV_ANALYTICS:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_ANALYTICS:
       return 'bg-purple-500/25 text-purple-600';
-    case RetroFundingBallotCategoriesAllocationCategorySlug.GOV_LEADERSHIP:
+    case RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_LEADERSHIP:
       return 'bg-orange-500/25 text-orange-600';
     default:
       return 'bg-blue-500/25 text-blue-600';

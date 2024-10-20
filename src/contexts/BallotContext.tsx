@@ -83,7 +83,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
 
   const { data: session } = useSession();
   const votingCategory = session?.category as CategoryId;
-  const { data: projects } = useProjectsByCategory(votingCategory);
+  const { data: projects } = useProjectsByCategory(votingCategory ?? 'all');
   const {
     data: distributionMethod,
     update: updateDistributionMethodLocally,

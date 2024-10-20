@@ -1,8 +1,10 @@
 export type CategoryId =
-  // | 'GOV_INFRA'
-  // | 'GOV_ANALYTICS'
-  // | 'GOV_LEADERSHIP'
-  'GOV_INFRA' | 'GOV_ANALYTICS' | 'GOV_LEADERSHIP';
+  // | 'GOVERNANCE_INFRA_AND_TOOLING'
+  // | 'GOVERNANCE_ANALYTICS'
+  // | 'GOVERNANCE_LEADERSHIP'
+  | 'GOVERNANCE_INFRA_AND_TOOLING'
+  | 'GOVERNANCE_ANALYTICS'
+  | 'GOVERNANCE_LEADERSHIP';
 
 export type FeedbackForm = {
   address: string;

@@ -13,7 +13,7 @@ import { Skeleton } from '../ui/skeleton';
 
 export function CategoryDetails({ id }: { id: CategoryId }) {
   const category = categories?.find((cat) => cat.id === id);
-  const { data: projects, isPending } = useProjectsByCategory(id);
+  const { data: projects, isPending } = useProjectsByCategory(id ?? 'all');
   const { name, image, description, eligibility, examples } = category ?? {};
   const { eligible_projects, not_eligible_projects } = eligibility ?? {};
   const { data: session } = useSession();
