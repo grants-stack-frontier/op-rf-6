@@ -1,18 +1,25 @@
 import { getToken } from './token';
 
 // NOTE: Supports cases where `content-type` is other than `json`
-const getBody = <T>(c: Response | Request): Promise<T> => {
+const getBody = async <T>(c: Response | Request): Promise<T> => {
   const contentType = c.headers.get('content-type');
 
+  let data: any;
+
   if (contentType && contentType.includes('application/json')) {
-    return c.json();
+    data = await c.json();
+  } else if (contentType && contentType.includes('application/pdf')) {
+    data = await c.blob();
+  } else {
+    data = await c.text();
   }
 
-  if (contentType && contentType.includes('application/pdf')) {
-    return c.blob() as Promise<T>;
+  // Check if the response has a nested data structure
+  if (data && typeof data === 'object' && 'data' in data) {
+    return data.data;
   }
 
-  return c.text() as Promise<T>;
+  return data;
 };
 
 // NOTE: Add headers
@@ -81,5 +88,5 @@ export const customFetch = async <T>(
 
   const data = await getBody<T>(response);
 
-  return { status: response.status, data } as T;
+  return data as T;
 };

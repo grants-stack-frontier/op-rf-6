@@ -4,10 +4,7 @@ import { useCallback, useState } from 'react';
 import { Round5ProjectAllocation } from '@/types/ballot';
 import type { CategoryId } from '@/types/various';
 
-type BallotState = Record<
-  string,
-  { allocation: number; locked: boolean }
->;
+type BallotState = Record<string, { allocation: number; locked: boolean }>;
 
 export function useBallotEditor() {
   const [state, setState] = useState<BallotState>({});

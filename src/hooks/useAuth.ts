@@ -1,42 +1,42 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { decodeJwt } from 'jose';
-import ky from 'ky';
 import { useRouter } from 'next/navigation';
 import { useDisconnect as useWagmiDisconnect } from 'wagmi';
 
+import { usePostSiweVerificationMessage } from '@/__generated__/api/agora';
 import mixpanel from '@/lib/mixpanel';
 import { getToken, setToken } from '@/lib/token';
 
 import type { Address } from 'viem';
 
-export function useNonce() {
-  return useQuery({
-    queryKey: ['nonce'],
-    queryFn: async () => ky.get('/api/agora/auth/nonce').text(),
-  });
-}
-
 export function useVerify() {
   const client = useQueryClient();
-  return useMutation({
-    mutationFn: async (json: {
+  const mutation = usePostSiweVerificationMessage({
+    mutation: {
+      onSuccess: async (data) => {
+        if (data.access_token) {
+          mixpanel.track('Sign In', { status: 'success' });
+          setToken(data.access_token);
+          await client.invalidateQueries({ queryKey: ['session'] });
+          setVoterConfirmationView();
+        } else {
+          console.error('Access token is undefined');
+        }
+      },
+    },
+  });
+
+  return {
+    ...mutation,
+    mutateAsync: async (json: {
       message: string;
       signature: string;
       nonce: string;
     }) => {
-      const { access_token } = await ky
-        .post('/api/agora/auth/verify', { json })
-        .json<{ access_token: string }>();
-      mixpanel.track('Sign In', { status: 'success' });
-      setToken(access_token);
-      // Trigger a refetch of the session
-      await client.invalidateQueries({ queryKey: ['session'] });
-
-      setVoterConfirmationView();
-
-      return { access_token };
+      const result = await mutation.mutateAsync({ data: json });
+      return result;
     },
-  });
+  };
 }
 
 export function useDisconnect() {
