@@ -6,6 +6,7 @@ import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/ago
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ROUND } from '@/config';
 import { useBudgetContext } from '@/contexts/BudgetContext';
 import { useBudget } from '@/hooks/useBudget';
 import { Category } from '@/types/categories';
@@ -18,7 +19,7 @@ export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =
     useBudgetContext();
   const router = useRouter();
-  const { getBudget, saveAllocation } = useBudget(5);
+  const { getBudget, saveAllocation } = useBudget(ROUND);
   const { address } = useAccount();
 
   const [initialLoad, setInitialLoad] = useState(isLoading);

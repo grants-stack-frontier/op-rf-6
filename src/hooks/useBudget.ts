@@ -10,9 +10,9 @@ import {
 import type {
   RetroFundingBallotCategoriesAllocation,
   Ballot,
+  UpdateRetroFundingRoundCategoryAllocationBody,
 } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
-import type { Round5Allocation } from '@/types/various';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();
@@ -42,7 +42,9 @@ export function useBudget(roundId: number) {
 
   const saveAllocation = useMutation({
     mutationKey: ['save-budget', roundId],
-    mutationFn: async (allocation: Round5Allocation) => {
+    mutationFn: async (
+      allocation: UpdateRetroFundingRoundCategoryAllocationBody
+    ) => {
       if (!address) throw new Error('No address provided');
       return updateRetroFundingRoundCategoryAllocation(
         roundId,

@@ -1,16 +1,14 @@
 import { useMemo } from 'react';
 
-import { votingEndDate } from '@/config';
-import {
-  useRound5BallotWeightSum,
-  useDistributionMethodFromLocalStorage,
-} from '@/hooks/useBallotRound5';
+import { ROUND, votingEndDate } from '@/config';
+import { useBallotWeightSum } from '@/hooks/useBallot';
 import { useBudget } from '@/hooks/useBudget';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 
 import { useVotingTimeLeft } from '../common/voting-ends-in';
 
 export function WeightsError() {
-  const allocationSum = useRound5BallotWeightSum();
+  const allocationSum = useBallotWeightSum();
   const remainingAllocation = useMemo(() => {
     return 100 - allocationSum;
   }, [allocationSum]);
@@ -19,7 +17,7 @@ export function WeightsError() {
   const { data: distributionMethod } = useDistributionMethodFromLocalStorage();
   const {
     getBudget: { data: budgetData },
-  } = useBudget(5);
+  } = useBudget(ROUND);
 
   if (Number(seconds) < 0) {
     return (

@@ -16,18 +16,19 @@ import {
   Ballot,
   RetroFundingBallot5ProjectsAllocation,
 } from '@/__generated__/api/agora.schemas';
+import { ROUND } from '@/config';
 import { useSession } from '@/hooks/useAuth';
 import {
-  useSaveRound5Position,
-  useRound5BallotWeightSum,
-  useDistributionMethodFromLocalStorage,
+  useSavePosition,
+  useBallotWeightSum,
   useDistributionMethod,
   DistributionMethod,
-  useIsSavingRound5Ballot,
-  useSaveRound5Allocation,
-} from '@/hooks/useBallotRound5';
-import { useBallotEditor } from '@/hooks/useBallotRound5Editor';
+  useIsSavingBallot,
+  useSaveAllocation,
+} from '@/hooks/useBallot';
+import { useBallotEditor } from '@/hooks/useBallotEditor';
 import { useBudget } from '@/hooks/useBudget';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
@@ -69,12 +70,12 @@ type BallotContext = ReturnType<typeof useBallotEditor> & {
   isSavingBallot: boolean;
 };
 
-const BallotRound5Context = createContext({} as BallotContext);
+const BallotContext = createContext({} as BallotContext);
 
 export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
   const { data, isFetched, isPending, refetch } =
-    useGetRetroFundingRoundBallotById(6, address ?? '');
+    useGetRetroFundingRoundBallotById(ROUND, address ?? '');
   const ballot = data as Ballot;
   const [localBallot, setLocalBallot] = useState<Ballot | undefined>(ballot);
 
@@ -90,11 +91,11 @@ export function BallotProvider({ children }: PropsWithChildren) {
   } = useDistributionMethodFromLocalStorage();
   const { mutate: redistribute, isPending: isRedistributing } =
     useDistributionMethod();
-  const { mutateAsync: savePosition } = useSaveRound5Position();
-  const allocationSum = useRound5BallotWeightSum();
-  const { getBudget } = useBudget(5);
-  const isSavingBallot = useIsSavingRound5Ballot();
-  const { mutate: saveAllocation } = useSaveRound5Allocation();
+  const { mutateAsync: savePosition } = useSavePosition();
+  const allocationSum = useBallotWeightSum();
+  const { getBudget } = useBudget(ROUND);
+  const isSavingBallot = useIsSavingBallot();
+  const { mutate: saveAllocation } = useSaveAllocation();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -460,12 +461,10 @@ export function BallotProvider({ children }: PropsWithChildren) {
   };
 
   return (
-    <BallotRound5Context.Provider value={value}>
-      {children}
-    </BallotRound5Context.Provider>
+    <BallotContext.Provider value={value}>{children}</BallotContext.Provider>
   );
 }
 
-export function useBallotRound5Context() {
-  return useContext(BallotRound5Context);
+export function useBallotContext() {
+  return useContext(BallotContext);
 }

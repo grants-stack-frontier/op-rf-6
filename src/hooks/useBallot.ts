@@ -14,9 +14,14 @@ import {
 import { Ballot } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
 import { ROUND } from '@/config';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
-export function useSaveRound5Allocation() {
+import {
+  getDistributionMethodFromLocalStorage,
+  saveDistributionMethodToLocalStorage,
+} from './useDistributionMethod';
+
+export function useSaveAllocation() {
   const { toast } = useToast();
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -117,7 +122,7 @@ function saveBallotSubmissionToLocalStorage(submission: {
   }
 }
 
-export function useSaveRound5Position() {
+export function useSavePosition() {
   const { toast } = useToast();
   const { address } = useAccount();
 
@@ -156,71 +161,6 @@ export enum DistributionMethod {
   IMPACT_GROUPS = 'IMPACT_GROUPS',
   TOP_WEIGHTED = 'TOP_WEIGHTED',
   CUSTOM = 'CUSTOM',
-}
-
-export function saveDistributionMethodToLocalStorage(
-  method: DistributionMethod | null,
-  address?: string
-) {
-  if (typeof window !== 'undefined' && address) {
-    const storageKey = `distributionMethod_${address.toLowerCase()}`;
-    if (method === null) {
-      localStorage.removeItem(storageKey);
-    } else {
-      localStorage.setItem(storageKey, method);
-    }
-  }
-}
-
-export function getDistributionMethodFromLocalStorage(
-  address: string
-): DistributionMethod | null {
-  if (typeof window !== 'undefined') {
-    const storageKey = `distributionMethod_${address.toLowerCase()}`;
-    const savedMethod = localStorage.getItem(storageKey);
-    return savedMethod as DistributionMethod | null;
-  }
-  return null;
-}
-
-export function useDistributionMethodFromLocalStorage() {
-  const { address } = useAccount();
-  const queryClient = useQueryClient();
-
-  const query = useGetRetroFundingRoundBallotById(ROUND, address ?? '', {
-    query: {
-      select: () => getDistributionMethodFromLocalStorage(address ?? ''),
-      enabled: !!address,
-    },
-  });
-
-  const { mutate: updateDistributionMethod } =
-    useUpdateRetroFundingBallotDistributionMethod();
-
-  const update = (method: DistributionMethod | null) => {
-    if (address && method) {
-      updateDistributionMethod({
-        roundId: ROUND,
-        addressOrEnsName: address,
-        distributionMethod: method as 'IMPACT_GROUPS' | 'TOP_TO_BOTTOM',
-      });
-      saveDistributionMethodToLocalStorage(method, address);
-      queryClient.setQueryData(['ballot-round6', address], (oldData: any) => ({
-        ...oldData,
-        distribution_method: method,
-      }));
-    }
-  };
-
-  const reset = () => {
-    update(null);
-  };
-
-  return {
-    ...query,
-    update,
-    reset,
-  };
 }
 
 export function useDistributionMethod() {
@@ -267,12 +207,12 @@ export function useDistributionMethod() {
   };
 }
 
-export function useIsSavingRound5Ballot() {
+export function useIsSavingBallot() {
   return Boolean(useIsMutating({ mutationKey: ['save-round6-ballot'] }));
 }
 
-export function useRound5BallotWeightSum() {
-  const { ballot } = useBallotRound5Context();
+export function useBallotWeightSum() {
+  const { ballot } = useBallotContext();
 
   const allocationSum = useMemo(() => {
     if (!ballot || !ballot.projects_allocations) return 0;

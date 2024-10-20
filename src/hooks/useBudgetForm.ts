@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
+import { ROUND } from '@/config';
 import { useAllProjectsByCategory } from '@/hooks/useProjects';
 import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budgetHelpers';
 import { categories } from '@/lib/categories';
@@ -12,10 +13,9 @@ import { useSession } from './useAuth';
 import { useBudget } from './useBudget';
 
 export function useBudgetForm() {
-  const roundId = 5;
   const { address } = useAccount();
   const allProjectsByCategory = useAllProjectsByCategory();
-  const { getBudget, saveAllocation } = useBudget(roundId);
+  const { getBudget, saveAllocation } = useBudget(ROUND);
   const [totalBudget, setTotalBudget] = useState<number>(8000000);
   const [allocations, setAllocations] = useState<Record<string, number>>({});
   const [lockedFields, setLockedFields] = useState<Record<string, boolean>>({});
@@ -292,7 +292,7 @@ export function useBudgetForm() {
     async (budget: number) => {
       if (!address) return;
       try {
-        await updateRetroFundingRoundBudgetAllocation(roundId, address, budget);
+        await updateRetroFundingRoundBudgetAllocation(ROUND, address, budget);
       } catch (error) {
         console.error('Failed to save budget allocation:', error);
         setError(

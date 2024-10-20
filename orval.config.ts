@@ -14,10 +14,6 @@ export default defineConfig({
           path: './src/lib/customFetch.ts',
           name: 'customFetch',
         },
-        query: {
-          useQuery: true,
-          useInfinite: true,
-        },
       },
     },
     hooks: {

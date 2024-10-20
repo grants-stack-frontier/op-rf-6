@@ -1,3 +1,5 @@
+// needs to be fixed on the db side
+
 export type TeamMember = {
   fid: number;
   object: 'user';

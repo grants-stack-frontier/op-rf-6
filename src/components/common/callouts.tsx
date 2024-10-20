@@ -2,13 +2,13 @@
 import { useAccount } from 'wagmi';
 
 import { votingEndDate } from '@/config';
-import { useIsBadgeholder } from '@/hooks/useIsBadgeholder';
+import { useSession } from '@/hooks/useAuth';
 
 import { useVotingTimeLeft } from './voting-ends-in';
 
 export function Callouts() {
   const { address, status } = useAccount();
-  const isBadgeholder = useIsBadgeholder();
+  const { data: session } = useSession();
 
   const [, , , seconds] = useVotingTimeLeft(votingEndDate);
 
@@ -22,7 +22,7 @@ export function Callouts() {
 
   if (!address) return null;
   if (['connecting', 'reconnecting'].includes(status)) return null;
-  if (isBadgeholder) return null;
+  if (session?.isBadgeholder) return null;
 
   return (
     <div className="bg-accent-foreground text-center p-3 text-white dark:text-black">

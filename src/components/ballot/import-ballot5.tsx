@@ -5,12 +5,11 @@ import { useAccount } from 'wagmi';
 
 import { useGetRetroFundingRoundBallotById } from '@/__generated__/api/agora';
 import { RetroFundingBallot5ProjectsAllocation } from '@/__generated__/api/agora.schemas';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { ROUND } from '@/config';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
-import {
-  DistributionMethod,
-  useDistributionMethodFromLocalStorage,
-} from '@/hooks/useBallotRound5';
+import { DistributionMethod } from '@/hooks/useBallot';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
@@ -51,10 +50,10 @@ export function ImportBallotDialog({
 }
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
-  const { ballot, reset } = useBallotRound5Context();
+  const { ballot, reset } = useBallotContext();
   const saveProjects = useSaveProjects();
   const { address } = useAccount();
-  const { refetch } = useGetRetroFundingRoundBallotById(6, address ?? '');
+  const { refetch } = useGetRetroFundingRoundBallotById(ROUND, address ?? '');
   const { data: session } = useSession();
   const { data: projects } = useProjectsByCategory(
     session?.category as CategoryId
@@ -151,7 +150,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const emptyBallot: RetroFundingBallot5ProjectsAllocation[] =
     ballot?.projects_allocations
       ? ballot.projects_allocations.map((alloc) => ({
@@ -163,15 +162,13 @@ function ExportBallotButton() {
       : [{ project_id: '0x0', name: 'Some project', allocation: 0, impact: 0 }];
 
   return (
-    <Button variant="outline" onClick={() => exportRound5Ballot(emptyBallot)}>
+    <Button variant="outline" onClick={() => exportBallot(emptyBallot)}>
       Download ballot template
     </Button>
   );
 }
 
-export function exportRound5Ballot(
-  ballot: RetroFundingBallot5ProjectsAllocation[]
-) {
+export function exportBallot(ballot: RetroFundingBallot5ProjectsAllocation[]) {
   const csv = format(
     ballot.map((alloc) => ({
       project_id: alloc.project_id,

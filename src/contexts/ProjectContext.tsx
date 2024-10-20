@@ -14,7 +14,8 @@ import {
   Project,
   RetroFundingBallot5ProjectsAllocation,
 } from '@/__generated__/api/agora.schemas';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { ROUND } from '@/config';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
@@ -45,10 +46,10 @@ export const ProjectProvider: React.FC<{
 }> = ({ children, id }) => {
   const { data: session } = useSession();
   const { data: project, isPending: isProjectLoading } =
-    useGetRetroFundingRoundProjectById(6, id);
+    useGetRetroFundingRoundProjectById(ROUND, id);
   const { data: projects, isPending: isProjectsLoading } =
     useProjectsByCategory(project?.applicationCategory as CategoryId);
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const { address } = useAccount();
 
   const [showUnlockDialog, setShowUnlockDialog] = useState(false);

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useDisconnect, useSession } from '@/hooks/useAuth';
 import { categoryNames } from '@/lib/categories';
 import type { CategoryId } from '@/types/various';
@@ -18,7 +18,7 @@ import { Progress } from '../ui/progress';
 import { Separator } from '../ui/separator';
 
 export function EmptyBallot() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const { data: session } = useSession();
   const votingCategory = session?.category;
 

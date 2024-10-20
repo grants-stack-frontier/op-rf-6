@@ -4,8 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
-import { useDistributionMethodFromLocalStorage } from '@/hooks/useBallotRound5';
+import { useBallotContext } from '@/contexts/BallotContext';
+import { useDistributionMethodFromLocalStorage } from '@/hooks/useDistributionMethod';
 import { useSaveProjects } from '@/hooks/useProjects';
 import { ImpactScore } from '@/types/project-scoring';
 
@@ -22,7 +22,7 @@ import {
 
 export function ResetButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const saveProjects = useSaveProjects();
   const [isPending, setIsPending] = useState(false);
   const { reset: resetDistributionMethod } =
@@ -46,7 +46,7 @@ export function ResetButton() {
 
     resetDistributionMethod();
 
-    queryClient.invalidateQueries({ queryKey: ['ballot-round5', address] });
+    queryClient.invalidateQueries({ queryKey: ['ballot-round6', address] });
 
     setIsPending(false);
     setIsOpen(false);

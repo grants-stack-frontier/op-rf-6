@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useProjectContext } from '@/contexts/ProjectContext';
 import { scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
@@ -28,7 +28,7 @@ export function ReviewSidebar() {
     handleScore: onScoreSelect,
   } = useProjectContext();
 
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const allProjectsScored = useMemo(() => {
     return ballot?.projects_allocations?.length === ballot?.total_projects;
   }, [ballot]);
