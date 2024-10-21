@@ -1,7 +1,7 @@
 export type CategoryId =
-  | 'ETHEREUM_CORE_CONTRIBUTIONS'
-  | 'OP_STACK_RESEARCH_AND_DEVELOPMENT'
-  | 'OP_STACK_TOOLING';
+  | 'GOVERNANCE_INFRA_AND_TOOLING'
+  | 'GOVERNANCE_ANALYTICS'
+  | 'GOVERNANCE_LEADERSHIP';
 
 export type Round5Allocation = {
   category_slug: CategoryId;

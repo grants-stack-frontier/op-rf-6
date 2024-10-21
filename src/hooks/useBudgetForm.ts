@@ -10,9 +10,10 @@ import type { CategoryId } from '@/types/various';
 
 import { useSession } from './useAuth';
 import { useBudget } from './useBudget';
+import { ROUND } from '@/config';
 
 export function useBudgetForm() {
-  const roundId = 5;
+  const roundId = ROUND;
   const { address } = useAccount();
   const allProjectsByCategory = useAllProjectsByCategory();
   const { getBudget, saveAllocation } = useBudget(roundId);

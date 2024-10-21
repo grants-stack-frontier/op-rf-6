@@ -23,9 +23,9 @@ import { ProjectsResponse } from '@/types/projects';
 import type { CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'op_rnd',
-  OP_STACK_TOOLING: 'op_tooling',
+  GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
+  GOVERNANCE_ANALYTICS: 'gov_analytics',
+  GOVERNANCE_LEADERSHIP: 'gov_leadership',
 };
 
 export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
