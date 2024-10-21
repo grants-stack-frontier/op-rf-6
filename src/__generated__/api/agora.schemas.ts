@@ -105,9 +105,9 @@ export type UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  // ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
+  // OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+  // OP_STACK_TOOLING: 'OP_STACK_TOOLING',
   GOVERNANCE_INFRA_AND_TOOLING: 'GOVERNANCE_INFRA_AND_TOOLING',
   GOVERNANCE_ANALYTICS: 'GOVERNANCE_ANALYTICS',
   GOVERNANCE_LEADERSHIP: 'GOVERNANCE_LEADERSHIP',
@@ -715,14 +715,8 @@ export type ProjectGrantsAndFunding = {
   grants?: ProjectGrantsAndFundingGrantsItem[];
   revenue?: ProjectGrantsAndFundingRevenueItem[];
   ventureFunding?: ProjectGrantsAndFundingVentureFundingItem[];
-  investment?: {
-    amount?: string;
-    details?: string;
-  }[];
-  investments?: {
-    amount?: string;
-    details?: string;
-  }[];
+  investment?: any[];
+  investments?: any[];
 };
 
 export type ProjectGithubItemOneOf = { [key: string]: unknown };

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
+import { ROUND } from '@/config';
 import { useAllProjectsByCategory } from '@/hooks/useProjects';
 import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budgetHelpers';
 import { categories } from '@/lib/categories';
@@ -10,7 +11,6 @@ import type { CategoryId } from '@/types/various';
 
 import { useSession } from './useAuth';
 import { useBudget } from './useBudget';
-import { ROUND } from '@/config';
 
 export function useBudgetForm() {
   const roundId = ROUND;
