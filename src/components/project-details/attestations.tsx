@@ -31,8 +31,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 export function Attestations({ projectId, metrics }: { projectId?: string, metrics?: ProjectImpactMetrics }) {
   const notableRecognition = useMemo(() => {
-    const mostPositive = Boolean(metrics?.most_positive_superlative?.toLowerCase() === 'true');
-    const cannotLiveWithout = Boolean(metrics?.cant_live_without_superlative?.toLowerCase() === 'true');
+    const mostPositive = Boolean(metrics?.most_positive_superlative);
+    const cannotLiveWithout = Boolean(metrics?.cant_live_without_superlative);
     return { mostPositive, cannotLiveWithout };
   }, [metrics]);
 

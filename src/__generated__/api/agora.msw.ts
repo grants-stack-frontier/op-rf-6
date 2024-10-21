@@ -1935,9 +1935,9 @@ export const getGetRetroFundingRoundBallotByIdResponseBallotMock = (
         ]),
         category_slug: faker.helpers.arrayElement([
           faker.helpers.arrayElement([
-            'ETHEREUM_CORE_CONTRIBUTIONS',
-            'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-            'OP_STACK_TOOLING',
+            'GOVERNANCE_INFRA_AND_TOOLING',
+            'GOVERNANCE_ANALYTICS',
+            'GOVERNANCE_LEADERSHIP',
           ] as const),
           undefined,
         ]),
@@ -2944,9 +2944,9 @@ export const getUpdateRetroFundingRoundProjectsResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3055,9 +3055,9 @@ export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3166,9 +3166,9 @@ export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3277,9 +3277,9 @@ export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3388,9 +3388,9 @@ export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3499,9 +3499,9 @@ export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3610,9 +3610,9 @@ export const getUpdateRetroFundingBallotDistributionMethodResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
