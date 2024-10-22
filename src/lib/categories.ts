@@ -1,9 +1,9 @@
 import { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
 import { Category } from '@/types/categories';
 
-import ethCore from '../../public/eth_core.svg';
-import opRnd from '../../public/op_rnd.svg';
-import opTooling from '../../public/op_tooling.svg';
+import govAnalytics from '../../public/govAnalytics.svg';
+import govInfra from '../../public/govInfra.svg';
+import govLeadership from '../../public/govLeadership.svg';
 
 export const categoryNames: Record<string, string> = {
   GOVERNANCE_INFRA_AND_TOOLING: 'Governance Infrastructure & Tooling',
@@ -15,7 +15,7 @@ export const categories: Category[] = [
   {
     id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_INFRA_AND_TOOLING,
     name: 'Governance Infrastructure & Tooling',
-    image: ethCore.src,
+    image: govInfra.src,
     description:
       'Infrastructure and tooling that powered governance or that made the usage of governance infrastructure more accessible.',
     examples: [
@@ -39,7 +39,7 @@ export const categories: Category[] = [
   {
     id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_ANALYTICS,
     name: 'Governance Analytics',
-    image: opRnd.src,
+    image: govAnalytics.src,
     description:
       'Analytics that enabled accountability, provided transparency into Collective operations, promoted improved performance, or aided in the design of the Collective.',
     examples: [
@@ -59,7 +59,7 @@ export const categories: Category[] = [
   {
     id: RetroFundingBallotCategoriesAllocationCategorySlug.GOVERNANCE_LEADERSHIP,
     name: 'Governance Leadership',
-    image: opTooling.src,
+    image: govLeadership.src,
     description:
       'Demonstrated leadership in the Collective, including but not limited to, hosting community calls and/or participation in councils, boards and commissions beyond executing on basic responsibilities outlined in Token House Charters.',
     examples: [
