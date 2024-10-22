@@ -103,8 +103,8 @@ export function BudgetForm() {
               <span className="text-sm">2M</span>
               <Slider
                 className="flex-1 mx-2"
-                min={2000000}
-                max={8000000}
+                min={1000000}
+                max={3500000}
                 step={50000}
                 value={[totalBudget]}
                 onValueChange={handleBudgetChange}

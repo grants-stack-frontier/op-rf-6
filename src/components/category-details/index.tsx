@@ -65,9 +65,11 @@ export function CategoryDetails({ id }: { id: CategoryId }) {
                 )}
               </div>
             </div>
-            <div className="flex items-start gap-2 text-gray-700 dark:text-white">
-              <Heading variant="h1">Examples:</Heading>
-              <p>{examples?.join(', ')}</p>
+            <div className="text-gray-700 dark:text-white">
+              <Heading variant="h1" className="inline-block mr-1">
+                Examples:
+              </Heading>
+              <p className="inline">{examples?.join(', ')}</p>
             </div>
             <div className="flex flex-col items-start gap-6 text-gray-700 dark:text-white">
               <div className="flex items-start gap-2">

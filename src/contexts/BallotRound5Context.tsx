@@ -73,12 +73,7 @@ const BallotRound5Context = createContext({} as BallotContext);
 
 export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
-  const {
-    data: ballot,
-    isFetched,
-    isPending,
-    refetch,
-  } = useBallot(address);
+  const { data: ballot, isFetched, isPending, refetch } = useBallot(address);
   const [localBallot, setLocalBallot] = useState<Round5Ballot | undefined>(
     ballot
   );
