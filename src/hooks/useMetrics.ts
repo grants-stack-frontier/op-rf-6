@@ -1,37 +1,23 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-
-import { OrderBy, SortOrder } from './useFilter';
 import { useAccount } from 'wagmi';
-import { Round4Allocation } from './useBallot';
+
 import {
   getImpactMetricsOnRetroFundingRound,
   recordImpactMetricView,
 } from '@/__generated__/api/agora';
 
+enum OrderBy {
+  name = 'name',
+  allocation = 'allocation',
+}
+enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
+
 type SortFields = { [OrderBy.name]?: string; [OrderBy.allocation]?: number };
-
-export type Metric = {
-  metric_id: string;
-  name: string;
-  url: string;
-  description: string;
-  comments: [];
-  commentsCount: number;
-  views: number;
-  added_to_ballot: number;
-  allocations_per_project?: ProjectAllocation[];
-};
-
-export type ProjectAllocation = {
-  allocation: number;
-  image: string;
-  name: string;
-  is_os: boolean;
-  project_id: string;
-  allocations_per_metric?: Round4Allocation[];
-};
 
 export function createSortFn(filter: { order: OrderBy; sort: SortOrder }) {
   return function sortFn(a?: SortFields, b?: SortFields) {

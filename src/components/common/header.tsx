@@ -1,22 +1,23 @@
 'use client';
 
 import { ArrowUpRight } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
-import { badgeholderManualUrl, votingEndDate } from '@/config';
-import { hasSeenIntro } from '@/utils/localStorage';
-
 import { Button } from '@/components/ui/button';
+import { badgeholderManualUrl, votingEndDate } from '@/config';
+import { hasSeenIntro } from '@/lib/localStorage';
+
 import { ConnectButton } from '../auth/connect-button';
 import { SignMessage } from '../auth/sign-message';
 import { VoterConfirmationDialog } from '../auth/voter-confirmation';
-import { ModeToggle } from '../dark-mode-toggle';
 import { Separator } from '../ui/separator';
-import { VotingEndsIn } from '../voting-ends-in';
+
 import { Logo } from './logo';
+import { ModeToggle } from './mode-toggle';
+import { VotingEndsIn } from './voting-ends-in';
 
 export function Header() {
   const { address } = useAccount();
@@ -37,7 +38,7 @@ export function Header() {
       </Link>
       <div className="hidden sm:flex items-center gap-2 divide-x space-x-2 text-sm">
         <div className="flex flex-col lg:flex-row items-center h-8">
-          <p>Round 5: OP Stack</p>
+          <p>Round 6: Governance</p>
         </div>
         <div className="flex flex-col lg:flex-row items-center h-8">
           <VotingEndsIn className="pl-4" date={votingEndDate} />
@@ -47,7 +48,7 @@ export function Header() {
             iconRight={ArrowUpRight}
             variant="link"
             className="pl-4 h-8"
-            onClick={() => mixpanel.track('Open Manual', { external: true })}
+            onClick={() => track('Open Manual', { external: true })}
           >
             View badgeholder manual
           </Button>

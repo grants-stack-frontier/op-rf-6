@@ -1,21 +1,20 @@
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { Heading } from '../ui/headings';
-import { Badge } from '../ui/badge';
-
+import { ChevronLeft } from 'lucide-react';
+import { type PropsWithChildren, useMemo } from 'react';
 import {
   FormProvider,
-  UseFormRegister,
+  type UseFormRegister,
   useController,
   useForm,
   useFormContext,
 } from 'react-hook-form';
 
-import { Card } from '../ui/card';
-import { Checkbox } from '../ui/checkbox';
-import { Textarea } from '../ui/textarea';
-import { ChevronLeft } from 'lucide-react';
-import { PropsWithChildren, useMemo } from 'react';
+import { useSendFeedback } from '@/hooks/useFeedback';
+import { FeedbackForm } from '@/types/various';
+
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Heading } from '../ui/headings';
+import { Input } from '../ui/input';
 import {
   Select,
   SelectContent,
@@ -23,8 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { FeedbackForm, useSendFeedback } from '@/hooks/useFeedback';
-import { FormMessage } from '../ui/form';
+import { Textarea } from '../ui/textarea';
 
 export function Form({
   children,
@@ -35,7 +33,7 @@ export function Form({
   return <FormProvider {...form}>{children}</FormProvider>;
 }
 
-export function Feedback({ onSubmit = () => {} }) {
+export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   const form = useFormContext<FeedbackForm & { index: number }>();
   const { handleSubmit, register, setValue, watch } = form;
   const index = watch('index') ?? 0;
@@ -130,10 +128,6 @@ function createQuestions(
         />
       ),
     },
-    // {
-    //   title: `Did you observe any behavior among your fellow badgeholders that could be considered one of the following (select all that apply)?`,
-    //   children: <Behaviors />,
-    // },
     {
       title:
         'How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?',
@@ -206,128 +200,6 @@ function createQuestions(
         />
       ),
     },
-    // {
-    //   title: "To what extent do you trust the opinions of other badgeholders?",
-    //   children: (
-    //     <SelectForm
-    //       key="trust"
-    //       name="trust"
-    //       options={Array(7)
-    //         .fill(0)
-    //         .map((_, index) => ({
-    //           label: `${index + 1} ${
-    //             index === 0
-    //               ? "(very low trust)"
-    //               : index === 3
-    //               ? "(some trust)"
-    //               : index === 6
-    //               ? "(very high trust)"
-    //               : ""
-    //           }`,
-    //           value: String(index + 1),
-    //         }))}
-    //     />
-    //   ),
-    // },
-    // QUESTION: Are we keeping the rest of these questions?
-    // {
-    //   title:
-    //     "How would you rate your knowledge on the arguments for or against deducting external funding (e.g., VC funding, Optimism grants, or other grants) from Retro Funding rewards?",
-    //   children: (
-    //     <SelectForm
-    //       key="knowledge"
-    //       name="knowledge"
-    //       options={Array(7)
-    //         .fill(0)
-    //         .map((_, index) => ({
-    //           label: `${index + 1} ${
-    //             index === 0
-    //               ? "(very low knowledge)"
-    //               : index === 3
-    //               ? "(some knowledge)"
-    //               : index === 6
-    //               ? "(very high knowledge)"
-    //               : ""
-    //           }`,
-    //           value: String(index + 1),
-    //         }))}
-    //     />
-    //   ),
-    // },
-
-    // {
-    //   title:
-    //     "How satisfied do you feel with the definition of profit, compared to round 4?",
-    //   description:
-    //     "Definition: Impact = Award in OP, no past funding, grants, or revenue are deducted from Projects Retro Funding rewards",
-    //   children: (
-    //     <SelectForm
-    //       key="satisfaction"
-    //       name="satisfaction"
-    //       options={Array(7)
-    //         .fill(0)
-    //         .map((_, index) => ({
-    //           label: `${index + 1} ${
-    //             index === 0
-    //               ? "(not satisfied)"
-    //               : index === 3
-    //               ? "(somewhat satisfied)"
-    //               : index === 6
-    //               ? "(very satisfied)"
-    //               : ""
-    //           }`,
-    //           value: String(index + 1),
-    //         }))}
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "How understandable and clear did you find the impact metrics?",
-    //   children: (
-    //     <SelectForm
-    //       key="understandable"
-    //       name="understandable"
-    //       options={Array(7)
-    //         .fill(0)
-    //         .map((_, index) => ({
-    //           label: `${index + 1} ${
-    //             index === 0
-    //               ? "(not understandable)"
-    //               : index === 3
-    //               ? "(somewhat understandable)"
-    //               : index === 6
-    //               ? "(very clear)"
-    //               : ""
-    //           }`,
-    //           value: String(index + 1),
-    //         }))}
-    //     />
-    //   ),
-    // },
-    // {
-    //   title:
-    //     "How confident are you in the data sources and trust signals used for the impact metrics?",
-    //   children: (
-    //     <SelectForm
-    //       key="confidence_data"
-    //       name="confidence_data"
-    //       options={Array(7)
-    //         .fill(0)
-    //         .map((_, index) => ({
-    //           label: `${index + 1} ${
-    //             index === 0
-    //               ? "(not confident)"
-    //               : index === 3
-    //               ? "(somewhat confident)"
-    //               : index === 6
-    //               ? "(very confident)"
-    //               : ""
-    //           }`,
-    //           value: String(index + 1),
-    //         }))}
-    //     />
-    //   ),
-    // },
   ];
 }
 
@@ -341,7 +213,7 @@ function SelectForm({
   options: { value: string; label: string }[];
 }) {
   const _name = `${name}Rating`;
-  const { control, watch, register, formState } = useFormContext();
+  const { control, register } = useFormContext();
   const { field } = useController({ name: _name, control });
 
   return (

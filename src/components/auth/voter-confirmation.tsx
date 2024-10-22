@@ -1,24 +1,22 @@
 'use client';
 
-import ky from 'ky';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { decodeJwt } from 'jose';
-import { useAccount, useDisconnect as useWagmiDisconnect } from 'wagmi';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button } from '../ui/button';
-
-import { getToken, setToken } from '@/lib/token';
 import { useRouter } from 'next/navigation';
-import mixpanel from '@/lib/mixpanel';
-import { Address } from 'viem';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAccount, useDisconnect as useWagmiDisconnect } from 'wagmi';
 
-import { UnifiedDialog } from './unified-dialog';
-
-import React from 'react';
 import {
   getVoterConfirmationView,
   removeVoterConfirmationView,
 } from '@/hooks/useAuth';
+import mixpanel from '@/lib/mixpanel';
+import { getToken } from '@/lib/token';
+
+import { UnifiedDialog } from '../common/unified-dialog';
+import { Button } from '../ui/button';
+
+import type { Address } from 'viem';
 
 export function VoterConfirmationDialog() {
   const { data: session } = useSession();
@@ -54,7 +52,7 @@ function VoterIsSelected({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       title="You've been selected to vote in this round of Retro Funding"
       description="You're in a special group of badgeholders and guest voters participating in this round. Thanks in advance for your efforts."
-      emoji="✅"
+      sunny
     >
       <Button
         type="button"
@@ -122,32 +120,6 @@ function VoterIsNotBadgeholder({ onClose }: { onClose: () => void }) {
   );
 }
 
-function useNonce() {
-  return useQuery({
-    queryKey: ['nonce'],
-    queryFn: async () => ky.get('/api/agora/auth/nonce').text(),
-  });
-}
-function useVerify() {
-  const client = useQueryClient();
-  return useMutation({
-    mutationFn: async (json: {
-      message: string;
-      signature: string;
-      nonce: string;
-    }) => {
-      const { access_token, ...rest } = await ky
-        .post('/api/agora/auth/verify', { json })
-        .json<{ access_token: string }>();
-      mixpanel.track('Sign In', { status: 'success' });
-      setToken(access_token);
-      // Trigger a refetch of the session
-      await client.invalidateQueries({ queryKey: ['session'] });
-
-      return { access_token };
-    },
-  });
-}
 export function useDisconnect() {
   const client = useQueryClient();
   const router = useRouter();

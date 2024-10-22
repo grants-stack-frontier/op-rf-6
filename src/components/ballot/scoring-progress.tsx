@@ -1,9 +1,11 @@
 'use client';
 
-import { Text } from '@/components/ui/text';
 import { useMemo } from 'react';
+
+import { Text } from '@/components/ui/text';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+
 import { Progress } from '../ui/progress';
-import { useBallotRound5Context } from './provider5';
 
 export function ScoringProgressBar() {
   const { ballot } = useBallotRound5Context();

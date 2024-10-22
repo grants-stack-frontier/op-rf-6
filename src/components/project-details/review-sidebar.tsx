@@ -1,3 +1,6 @@
+import { RiCheckLine } from '@remixicon/react';
+import { useCallback, useMemo, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -6,34 +9,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ImpactScore, scoreLabels } from '@/hooks/useProjectScoring';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useProjectContext } from '@/contexts/ProjectContext';
+import { scoreLabels } from '@/hooks/useProjectScoring';
 import { cn } from '@/lib/utils';
-import { RiCheckLine } from '@remixicon/react';
-import { useCallback, useMemo, useState } from 'react';
-import { useBallotRound5Context } from '../ballot/provider5';
+import { ImpactScore } from '@/types/project-scoring';
+
 import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';
 import { Skeleton } from '../ui/skeleton';
 
-type CardProps = React.ComponentProps<typeof Card>;
+export function ReviewSidebar() {
+  const {
+    isLoading,
+    currentProjectScore,
+    isSaving,
+    isVoted,
+    handleScore: onScoreSelect,
+  } = useProjectContext();
 
-interface ReviewSidebarProps extends CardProps {
-  onScoreSelect: (score: ImpactScore) => void;
-  isSaving: boolean;
-  isVoted: boolean;
-  currentProjectScore?: ImpactScore;
-  isLoading: boolean;
-}
-
-export function ReviewSidebar({
-  className,
-  onScoreSelect,
-  isVoted,
-  isSaving,
-  isLoading,
-  currentProjectScore,
-  ...props
-}: ReviewSidebarProps) {
   const { ballot } = useBallotRound5Context();
   const allProjectsScored = useMemo(() => {
     return ballot?.project_allocations?.length === ballot?.total_projects;
@@ -44,7 +38,7 @@ export function ReviewSidebar({
 
   const handleScore = useCallback(
     (score: ImpactScore) => {
-      if (Number(score) === 0) {
+      if (score === 0) {
         setIsConflictOfInterestDialogOpen(true);
         return;
       } else {
@@ -55,37 +49,35 @@ export function ReviewSidebar({
   );
 
   const sortedScores = useMemo(() => {
-    return (Object.entries(scoreLabels) as [ImpactScore, string][])
+    return Object.entries(scoreLabels)
+      .map(([score, label]) => [Number(score), label] as [number, string])
       .sort(([scoreA], [scoreB]) => {
-        if (scoreA === 'Skip') return 1;
-        if (scoreB === 'Skip') return -1;
-        return Number(scoreB) - Number(scoreA);
+        if (scoreA === 999) return 1;
+        if (scoreB === 999) return -1;
+        return scoreB - scoreA;
       })
-      .filter(([score]) => score !== 'Skip')
-      .concat([['Skip', scoreLabels['Skip']] as [ImpactScore, string]]);
+      .filter(([score]) => score !== 999)
+      .concat([[999, scoreLabels[999]] as [number, string]]);
   }, []);
 
   return (
-    <Card
-      className={cn('w-[304px] h-[560px] sticky top-8', className)}
-      {...props}
-    >
+    <Card className="w-[304px] h-[560px] sticky top-8">
       <CardHeader>
         <CardTitle className="text-base font-medium text-center">
           {isVoted
             ? "You've already voted on this project"
-            : "How would you score this project's impact on the OP Stack?"}
+            : "How would you score this project's impact on Optimism Governance?"}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="flex flex-col gap-2">
           {sortedScores.map(([score, label]) => {
             const isDisabled =
-              isLoading || isSaving || (score === 'Skip' && allProjectsScored);
+              isLoading || isSaving || (score === 999 && allProjectsScored);
             return (
               <Button
                 key={score}
-                variant={score === 'Skip' ? 'link' : 'outline'}
+                variant={score === 999 ? 'link' : 'outline'}
                 className={cn(
                   label === 'Conflict of interest'
                     ? 'hover:bg-red-200 hover:text-red-600'
@@ -102,7 +94,7 @@ export function ReviewSidebar({
                       ? 'bg-red-200 text-red-600'
                       : ''
                 )}
-                onClick={() => handleScore(score)}
+                onClick={() => handleScore(score as ImpactScore)}
                 disabled={isDisabled}
               >
                 {isVoted && Number(currentProjectScore) === Number(score) && (
@@ -121,14 +113,6 @@ export function ReviewSidebar({
             <Skeleton className="h-2 w-full" />
           </div>
         ) : (
-          // <>
-          //   <Progress
-          //     value={(votedCount ? votedCount / totalProjects : 0) * 100}
-          //   />
-          //   <p className="text-sm text-muted-foreground">
-          //     You&apos;ve scored {votedCount} out of {totalProjects} projects
-          //   </p>
-          // </>
           <ScoringProgressBar />
         )}
       </CardFooter>

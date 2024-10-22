@@ -1,9 +1,13 @@
 'use client';
-import { Project } from '@/__generated__/api/agora.schemas';
-import { CategoryType } from '@/data/categories';
+import type { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
+import { useProjectContext } from '@/contexts/ProjectContext';
+import { TeamMember } from '@/types/project-details';
+
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
-import { CategoryAndTeam, TeamMember } from './category-team';
+
+import { Attestations } from './attestations';
+import { CategoryAndTeam } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
 import { PricingModel } from './pricing-model';
@@ -11,16 +15,12 @@ import { ProjectDescription } from './project-description';
 import { ProjectHeader } from './project-header';
 import { ReposLinksContracts } from './repos-links-contracts';
 import { SocialLinksList } from './social-links';
-import { Testimonials } from './testimonials';
+// import { Testimonials } from './testimonials';
 
-export function ProjectDetails({
-  data,
-  isPending,
-}: {
-  data?: Project;
-  isPending: boolean;
-}) {
+export function ProjectDetails() {
+  const { project, isLoading } = useProjectContext();
   const {
+    id,
     profileAvatarUrl,
     name,
     projectCoverImageUrl,
@@ -32,14 +32,16 @@ export function ProjectDetails({
     links,
     grantsAndFunding,
     pricingModel,
+    impactMetrics,
     impactStatement,
-    testimonials,
+    // testimonials,
     contracts,
     team,
-  } = data ?? {};
+  } = project ?? {};
+  console.log({ project });
   return (
     <>
-      {isPending ? (
+      {isLoading ? (
         <>
           <Skeleton className="w-96 h-8" />
           <div className="space-y-2">
@@ -59,7 +61,9 @@ export function ProjectDetails({
           <ProjectDescription description={description} />
           <SocialLinksList socialLinks={socialLinks} />
           <CategoryAndTeam
-            category={applicationCategory as CategoryType}
+            category={
+              applicationCategory as RetroFundingBallotCategoriesAllocationCategorySlug
+            }
             team={team as TeamMember[] | undefined}
           />
           <ReposLinksContracts
@@ -67,7 +71,8 @@ export function ProjectDetails({
             links={links}
             contracts={contracts}
           />
-          <Testimonials testimonials={testimonials} />
+          {/* <Testimonials testimonials={testimonials} /> */}
+          <Attestations projectId={id} metrics={impactMetrics} />
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

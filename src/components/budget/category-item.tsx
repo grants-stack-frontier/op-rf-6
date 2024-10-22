@@ -1,8 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Category } from '@/data/categories';
 import {
   RiAddLine,
   RiArrowRightSLine,
@@ -13,8 +8,14 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useBudgetContext } from './provider';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { useBudgetContext } from '@/contexts/BudgetContext';
 import { categoryMap } from '@/hooks/useProjects';
+import { Category } from '@/types/categories';
 
 interface CategoryItemProps {
   category: Category;
@@ -37,7 +38,7 @@ export function CategoryItem({ category }: CategoryItemProps) {
   const isLocked = lockedFields[category.id] || false;
   const projectCount =
     (allProjectsByCategory &&
-      allProjectsByCategory[categoryMap[category.id]].length) ||
+      allProjectsByCategory[categoryMap[category.id]]?.length) ||
     0;
 
   const formatAllocation = (value: number) =>

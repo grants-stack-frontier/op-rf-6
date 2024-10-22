@@ -11,7 +11,7 @@ export default defineConfig({
       mock: true,
       override: {
         mutator: {
-          path: './src/lib/custom-fetch.ts',
+          path: './src/lib/customFetch.ts',
           name: 'customFetch',
         },
       },

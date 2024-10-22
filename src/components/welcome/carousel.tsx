@@ -1,16 +1,18 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import { markIntroAsSeen } from '@/lib/localStorage';
 import { cn } from '@/lib/utils';
-import { markIntroAsSeen } from '@/utils/localStorage';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
+
 import { Button } from '../ui/button';
 import { Heading } from '../ui/headings';
 
@@ -46,13 +48,13 @@ export function WelcomeCarousel({
 
   return (
     <div className="flex flex-col items-center">
-      <Carousel setApi={setApi} className="w-full max-w-[550px] h-[280px]">
+      <Carousel setApi={setApi} className="w-full max-w-[550px] h-[290px]">
         <CarouselContent>
           {slides.map(({ image }, index) => (
             <CarouselItem key={index} className="flex flex-col items-center">
-              <div className="w-[300px] mb-6">
+              <div className="w-[360px] mb-8">
                 <div className="flex h-36 items-center justify-center">
-                  <Image alt="" {...image} />
+                  <Image alt="" {...image} width={360} />
                 </div>
               </div>
               <div className="mx-auto">

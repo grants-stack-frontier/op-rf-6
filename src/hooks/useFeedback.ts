@@ -1,26 +1,8 @@
-import { useToast } from '@/components/ui/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import ky from 'ky';
-import { z } from 'zod';
 
-const FormSchema = z.object({
-  address: z.string(),
-
-  votingTime: z.string(),
-
-  votingRating: z.string(),
-
-  concernRating: z.string(),
-  concernComment: z.string().optional(),
-
-  confidenceRating: z.string(),
-  confidenceComment: z.string().optional(),
-
-  influenceRating: z.string(),
-  influenceComment: z.string().optional(),
-});
-
-export type FeedbackForm = z.infer<typeof FormSchema>;
+import { useToast } from '@/components/ui/use-toast';
+import { FeedbackForm } from '@/types/various';
 
 const formMap: FeedbackForm = {
   address: '45ea618e-403e-40b8-b610-88b6b1b63b6c',
@@ -49,7 +31,7 @@ async function sendFeedback(feedback: FeedbackForm) {
     }
   );
   return ky
-    .post(`/api/deform`, {
+    .post('/api/deform', {
       json: {
         operationName: 'AddFormResponse',
         variables: {

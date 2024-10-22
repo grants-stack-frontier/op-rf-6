@@ -26,11 +26,13 @@ Live and stable.
 - **contracts**: Data for the current onchain contracts
 - **projects** Round 5 Projects with mock data
 - **RetroFundingBallots** Round 5 Ballots with mock data
-
-Not Live.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
+
+Not Live.
+- 0.3.0: Round 6 mock projects data
+- 0.3.1: Round 6 production release with real data
 
 ### Release Schedule
 
@@ -44,15 +46,24 @@ Not Live.
 | OP 0.2.0 | LIVE   | Aug 10th |
 | OP 0.2.1 | LIVE   | Aug 26th |
 | OP 0.2.2 | LIVE   | Sep 4th |
-| OP 0.2.3 | ON TRACK   | Sep 20th |
+| OP 0.2.3 | LIVE   | Sep 20th |
+|----------|---------|---------------|
+| OP 0.3.0 | ON TRACK   | Oct 11th |
+| OP 0.3.1 | ON TRACK   | Oct 25th |
  * OpenAPI spec version: 0.2.1
  */
 import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
+import {
+  RetroFundingRoundStatus,
+  VoteSupport,
+  VotingStrategy,
+} from './agora.schemas';
 import type {
   ApprovalProposalData,
   ApprovalProposalResults,
   AuthToken,
+  Ballot,
   Comment,
   CommentVote,
   Contract,
@@ -76,18 +87,12 @@ import type {
   RetroFundingImpactMetric,
   RetroFundingRound,
   Round4Ballot,
-  Round5Ballot,
   SnapshotProposalData,
   SnapshotProposalResults,
   StandardProposalData,
   StandardProposalResults,
   SubmitRetroFundingBallot200,
   VotingToken,
-} from './agora.schemas';
-import {
-  RetroFundingRoundStatus,
-  VoteSupport,
-  VotingStrategy,
 } from './agora.schemas';
 
 export const getGetSpecResponseMock = (): string => faker.word.sample();
@@ -164,7 +169,7 @@ export const getGetDelegatesResponseMock = (
     })),
     undefined,
   ]),
-  metadata: faker.helpers.arrayElement([
+  meta: faker.helpers.arrayElement([
     {
       has_next: faker.helpers.arrayElement([
         faker.datatype.boolean(),
@@ -1528,53 +1533,7 @@ export const getGetProjectsResponseMock = (
         Array.from(
           { length: faker.number.int({ min: 1, max: 10 }) },
           (_, i) => i + 1
-        ).map(() =>
-          faker.helpers.arrayElement([
-            faker.word.sample(),
-            {
-              age_of_project_years: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              fork_count: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              forked_by_top_devs: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              forked_events: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              fulltime_developer_average_6_months: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              new_contributor_count_6_months: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              repo_rank: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              star_count: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              starred_by_top_devs: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              starred_events: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-            },
-          ])
-        ),
+        ).map(() => faker.helpers.arrayElement([faker.word.sample(), {}])),
         undefined,
       ]),
       grantsAndFunding: faker.helpers.arrayElement([
@@ -1647,6 +1606,130 @@ export const getGetProjectsResponseMock = (
         undefined,
       ]),
       id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+      impactMetrics: faker.helpers.arrayElement([
+        {
+          avg_nps_score: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          cant_live_without_superlative: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
+          count_citizen_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          count_delegate_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          count_total_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          elected_governance_reviews: faker.helpers.arrayElement([
+            {
+              anticapture_commission_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              code_of_conduct_council_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              optimism_grants_council_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          most_positive_superlative: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
+          percentage_distributions: faker.helpers.arrayElement([
+            {
+              citizens: faker.helpers.arrayElement([
+                {
+                  extremely_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  neutral: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  somewhat_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              top_delegates: faker.helpers.arrayElement([
+                {
+                  extremely_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  neutral: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  somewhat_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+        },
+        undefined,
+      ]),
       impactStatement: faker.helpers.arrayElement([
         {
           category: faker.helpers.arrayElement([
@@ -1655,19 +1738,14 @@ export const getGetProjectsResponseMock = (
           ]),
           statement: faker.helpers.arrayElement([
             {
-              create: Array.from(
-                { length: faker.number.int({ min: 1, max: 5 }) },
-                () => ({
-                  answer: faker.helpers.arrayElement([
-                    faker.lorem.sentence(),
-                    undefined,
-                  ]),
-                  question: faker.helpers.arrayElement([
-                    faker.lorem.sentence(),
-                    undefined,
-                  ]),
-                })
-              ),
+              answer: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              question: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
             },
             undefined,
           ]),
@@ -1837,9 +1915,9 @@ export const getGetRetroFundingRoundByIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getGetRetroFundingRoundBallotByIdResponseRound5BallotMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+export const getGetRetroFundingRoundBallotByIdResponseBallotMock = (
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   ...{
     address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
     budget: faker.helpers.arrayElement([
@@ -1857,9 +1935,9 @@ export const getGetRetroFundingRoundBallotByIdResponseRound5BallotMock = (
         ]),
         category_slug: faker.helpers.arrayElement([
           faker.helpers.arrayElement([
-            'ETHEREUM_CORE_CONTRIBUTIONS',
-            'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-            'OP_STACK_TOOLING',
+            'GOVERNANCE_INFRA_AND_TOOLING',
+            'GOVERNANCE_ANALYTICS',
+            'GOVERNANCE_LEADERSHIP',
           ] as const),
           undefined,
         ]),
@@ -2049,7 +2127,7 @@ export const getGetRetroFundingRoundBallotByIdResponseRound4BallotMock = (
 export const getGetRetroFundingRoundBallotByIdResponseMock =
   (): GetRetroFundingRoundBallotById200 =>
     faker.helpers.arrayElement([
-      { ...getGetRetroFundingRoundBallotByIdResponseRound5BallotMock() },
+      { ...getGetRetroFundingRoundBallotByIdResponseBallotMock() },
       { ...getGetRetroFundingRoundBallotByIdResponseRound4BallotMock() },
     ]);
 
@@ -2198,53 +2276,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
         Array.from(
           { length: faker.number.int({ min: 1, max: 10 }) },
           (_, i) => i + 1
-        ).map(() =>
-          faker.helpers.arrayElement([
-            faker.word.sample(),
-            {
-              age_of_project_years: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              fork_count: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              forked_by_top_devs: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              forked_events: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              fulltime_developer_average_6_months: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              new_contributor_count_6_months: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              repo_rank: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              star_count: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              starred_by_top_devs: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-              starred_events: faker.helpers.arrayElement([
-                faker.number.int({ min: undefined, max: undefined }),
-                undefined,
-              ]),
-            },
-          ])
-        ),
+        ).map(() => faker.helpers.arrayElement([faker.word.sample(), {}])),
         undefined,
       ]),
       grantsAndFunding: faker.helpers.arrayElement([
@@ -2317,6 +2349,130 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
         undefined,
       ]),
       id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+      impactMetrics: faker.helpers.arrayElement([
+        {
+          avg_nps_score: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          cant_live_without_superlative: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
+          count_citizen_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          count_delegate_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          count_total_attestations: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          elected_governance_reviews: faker.helpers.arrayElement([
+            {
+              anticapture_commission_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              code_of_conduct_council_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              optimism_grants_council_member: faker.helpers.arrayElement([
+                {
+                  avg_nps_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  avg_pmf_score: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  count_attestations: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          most_positive_superlative: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
+          percentage_distributions: faker.helpers.arrayElement([
+            {
+              citizens: faker.helpers.arrayElement([
+                {
+                  extremely_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  neutral: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  somewhat_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+              top_delegates: faker.helpers.arrayElement([
+                {
+                  extremely_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  neutral: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                  somewhat_upset: faker.helpers.arrayElement([
+                    faker.number.int({ min: undefined, max: undefined }),
+                    undefined,
+                  ]),
+                },
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+        },
+        undefined,
+      ]),
       impactStatement: faker.helpers.arrayElement([
         {
           category: faker.helpers.arrayElement([
@@ -2325,19 +2481,14 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
           ]),
           statement: faker.helpers.arrayElement([
             {
-              create: Array.from(
-                { length: faker.number.int({ min: 1, max: 5 }) },
-                () => ({
-                  answer: faker.helpers.arrayElement([
-                    faker.lorem.sentence(),
-                    undefined,
-                  ]),
-                  question: faker.helpers.arrayElement([
-                    faker.lorem.sentence(),
-                    undefined,
-                  ]),
-                })
-              ),
+              answer: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              question: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
             },
             undefined,
           ]),
@@ -2453,53 +2604,7 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     Array.from(
       { length: faker.number.int({ min: 1, max: 10 }) },
       (_, i) => i + 1
-    ).map(() =>
-      faker.helpers.arrayElement([
-        faker.word.sample(),
-        {
-          age_of_project_years: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          fork_count: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          forked_by_top_devs: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          forked_events: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          fulltime_developer_average_6_months: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          new_contributor_count_6_months: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          repo_rank: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          star_count: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          starred_by_top_devs: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-          starred_events: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
-            undefined,
-          ]),
-        },
-      ])
-    ),
+    ).map(() => faker.helpers.arrayElement([faker.word.sample(), {}])),
     undefined,
   ]),
   grantsAndFunding: faker.helpers.arrayElement([
@@ -2542,24 +2647,140 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     undefined,
   ]),
   id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  impactMetrics: faker.helpers.arrayElement([
+    {
+      avg_nps_score: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      cant_live_without_superlative: faker.helpers.arrayElement([
+        faker.word.sample(),
+        undefined,
+      ]),
+      count_citizen_attestations: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      count_delegate_attestations: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      count_total_attestations: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      elected_governance_reviews: faker.helpers.arrayElement([
+        {
+          anticapture_commission_member: faker.helpers.arrayElement([
+            {
+              avg_nps_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              avg_pmf_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              count_attestations: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          code_of_conduct_council_member: faker.helpers.arrayElement([
+            {
+              avg_nps_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              avg_pmf_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              count_attestations: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          optimism_grants_council_member: faker.helpers.arrayElement([
+            {
+              avg_nps_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              avg_pmf_score: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              count_attestations: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+        },
+        undefined,
+      ]),
+      most_positive_superlative: faker.helpers.arrayElement([
+        faker.word.sample(),
+        undefined,
+      ]),
+      percentage_distributions: faker.helpers.arrayElement([
+        {
+          citizens: faker.helpers.arrayElement([
+            {
+              extremely_upset: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              neutral: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              somewhat_upset: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          top_delegates: faker.helpers.arrayElement([
+            {
+              extremely_upset: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              neutral: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              somewhat_upset: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+        },
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
   impactStatement: faker.helpers.arrayElement([
     {
       category: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       statement: faker.helpers.arrayElement([
         {
-          create: Array.from(
-            { length: faker.number.int({ min: 1, max: 5 }) },
-            () => ({
-              answer: faker.helpers.arrayElement([
-                faker.lorem.sentence(),
-                undefined,
-              ]),
-              question: faker.helpers.arrayElement([
-                faker.lorem.sentence(),
-                undefined,
-              ]),
-            })
-          ),
+          answer: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+          question: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
         },
         undefined,
       ]),
@@ -2708,8 +2929,8 @@ export const getAddImpactMetricToRetroFundingBallotResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundProjectsResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -2723,9 +2944,9 @@ export const getUpdateRetroFundingRoundProjectsResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -2819,8 +3040,8 @@ export const getUpdateRetroFundingRoundProjectsResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -2834,9 +3055,9 @@ export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -2930,8 +3151,8 @@ export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -2945,9 +3166,9 @@ export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3041,8 +3262,8 @@ export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -3056,9 +3277,9 @@ export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3152,8 +3373,8 @@ export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -3167,9 +3388,9 @@ export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3263,8 +3484,8 @@ export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
 });
 
 export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -3278,9 +3499,9 @@ export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -3374,8 +3595,8 @@ export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
 });
 
 export const getUpdateRetroFundingBallotDistributionMethodResponseMock = (
-  overrideResponse: Partial<Round5Ballot> = {}
-): Round5Ballot => ({
+  overrideResponse: Partial<Ballot> = {}
+): Ballot => ({
   address: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   budget: faker.helpers.arrayElement([
     faker.number.int({ min: undefined, max: undefined }),
@@ -3389,9 +3610,9 @@ export const getUpdateRetroFundingBallotDistributionMethodResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
-          'ETHEREUM_CORE_CONTRIBUTIONS',
-          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-          'OP_STACK_TOOLING',
+          'GOVERNANCE_INFRA_AND_TOOLING',
+          'GOVERNANCE_ANALYTICS',
+          'GOVERNANCE_LEADERSHIP',
         ] as const),
         undefined,
       ]),
@@ -4453,10 +4674,10 @@ export const getAddImpactMetricToRetroFundingBallotMockHandler = (
 
 export const getUpdateRetroFundingRoundProjectsMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/projects',
@@ -4479,10 +4700,10 @@ export const getUpdateRetroFundingRoundProjectsMockHandler = (
 
 export const getUpdateRetroFundingRoundProjectAllocationMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/projects/:projectId/allocation/:allocation',
@@ -4505,10 +4726,10 @@ export const getUpdateRetroFundingRoundProjectAllocationMockHandler = (
 
 export const getUpdateRetroFundingRoundProjectImpactMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/projects/:projectId/impact/:impact',
@@ -4531,10 +4752,10 @@ export const getUpdateRetroFundingRoundProjectImpactMockHandler = (
 
 export const getUpdateRetroFundingRoundProjectPositionMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/projects/:projectId/position/:position',
@@ -4557,10 +4778,10 @@ export const getUpdateRetroFundingRoundProjectPositionMockHandler = (
 
 export const getUpdateRetroFundingRoundCategoryAllocationMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/categories',
@@ -4583,10 +4804,10 @@ export const getUpdateRetroFundingRoundCategoryAllocationMockHandler = (
 
 export const getUpdateRetroFundingRoundBudgetAllocationMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/budget/:budget',
@@ -4609,10 +4830,10 @@ export const getUpdateRetroFundingRoundBudgetAllocationMockHandler = (
 
 export const getUpdateRetroFundingBallotDistributionMethodMockHandler = (
   overrideResponse?:
-    | Round5Ballot
+    | Ballot
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<Round5Ballot> | Round5Ballot)
+      ) => Promise<Ballot> | Ballot)
 ) => {
   return http.post(
     '*/retrofunding/rounds/:roundId/ballots/:addressOrEnsName/distribution_method/:distributionMethod',

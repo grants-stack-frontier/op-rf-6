@@ -1,23 +1,23 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { votingEndDate } from '@/config';
-import {
-  Round5Ballot,
-  useRound5Ballot,
-  useSubmitBallot,
-} from '@/hooks/useBallotRound5';
-import { formatDate } from '@/lib/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArrowDownToLineIcon } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
+import { track } from 'mixpanel-browser';
 import Image from 'next/image';
 import { ComponentProps, useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { votingEndDate } from '@/config';
+import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
+import { formatDate } from '@/lib/utils';
+import { Round5Ballot } from '@/types/ballot';
+
 import VotingSuccess_OPStack from '../../../public/RetroFunding_R5_IVoted_16x9.png';
 import { Button } from '../ui/button';
 import { Heading } from '../ui/headings';
 import { Text } from '../ui/text';
+
 import { Feedback, Form } from './feedback-form';
 import { exportRound5Ballot } from './import-ballot5';
-import { useQueryClient } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
 
 export function SubmitRound5Dialog({
   open,
@@ -29,7 +29,7 @@ export function SubmitRound5Dialog({
   >(ballot?.status === 'SUBMITTED' ? 'submit' : 'init');
   const { address } = useAccount();
 
-  const { refetch: refetchBallot } = useRound5Ballot(address);
+  const { refetch: refetchBallot } = useBallot(address);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -172,5 +172,5 @@ export function downloadImage(element: HTMLImageElement | null) {
   anchor.click();
   document.body.removeChild(anchor);
 
-  mixpanel.track('Download I Voted image');
+  track('Download I Voted image');
 }

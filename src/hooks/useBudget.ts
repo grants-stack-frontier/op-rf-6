@@ -2,18 +2,19 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { CategoryId, Round5Allocation } from '@/types/shared';
+
 import {
   getRetroFundingRoundBallotById,
   updateRetroFundingRoundCategoryAllocation,
-  getRetroFundingRoundBallotByIdResponse,
-  updateRetroFundingRoundCategoryAllocationResponse,
+  type getRetroFundingRoundBallotByIdResponse,
+  type updateRetroFundingRoundCategoryAllocationResponse,
 } from '@/__generated__/api/agora';
-import {
+import type {
   RetroFundingBallotCategoriesAllocation,
-  Round5Ballot,
+  Ballot,
 } from '@/__generated__/api/agora.schemas';
+import { useToast } from '@/components/ui/use-toast';
+import type { Round5Allocation } from '@/types/various';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();
@@ -27,7 +28,7 @@ export function useBudget(roundId: number) {
       if (!address) throw new Error('No address provided');
       return getRetroFundingRoundBallotById(roundId, address).then(
         (response: getRetroFundingRoundBallotByIdResponse) => {
-          const ballot = response.data as Round5Ballot;
+          const ballot = response.data as Ballot;
           return {
             budget: ballot.budget,
             allocations:
@@ -50,11 +51,11 @@ export function useBudget(roundId: number) {
         address,
         allocation
       ).then((response: updateRetroFundingRoundCategoryAllocationResponse) => {
-        const updatedBallot = response.data as Round5Ballot;
+        const updatedBallot = response.data as Ballot;
         // Update the query data with the full structure
         queryClient.setQueryData(
           ['budget', address, roundId],
-          (oldData: any) => ({
+          (_: unknown) => ({
             budget: updatedBallot.budget,
             allocations: updatedBallot.category_allocations,
           })

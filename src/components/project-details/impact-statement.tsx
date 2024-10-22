@@ -1,7 +1,8 @@
 import { ProjectImpactStatement } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
-import { categoryNames } from '@/data/categories';
-import { Markdown } from '../markdown';
+import { categoryNames } from '@/lib/categories';
+
+import { Markdown } from '../common/markdown';
 
 export function ImpactStatement({
   impactStatement,
@@ -32,19 +33,15 @@ export function ImpactStatement({
           allowed.
         </p>
       </div>
-      {statement?.create && statement.create.length > 0 && (
-        <>
-          {statement.create.map((statement, index) => (
-            <div key={index} className="flex flex-col gap-6 mb-12">
-              <p className="border-l-4 pl-2 border-red-500 font-semibold">
-                {statement.question}
-              </p>
-              <Markdown className="text-gray-700 dark:text-gray-300">
-                {statement.answer}
-              </Markdown>
-            </div>
-          ))}
-        </>
+      {statement && (
+        <div className="flex flex-col gap-6 mb-12">
+          <p className="border-l-4 pl-2 border-red-500 font-semibold">
+            {statement.question}
+          </p>
+          <Markdown className="text-gray-700 dark:text-gray-300">
+            {statement.answer}
+          </Markdown>
+        </div>
       )}
     </>
   );

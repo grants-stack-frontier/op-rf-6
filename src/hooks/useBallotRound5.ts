@@ -6,60 +6,18 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { agoraRoundsAPI } from '@/config';
-
+import { useMemo } from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
-import { useToast } from '@/components/ui/use-toast';
-import { request } from '@/lib/request';
-import debounce from 'lodash.debounce';
-import { useMemo, useRef } from 'react';
-import { useBallotRound5Context } from '@/components/ballot/provider5';
-import { CategoryId } from '@/types/shared';
-import {
-  RetroFunding5BallotSubmissionContent,
-  SubmitRetroFundingBallotBody,
-} from '@/__generated__/api/agora.schemas';
+
 import { submitRetroFundingBallot } from '@/__generated__/api/agora';
+import type { SubmitRetroFundingBallotBody } from '@/__generated__/api/agora.schemas';
+import { useToast } from '@/components/ui/use-toast';
+import { agoraRoundsAPI, ROUND } from '@/config';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { request } from '@/lib/request';
+import { Round5Ballot } from '@/types/ballot';
 
-export type Round5CategoryAllocation = {
-  category_slug: CategoryId;
-  allocation: number;
-  locked: boolean;
-};
-
-export type Round5ProjectAllocation = {
-  project_id: string;
-  name: string;
-  image: string;
-  position: number;
-  allocation: number;
-  impact: number;
-};
-
-export type Round5BallotStatus =
-  | 'NOT STARTED'
-  | 'RANKED'
-  | 'PENDING SUBMISSION'
-  | 'SUBMITTED';
-
-export type Round5Ballot = {
-  address: string;
-  round_id: number;
-  status: Round5BallotStatus;
-  budget?: number;
-  created_at?: string;
-  updated_at?: string;
-  published_at?: string;
-  submitted_at?: string;
-  category_allocations: Round5CategoryAllocation[];
-  project_allocations: Round5ProjectAllocation[];
-  projects_to_be_evaluated: string[];
-  total_projects: number;
-  payload_for_signature?: RetroFunding5BallotSubmissionContent;
-  distribution_method?: string;
-};
-
-export function useRound5Ballot(address?: string) {
+export function useBallot(address?: string) {
   return useQuery({
     enabled: Boolean(address),
     queryKey: ['ballot-round5', address],
@@ -76,14 +34,6 @@ export function useSaveRound5Allocation() {
   const { address } = useAccount();
 
   const queryClient = useQueryClient();
-
-  const debounceToast = useRef(
-    debounce(
-      () => toast({ title: 'Your ballot is saved automatically' }),
-      2000,
-      { leading: true, trailing: false }
-    )
-  ).current;
 
   return useMutation({
     mutationKey: ['save-round5-ballot'],
@@ -112,7 +62,7 @@ export function useSaveRound5Allocation() {
 export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
   const { toast } = useToast();
   const { address } = useAccount();
-  const { refetch } = useRound5Ballot(address);
+  const { refetch } = useBallot(address);
   const { signMessageAsync } = useSignMessage();
   const queryClient = useQueryClient();
 
@@ -125,20 +75,23 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
       });
 
       let submission;
-      try {
-        submission = await submitRetroFundingBallot(5, address!, {
-          address,
-          ballot_content,
-          signature,
-        });
-        if (submission.status != 200) {
-          throw new Error('Failed submitting ballot', {
-            cause: submission.status,
+
+      if (address) {
+        try {
+          submission = await submitRetroFundingBallot(ROUND, address, {
+            address,
+            ballot_content,
+            signature,
           });
+          if (submission.status !== 200) {
+            throw new Error('Failed submitting ballot', {
+              cause: submission.status,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          throw new Error('Error submitting ballot');
         }
-      } catch (error) {
-        console.error(error);
-        throw new Error('Error submitting ballot');
       }
 
       saveBallotSubmissionToLocalStorage({
@@ -160,16 +113,7 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
   });
 }
 
-export function useBallotSubmission() {
-  const { address } = useAccount();
-  return useQuery({
-    queryKey: ['ballot-submission-local-storage'],
-    queryFn: () => getBallotSubmissionFromLocalStorage(address),
-    initialData: getBallotSubmissionFromLocalStorage(address),
-  });
-}
-
-export function saveBallotSubmissionToLocalStorage(
+function saveBallotSubmissionToLocalStorage(
   submission: SubmitRetroFundingBallotBody
 ) {
   if (typeof window !== 'undefined') {
@@ -183,32 +127,9 @@ export function saveBallotSubmissionToLocalStorage(
   }
 }
 
-export function getBallotSubmissionFromLocalStorage(
-  address: string | undefined
-): { submission: SubmitRetroFundingBallotBody; timestamp: number } | null {
-  if (typeof window !== 'undefined') {
-    const item = localStorage.getItem('ballot-submission');
-    const parsed = item ? JSON.parse(item) : null;
-    return parsed?.submission?.address.toLowerCase() === address?.toLowerCase()
-      ? parsed
-      : null;
-  }
-  return null;
-}
-
 export function useSaveRound5Position() {
   const { toast } = useToast();
   const { address } = useAccount();
-
-  const queryClient = useQueryClient();
-
-  const debounceToast = useRef(
-    debounce(
-      () => toast({ title: 'Your ballot is saved automatically' }),
-      2000,
-      { leading: true, trailing: false }
-    )
-  ).current;
 
   return useMutation({
     mutationKey: ['save-round5-position'],
@@ -219,12 +140,7 @@ export function useSaveRound5Position() {
           {}
         )
         .json<Round5Ballot>();
-      // .then((r) => {
-      //   queryClient.setQueryData(["ballot-round5", address], r);
-      //   return r;
-      // });
     },
-    // onSuccess: debounceToast,
     onError: () =>
       toast({ variant: 'destructive', title: 'Error saving ballot' }),
   });
@@ -268,20 +184,25 @@ export function useDistributionMethodFromLocalStorage() {
 
   const query = useQuery({
     queryKey: ['distribution-method-local-storage', address],
-    queryFn: () => getDistributionMethodFromLocalStorage(address!),
+    queryFn: () =>
+      address ? getDistributionMethodFromLocalStorage(address) : null,
     enabled: !!address,
   });
 
   const update = useMutation({
     mutationFn: async (method: DistributionMethod | null) => {
-      saveDistributionMethodToLocalStorage(method, address!);
+      if (address) {
+        saveDistributionMethodToLocalStorage(method, address);
+      }
       return method;
     },
     onSuccess: (method) => {
-      queryClient.setQueryData(
-        ['distribution-method-local-storage', address],
-        method
-      );
+      if (address) {
+        queryClient.setQueryData(
+          ['distribution-method-local-storage', address],
+          method
+        );
+      }
     },
   });
 
@@ -312,7 +233,9 @@ export function useDistributionMethod() {
         .json<Round5Ballot>()
         .then((r) => {
           queryClient.setQueryData(['ballot-round5', address], r);
-          saveDistributionMethodToLocalStorage(distribution_method, address!);
+          if (address) {
+            saveDistributionMethodToLocalStorage(distribution_method, address);
+          }
           return r;
         });
       return res;

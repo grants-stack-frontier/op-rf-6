@@ -1,37 +1,16 @@
-import { CategoryType, categoryNames } from '@/data/categories';
-import { getBadgeClassName } from '@/utils/projectUtils';
+import { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
+import { categoryNames } from '@/lib/categories';
+import { getBadgeClassName } from '@/lib/projectUtils';
+import { TeamMember } from '@/types/project-details';
+
 import { AvatarCarousel } from '../common/avatar-carousel';
 import { Badge } from '../ui/badge';
-
-// Define a type for team members
-export type TeamMember = {
-  fid: number;
-  object: 'user';
-  pfp_url: string | null;
-  profile: {
-    bio: {
-      text: string;
-    };
-  };
-  username: string;
-  power_badge: boolean;
-  display_name: string;
-  active_status: 'inactive' | 'active';
-  verifications: string[];
-  follower_count: number;
-  custody_address: string;
-  following_count: number;
-  verified_addresses: {
-    eth_addresses: string[];
-    sol_addresses: string[];
-  };
-};
 
 export function CategoryAndTeam({
   category,
   team,
 }: {
-  category?: CategoryType;
+  category?: RetroFundingBallotCategoriesAllocationCategorySlug;
   team?: TeamMember[];
 }) {
   // Safely map over the team array, with additional checks

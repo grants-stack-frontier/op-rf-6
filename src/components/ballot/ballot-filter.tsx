@@ -1,19 +1,21 @@
 'use client';
+import { Ellipsis } from 'lucide-react';
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { useBallotRound5Context } from './provider5';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+
 import { exportRound5Ballot, ImportBallotDialog } from './import-ballot5';
-import { Ellipsis } from 'lucide-react';
 
 export function BallotFilter() {
   const [isOpen, setOpen] = useState(false);
-  const { state, ballot } = useBallotRound5Context();
+  const { ballot } = useBallotRound5Context();
 
   return (
     <div className="flex gap-2">

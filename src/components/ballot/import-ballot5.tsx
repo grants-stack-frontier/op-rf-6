@@ -1,19 +1,22 @@
 'use client';
 
+import { type ComponentProps, useCallback, useRef } from 'react';
+import { useAccount } from 'wagmi';
+
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
-  Round5ProjectAllocation,
   useDistributionMethodFromLocalStorage,
-  useRound5Ballot,
+  useBallot,
 } from '@/hooks/useBallotRound5';
-import { ImpactScore } from '@/hooks/useProjectImpact';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
-import { format, parse } from '@/lib/csv';
+import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
-import { CategoryId } from '@/types/shared';
-import { ComponentProps, useCallback, useRef } from 'react';
-import { useAccount } from 'wagmi';
+import { Round5ProjectAllocation } from '@/types/ballot';
+import { ImpactScore } from '@/types/project-scoring';
+import type { CategoryId } from '@/types/various';
+
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -23,7 +26,6 @@ import {
   DialogTitle,
 } from '../ui/dialog';
 import { toast } from '../ui/use-toast';
-import { useBallotRound5Context } from './provider5';
 
 export function ImportBallotDialog({
   isOpen,
@@ -49,10 +51,10 @@ export function ImportBallotDialog({
 }
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
-  const editor = useBallotRound5Context();
+  const { ballot, reset } = useBallotRound5Context();
   const { mutateAsync: saveProjects } = useSaveProjects();
   const { address } = useAccount();
-  const { refetch } = useRound5Ballot(address);
+  const { refetch } = useBallot(address);
   const { data: session } = useSession();
   const { data: projects } = useProjectsByCategory(
     session?.category as CategoryId
@@ -64,7 +66,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parse<Round5ProjectAllocation>(csvString);
+      const { data } = parseCSV<Round5ProjectAllocation>(csvString);
       const allocations = data.map(({ project_id, allocation, impact }) => ({
         project_id,
         allocation: Number(allocation).toString(),
@@ -77,18 +79,18 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
         );
       }
 
-      editor.reset(
+      reset(
         allocations.map((alloc) => ({
           project_id: alloc.project_id,
           allocation: Number(alloc.allocation),
           impact: alloc.impact,
-          name: editor.ballot?.project_allocations.find(
+          name: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.name,
-          image: editor.ballot?.project_allocations.find(
+          image: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.image,
-          position: editor.ballot?.project_allocations.find(
+          position: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.position,
         })) as Round5ProjectAllocation[]
@@ -108,14 +110,14 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           refetch();
           onClose();
         })
-        .catch((e) => {
+        .catch(() => {
           toast({
             title: 'Error importing ballot',
             variant: 'destructive',
           });
         });
     },
-    [editor]
+    [ballot, reset]
   );
 
   return (
@@ -143,9 +145,6 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  // const emptyBallot: Round5Allocation[] = [
-  //   { category_slug: 'ETHEREUM_CORE_CONTRIBUTIONS', allocation: 0, locked: false },
-  // ];
   const { ballot } = useBallotRound5Context();
   const emptyBallot: any[] = ballot
     ? ballot.project_allocations.map((alloc) => ({

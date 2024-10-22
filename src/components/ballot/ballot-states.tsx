@@ -1,31 +1,26 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
+import { type ComponentType, type PropsWithChildren, useMemo } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import {
-  ComponentProps,
-  ComponentType,
-  PropsWithChildren,
-  useMemo,
-  useState,
-} from 'react';
-import { Progress } from '../ui/progress';
-import { useBallotRound5Context } from './provider5';
-import { useDisconnect } from '@/hooks/useAuth';
-import { useVotingCategory } from '@/hooks/useVotingCategory';
-import { categoryNames } from '@/data/categories';
-import { CategoryId } from '@/types/shared';
+import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useDisconnect, useSession } from '@/hooks/useAuth';
+import { categoryNames } from '@/lib/categories';
+import type { CategoryId } from '@/types/various';
+
 import PairwiseLogo from '../../../public/pairwise.svg';
-import Image from 'next/image';
+import { Progress } from '../ui/progress';
 import { Separator } from '../ui/separator';
 
 export function EmptyBallot() {
   const { ballot } = useBallotRound5Context();
-  const votingCategory = useVotingCategory();
+  const { data: session } = useSession();
+  const votingCategory = session?.category;
 
   const quantities = useMemo(() => {
     if (ballot) {
@@ -100,18 +95,6 @@ export function NonBadgeholder() {
   );
 }
 
-function DashedCard({ className, ...props }: ComponentProps<typeof Card>) {
-  return (
-    <Card
-      className={cn('border-none', className)}
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23bcbfcd' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
-      }}
-      {...props}
-    />
-  );
-}
-
 function EmptyCard({
   icon: Icon,
   title,
@@ -147,12 +130,17 @@ function PairwiseCard() {
             href="https://rf5.pairwise.vote"
             target="_blank"
             className="underline"
+            rel="noreferrer"
           >
             Pairwise
           </a>
           . Return here to complete and submit your ballot.
         </p>
-        <Link href="https://rf5.pairwise.vote" target="_blank">
+        <Link
+          href="https://rf5.pairwise.vote"
+          target="_blank"
+          aria-label="Open Pairwise in a new tab"
+        >
           <svg
             className="cursor-pointer"
             width="20"
@@ -160,7 +148,10 @@ function PairwiseCard() {
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-labelledby="pairwiseSvgTitle"
           >
+            <title id="pairwiseSvgTitle">Arrow pointing to the top right</title>
             <path
               d="M13.3364 7.84518L6.16426 15.0173L4.98575 13.8388L12.1579 6.66667H5.83643V5H15.0031V14.1667H13.3364V7.84518Z"
               fill="#0F111A"
@@ -180,34 +171,16 @@ function UserSvg() {
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-labelledby="userSvgTitle"
     >
+      <title id="userSvgTitle">User icon</title>
       <path
         d="M0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32Z"
         fill="#F2F3F8"
       />
       <path
         d="M40 42H24V40C24 37.2386 26.2386 35 29 35H35C37.7614 35 40 37.2386 40 40V42ZM32 33C28.6863 33 26 30.3137 26 27C26 23.6863 28.6863 21 32 21C35.3137 21 38 23.6863 38 27C38 30.3137 35.3137 33 32 33Z"
-        fill="#636779"
-      />
-    </svg>
-  );
-}
-
-function BallotSvg() {
-  return (
-    <svg
-      width="64"
-      height="64"
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32Z"
-        fill="#F2F3F8"
-      />
-      <path
-        d="M40 42H24C23.4477 42 23 41.5523 23 41V23C23 22.4477 23.4477 22 24 22H40C40.5523 22 41 22.4477 41 23V41C41 41.5523 40.5523 42 40 42ZM28 27V29H36V27H28ZM28 31V33H36V31H28ZM28 35V37H33V35H28Z"
         fill="#636779"
       />
     </svg>
@@ -222,7 +195,10 @@ function LockedSvg() {
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-labelledby="lockedSvgTitle"
     >
+      <title id="lockedSvgTitle">Locked icon</title>
       <path
         d="M0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32Z"
         fill="#F2F3F8"

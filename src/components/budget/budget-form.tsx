@@ -1,16 +1,18 @@
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
+import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Slider } from '../ui/slider';
-import { CategoryItem } from './category-item';
-import { useBudgetContext } from './provider';
+import { useBudgetContext } from '@/contexts/BudgetContext';
 import { useBudget } from '@/hooks/useBudget';
-import { Round5Allocation } from '@/types/shared';
-import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
-import { useAccount } from 'wagmi';
-import { Category } from '@/data/categories';
+import { Category } from '@/types/categories';
+
+import { Slider } from '../ui/slider';
+
+import { CategoryItem } from './category-item';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =
@@ -94,15 +96,15 @@ export function BudgetForm() {
               <span className="text-red-500">*</span>
             </p>
             <p className="text-[14px] font-normal text-gray-600">
-              Round 5 rewards impact made to the OP Stack from Oct 2023 - Aug
-              2024.
+              Round 6 rewards impact made to the Optimism Governance from Oct
+              2023 - Aug 2024.
             </p>
             <div className="flex items-center my-6">
-              <span className="text-sm">2M</span>
+              <span className="text-sm">1M</span>
               <Slider
                 className="flex-1 mx-2"
-                min={2000000}
-                max={8000000}
+                min={1000000}
+                max={3500000}
                 step={50000}
                 value={[totalBudget]}
                 onValueChange={handleBudgetChange}
@@ -111,7 +113,7 @@ export function BudgetForm() {
                 rangeClassName="bg-gray-800"
                 thumbClassName="border-gray-600"
               />
-              <span className="text-sm">8M</span>
+              <span className="text-sm">3.5M</span>
               <div className="flex rounded-lg bg-[#F2F3F8] dark:bg-secondary border ml-4">
                 <input
                   type="text"

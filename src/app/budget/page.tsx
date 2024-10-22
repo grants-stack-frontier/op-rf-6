@@ -1,19 +1,18 @@
 'use client';
+import { Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { BallotTabs } from '@/components/ballot/ballot-tabs';
+import { useAccount } from 'wagmi';
+
+import { BudgetForm } from '@/components/budget/budget-form';
+import { InfoBox } from '@/components/budget/info-box';
+import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
 import { PageView } from '@/components/common/page-view';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { BudgetForm } from '@/components/budget/budget-form';
-import { BudgetProvider } from '@/components/budget/provider';
-import { InfoBox } from '@/components/budget/info-box';
 import { Separator } from '@/components/ui/separator';
-import { DisconnectedState } from '@/components/common/disconnected-state';
-import { useAccount } from 'wagmi';
-import { Loader2 } from 'lucide-react';
-import { PostSubmissionBanner } from '@/components/ballot/post-submission-banner';
+import { BudgetProvider } from '@/contexts/BudgetContext';
 
 export default function BudgetBallotPage() {
-  const { isConnecting, isConnected } = useAccount();
+  const { isConnecting } = useAccount();
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -34,17 +33,12 @@ export default function BudgetBallotPage() {
     );
   }
 
-  // If not connected after mounting and not connecting, show disconnected state
-  if (!isConnected) {
-    return <DisconnectedState />;
-  }
-
   // Connected and mounted, render the main content
   return (
     <BudgetProvider>
       <div className="flex flex-row gap-12">
         <section className="flex-grow max-w-[720px] space-y-6">
-          <BallotTabs />
+          <BallotBudgetTabs />
           <p className="text-gray-600">
             Decide on the budget for this round, and then decide how much should
             go to each category. You can return to this step at any time before

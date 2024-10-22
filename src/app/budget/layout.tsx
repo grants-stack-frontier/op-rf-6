@@ -1,6 +1,7 @@
-import { PostSubmissionBanner } from '@/components/ballot/post-submission-banner';
+// import { BallotBudgetTabs } from '@/components/common/ballot-tabs';
+import { PostSubmissionBanner } from '@/components/common/post-submission-banner';
 
-export default function BallotLayout({
+export default function BudgetLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

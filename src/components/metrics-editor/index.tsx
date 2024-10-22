@@ -1,24 +1,27 @@
 'use client';
-import { cn } from '@/lib/utils';
-import { BallotFilter } from '../ballot/ballot-filter';
-import { Card } from '../ui/card';
+import { useAccount } from 'wagmi';
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import {
   DistributionMethod,
   saveDistributionMethodToLocalStorage,
   useDistributionMethod,
   useDistributionMethodFromLocalStorage,
 } from '@/hooks/useBallotRound5';
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card';
-import { ResetButton } from './reset-button';
+import { cn } from '@/lib/utils';
+
+import Custom from '../../../public/chart-custom.svg';
 import Impact from '../../../public/chart-impact.svg';
 import TopBottom from '../../../public/chart-top-bottom.svg';
 import TopWeighted from '../../../public/chart-top-weighted.svg';
-import Custom from '../../../public/chart-custom.svg';
-import { useAccount } from 'wagmi';
+import { BallotFilter } from '../ballot/ballot-filter';
+import { Card } from '../ui/card';
+
+import { ResetButton } from './reset-button';
 
 export function BlueCircleCheckIcon() {
   return (

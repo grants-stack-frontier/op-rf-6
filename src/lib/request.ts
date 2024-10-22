@@ -1,8 +1,10 @@
 'use client';
-import ky, { HTTPError } from 'ky';
-import { getToken, setToken } from './token';
 import { decodeJwt } from 'jose';
-import { Address } from 'viem';
+import ky, { HTTPError } from 'ky';
+
+import { getToken, setToken } from './token';
+
+import type { Address } from 'viem';
 
 export const request = ky.extend({
   hooks: {
@@ -10,11 +12,11 @@ export const request = ky.extend({
       async (request) => {
         const token = getToken();
         if (token) {
-          const decodedToken = decodeJwt<{
+          decodeJwt<{
             siwe: { address: Address };
             isBadgeholder?: boolean;
             category: string;
-          }>(token!);
+          }>(token);
           request.headers.set('Authorization', `Bearer ${token}`);
           request.headers.set('Content-Type', 'application/json');
         }
@@ -29,8 +31,8 @@ export const request = ky.extend({
         ) {
           try {
             setToken('');
-            request.headers.set('Authorization', ``);
-          } catch (error) {
+            request.headers.set('Authorization', '');
+          } catch {
             throw new Error('Failed to refresh token');
           }
         }

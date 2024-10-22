@@ -1,101 +1,92 @@
 'use client';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
+
 import {
   getRetroFundingRoundProjectById,
-  getRetroFundingRoundProjectByIdResponse,
+  type getRetroFundingRoundProjectByIdResponse,
   getRetroFundingRoundProjects,
-  getRetroFundingRoundProjectsResponse,
+  type getRetroFundingRoundProjectsResponse,
   updateRetroFundingRoundProjectImpact,
 } from '@/__generated__/api/agora';
 import {
-  GetRetroFundingRoundProjectsCategory,
-  PageMetadata,
-  Project,
+  GetRetroFundingRoundProjectsParams,
+  type GetRetroFundingRoundProjectsCategory,
+  type Project,
 } from '@/__generated__/api/agora.schemas';
 import { toast } from '@/components/ui/use-toast';
-import { agoraRoundsAPI } from '@/config';
-import { CategoryType } from '@/data/categories';
+import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
-import { CategoryId } from '@/types/shared';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
-import { ImpactScore } from './useProjectScoring';
+import { ImpactScore } from '@/types/project-scoring';
+import { ProjectsResponse } from '@/types/projects';
+import type { CategoryId } from '@/types/various';
 
-export const categoryMap: Record<CategoryType, string> = {
-  ETHEREUM_CORE_CONTRIBUTIONS: 'eth_core',
-  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'op_rnd',
-  OP_STACK_TOOLING: 'op_tooling',
+export const categoryMap: Record<CategoryId, string> = {
+  GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
+  GOVERNANCE_ANALYTICS: 'gov_analytics',
+  GOVERNANCE_LEADERSHIP: 'gov_leadership',
 };
 
-export type ProjectsResponse = {
-  metadata?: PageMetadata;
-  data?: Project[];
-};
-
-export interface ProjectsParams {
-  limit?: number;
-  offset?: number;
-  category?: GetRetroFundingRoundProjectsCategory;
-}
-
-export function useProjects(params?: ProjectsParams) {
+export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
   const { limit, offset, category } = params ?? {};
   return useQuery({
     queryKey: ['projects', limit, offset, category],
     queryFn: async () => {
       if (limit !== undefined) {
         const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(5, {
+          await getRetroFundingRoundProjects(ROUND, {
             limit,
             offset,
             category: category ?? 'all',
           });
         return results.data?.projects ?? [];
-      } else {
-        const allProjects: Project[] = [];
-        let currentOffset = offset ?? 0;
-        const pageLimit = 100;
+      }
 
-        while (true) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(5, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category ?? 'all',
-            });
+      const allProjects: Project[] = [];
+      let currentOffset = offset ?? 0;
+      const pageLimit = 100;
 
-          const res: ProjectsResponse = results.data;
+      let hasMoreData = true;
+      while (hasMoreData) {
+        const results: getRetroFundingRoundProjectsResponse =
+          await getRetroFundingRoundProjects(ROUND, {
+            limit: pageLimit,
+            offset: currentOffset,
+            category: category ?? 'all',
+          });
 
-          if (!res.data || res.data.length === 0) {
-            break;
-          }
+        const res: ProjectsResponse = results.data;
 
+        if (!res.data || res.data.length === 0) {
+          hasMoreData = false;
+        } else {
           allProjects.push(...res.data);
           currentOffset += pageLimit;
 
           if (res.data.length < pageLimit) {
-            break;
+            hasMoreData = false;
           }
         }
-
-        return allProjects;
       }
+
+      return allProjects;
     },
   });
 }
 
-export function useProjectsByCategory(categoryId: CategoryId) {
+export function useProjectsByCategory(categoryId?: CategoryId) {
   return useQuery({
     queryKey: ['projects-by-category', categoryId],
     queryFn: async () =>
-      getRetroFundingRoundProjects(5, {
+      getRetroFundingRoundProjects(ROUND, {
         limit: 100,
         category: categoryMap[
-          categoryId
+          categoryId as CategoryId
         ] as GetRetroFundingRoundProjectsCategory,
-      }).then((results: getRetroFundingRoundProjectsResponse) => {
-        const res: ProjectsResponse = results.data;
-        return res.data;
+        //fix type when agora fixes it
+      }).then((results: any) => {
+        return results.data.data as Project[];
       }),
   });
 }
@@ -113,7 +104,7 @@ export function useSaveProjectImpact() {
       impact: ImpactScore;
     }) => {
       return updateRetroFundingRoundProjectImpact(
-        5,
+        ROUND,
         address as string,
         projectId,
         impact as number
@@ -135,7 +126,6 @@ export function useSaveProjectImpact() {
   });
 }
 
-export type SaveProjectsActionType = 'reset' | 'import';
 export function useSaveProjects() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -148,9 +138,9 @@ export function useSaveProjects() {
       projects: {
         project_id: string;
         allocation: string;
-        impact: 0 | 1 | 2 | 3 | 4 | 5;
+        impact: 0 | 1 | 2 | 3 | 4 | 5 | 999;
       }[];
-      action?: SaveProjectsActionType;
+      action?: 'reset' | 'import';
     }) => {
       await request
         .post(`${agoraRoundsAPI}/ballots/${address}/projects`, {
@@ -181,7 +171,7 @@ export function useProjectById(projectId: string) {
   return useQuery({
     queryKey: ['projects-by-id', projectId],
     queryFn: async () =>
-      getRetroFundingRoundProjectById(5, projectId).then(
+      getRetroFundingRoundProjectById(ROUND, projectId).then(
         (results: getRetroFundingRoundProjectByIdResponse) => {
           return results.data;
         }
@@ -197,13 +187,14 @@ export function useAllProjectsByCategory() {
       const projectsByCategory: Record<string, Project[]> = {};
 
       for (const category of categories) {
-        let allProjects: Project[] = [];
+        const allProjects: Project[] = [];
         let currentOffset = 0;
         const pageLimit = 100;
 
-        while (true) {
+        let hasMoreData = true;
+        while (hasMoreData) {
           const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(5, {
+            await getRetroFundingRoundProjects(ROUND, {
               limit: pageLimit,
               offset: currentOffset,
               category: category as GetRetroFundingRoundProjectsCategory,
@@ -212,14 +203,14 @@ export function useAllProjectsByCategory() {
           const res: ProjectsResponse = results.data;
 
           if (!res.data || res.data.length === 0) {
-            break;
-          }
+            hasMoreData = false;
+          } else {
+            allProjects.push(...res.data);
+            currentOffset += pageLimit;
 
-          allProjects.push(...res.data);
-          currentOffset += pageLimit;
-
-          if (res.data.length < pageLimit) {
-            break;
+            if (res.data.length < pageLimit) {
+              hasMoreData = false;
+            }
           }
         }
 

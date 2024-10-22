@@ -1,20 +1,23 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useAllProjectsByCategory, useProjects } from '@/hooks/useProjects';
-import { CategoryId } from '@/types/shared';
 import debounce from 'lodash.debounce';
-import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budget-helpers';
-import { useBudget } from './useBudget';
-import { categories } from '@/data/categories';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAccount } from 'wagmi';
+
 import { updateRetroFundingRoundBudgetAllocation } from '@/__generated__/api/agora';
+import { ROUND } from '@/config';
+import { useAllProjectsByCategory } from '@/hooks/useProjects';
+import { calculateBalancedAmounts, isCloseEnough } from '@/lib/budgetHelpers';
+import { categories } from '@/lib/categories';
+import type { CategoryId } from '@/types/various';
+
 import { useSession } from './useAuth';
+import { useBudget } from './useBudget';
 
 export function useBudgetForm() {
-  const roundId = 5;
+  const roundId = ROUND;
   const { address } = useAccount();
   const allProjectsByCategory = useAllProjectsByCategory();
   const { getBudget, saveAllocation } = useBudget(roundId);
-  const [totalBudget, setTotalBudget] = useState<number>(8000000);
+  const [totalBudget, setTotalBudget] = useState<number>(3500000);
   const [allocations, setAllocations] = useState<Record<string, number>>({});
   const [lockedFields, setLockedFields] = useState<Record<string, boolean>>({});
   const [error, setError] = useState('');
@@ -74,14 +77,13 @@ export function useBudgetForm() {
     if (getBudget.data) {
       const newAllocations: Record<string, number> = {};
       setTotalBudget(getBudget.data.budget ?? 8000000);
-
-      getBudget.data.allocations?.forEach((allocation) => {
+      for (const allocation of getBudget.data.allocations || []) {
         if (allocation.category_slug !== undefined) {
           newAllocations[allocation.category_slug] = Number(
             allocation.allocation
           );
         }
-      });
+      }
       setAllocations(newAllocations);
       checkTotalAllocation(newAllocations);
     }
@@ -103,13 +105,13 @@ export function useBudgetForm() {
       ) {
         setAllocations((prevAllocations) => {
           const newAllocations: Record<string, number> = {};
-          getBudget?.data?.allocations.forEach((allocation) => {
+          for (const allocation of getBudget?.data?.allocations || []) {
             if (allocation.category_slug !== undefined) {
               newAllocations[allocation.category_slug] = Number(
                 allocation.allocation
               );
             }
-          });
+          }
 
           return Object.keys(newAllocations).some(
             (key) => newAllocations[key] !== prevAllocations[key]
@@ -120,12 +122,12 @@ export function useBudgetForm() {
 
         setLockedFields((prevLockedFields) => {
           const newLockedFields: Record<string, boolean> = {};
-          getBudget?.data?.allocations.forEach((allocation) => {
+          for (const allocation of getBudget?.data?.allocations || []) {
             if (allocation.category_slug !== undefined) {
               newLockedFields[allocation.category_slug] =
                 allocation.locked ?? false;
             }
-          });
+          }
 
           return Object.keys(newLockedFields).some(
             (key) => newLockedFields[key] !== prevLockedFields[key]
@@ -252,7 +254,7 @@ export function useBudgetForm() {
 
         setAllocations((prevAllocations) => {
           const totalLockedAllocation = Object.entries(newLockedFields)
-            .filter(([id, isLocked]) => isLocked)
+            .filter(([_, isLocked]) => isLocked)
             .reduce((sum, [id, _]) => sum + prevAllocations[id], 0);
 
           const unlockedCategoryIds = Object.keys(newLockedFields).filter(
@@ -265,18 +267,18 @@ export function useBudgetForm() {
           if (unlockedCategoryIds.length > 0) {
             const equalAllocation =
               remainingAllocation / unlockedCategoryIds.length;
-            unlockedCategoryIds.forEach((id) => {
+            for (const id of unlockedCategoryIds) {
               newAllocations[id] = equalAllocation;
-            });
+            }
           }
 
-          Object.keys(newAllocations).forEach((id) => {
+          for (const id of Object.keys(newAllocations)) {
             saveAllocationToBackend(
               id as CategoryId,
               newAllocations[id],
               newLockedFields[id]
             );
-          });
+          }
 
           return newAllocations;
         });

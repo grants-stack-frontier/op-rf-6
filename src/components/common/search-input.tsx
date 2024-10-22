@@ -1,5 +1,5 @@
-import { ComponentProps } from 'react';
 import { SearchIcon } from 'lucide-react';
+import { ComponentProps } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';

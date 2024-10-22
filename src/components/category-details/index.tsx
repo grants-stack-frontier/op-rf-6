@@ -1,17 +1,19 @@
 'use client';
+import Image from 'next/image';
+
 import { Heading } from '@/components/ui/headings';
-import { categories } from '@/data/categories';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectsByCategory } from '@/hooks/useProjects';
-import { CategoryId } from '@/types/shared';
-import Image from 'next/image';
-import { Markdown } from '../markdown';
+import { categories } from '@/lib/categories';
+import { CategoryId } from '@/types/various';
+
+import { Markdown } from '../common/markdown';
 import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
 
 export function CategoryDetails({ id }: { id: CategoryId }) {
   const category = categories?.find((cat) => cat.id === id);
-  const { data: projects, isPending } = useProjectsByCategory(id);
+  const { data: projects, isPending } = useProjectsByCategory(id ?? 'all');
   const { name, image, description, eligibility, examples } = category ?? {};
   const { eligible_projects, not_eligible_projects } = eligibility ?? {};
   const { data: session } = useSession();
@@ -63,9 +65,11 @@ export function CategoryDetails({ id }: { id: CategoryId }) {
                 )}
               </div>
             </div>
-            <div className="flex items-start gap-2 text-gray-700 dark:text-white">
-              <Heading variant="h1">Examples:</Heading>
-              <p>{examples?.join(', ')}</p>
+            <div className="text-gray-700 dark:text-white">
+              <Heading variant="h1" className="inline-block mr-1">
+                Examples:
+              </Heading>
+              <p className="inline">{examples?.join(', ')}</p>
             </div>
             <div className="flex flex-col items-start gap-6 text-gray-700 dark:text-white">
               <div className="flex items-start gap-2">

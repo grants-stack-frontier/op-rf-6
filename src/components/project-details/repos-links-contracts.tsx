@@ -1,10 +1,4 @@
 import {
-  ProjectContractsItem,
-  ProjectGithubItem,
-  ProjectGithubItemOneOf,
-} from '@/__generated__/api/agora.schemas';
-import { formatProjectAge } from '@/utils/projectUtils';
-import {
   RiGitForkFill,
   RiGithubFill,
   RiLink,
@@ -16,8 +10,16 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { base, fraxtal, mode, optimism, zora } from 'viem/chains';
+
+import {
+  ProjectContractsItem,
+  ProjectGithubItem,
+  ProjectGithubItemOneOf,
+} from '@/__generated__/api/agora.schemas';
+import { formatProjectAge } from '@/lib/projectUtils';
+
 import Logo from '../../../public/logo.png';
-import { CustomAccordion } from '../custom-accordion';
+import { CustomAccordion } from '../common/custom-accordion';
 import { Card, CardContent } from '../ui/card';
 import { Heading } from '../ui/headings';
 

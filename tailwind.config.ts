@@ -1,6 +1,9 @@
+import tailwindcssTypography from '@tailwindcss/typography';
+import tailwindcssAnimate from 'tailwindcss-animate';
+
 import type { Config } from 'tailwindcss';
 
-const config = {
+const config: Config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -63,6 +66,14 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        pulse: {
+          '0%, 100%': {
+            opacity: '1',
+          },
+          '50%': {
+            opacity: '0.5',
+          },
+        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
@@ -75,10 +86,11 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        pulse: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
-} satisfies Config;
+  plugins: [tailwindcssAnimate, tailwindcssTypography],
+};
 
 export default config;

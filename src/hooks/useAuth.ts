@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { decodeJwt } from 'jose';
+import ky from 'ky';
 import { useRouter } from 'next/navigation';
 import { useDisconnect as useWagmiDisconnect } from 'wagmi';
-import ky from 'ky';
-import { decodeJwt } from 'jose';
-import { Address } from 'viem';
+
 import mixpanel from '@/lib/mixpanel';
 import { getToken, setToken } from '@/lib/token';
+
+import type { Address } from 'viem';
 
 export function useNonce() {
   return useQuery({
@@ -22,7 +24,7 @@ export function useVerify() {
       signature: string;
       nonce: string;
     }) => {
-      const { access_token, ...rest } = await ky
+      const { access_token } = await ky
         .post('/api/agora/auth/verify', { json })
         .json<{ access_token: string }>();
       mixpanel.track('Sign In', { status: 'success' });
@@ -58,16 +60,12 @@ export function useSession() {
     queryKey: ['session'],
     queryFn: async () => {
       const accessToken = getToken();
-      /**
-       * isBadgeholder: true | false,
-       * category: string,
-       * siwe: { address, chainId, nonce }
-       */
 
       const user = accessToken
         ? decodeJwt<{
             siwe: { address: Address };
             isBadgeholder?: boolean;
+            isCitizen?: boolean;
             category?: string;
           }>(accessToken)
         : null;

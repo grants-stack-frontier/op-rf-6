@@ -1,18 +1,17 @@
+import { useCallback, useMemo, useState } from 'react';
+
 import { toast } from '@/components/ui/use-toast';
-import { HttpStatusCode } from '@/enums/http-status-codes';
 import { useSaveProjectImpact } from '@/hooks/useProjects';
 import {
-  ProjectsSkipped,
   addSkippedProject,
   getProjectsSkipped,
   removeSkippedProject,
   setProjectsSkipped,
-} from '@/utils/localStorage';
-import { useCallback, useMemo, useState } from 'react';
-import { Address } from 'viem';
-import { Round5Ballot } from './useBallotRound5';
+} from '@/lib/localStorage';
+import { Round5Ballot } from '@/types/ballot';
+import { ImpactScore, ProjectsSkipped } from '@/types/project-scoring';
 
-export type ImpactScore = 0 | 1 | 2 | 3 | 4 | 5 | 'Skip';
+import type { Address } from 'viem';
 
 export const scoreLabels: Record<ImpactScore, string> = {
   0: 'Conflict of interest',
@@ -21,7 +20,7 @@ export const scoreLabels: Record<ImpactScore, string> = {
   3: 'Medium',
   4: 'High',
   5: 'Very high',
-  Skip: 'Skip',
+  999: 'Skip',
 };
 
 // Custom hook for project scoring logic
@@ -64,7 +63,7 @@ export const useProjectScoring = (
       const projectsSkipped = getProjectsSkipped(category, walletAddress);
       let updatedProjectsSkipped: ProjectsSkipped | undefined;
 
-      if (score === 'Skip') {
+      if (score === 999) {
         updatedProjectsSkipped = addSkippedProject(category, id, walletAddress);
       } else {
         setIsSaving(true);
@@ -78,9 +77,8 @@ export const useProjectScoring = (
             projectId: id,
             impact: score,
           });
-          if (result.status === HttpStatusCode.OK) {
+          if (result.status === 200) {
             if (projectsSkipped?.ids?.includes(id)) {
-              console.log('removing skipped project');
               updatedProjectsSkipped = removeSkippedProject(
                 category,
                 id,
@@ -89,6 +87,7 @@ export const useProjectScoring = (
             }
           }
         } catch (error) {
+          console.error('Error saving impact score:', error);
           setIsSaving(false);
           return {
             allProjectsScored: false,
@@ -97,7 +96,7 @@ export const useProjectScoring = (
           setIsSaving(false);
         }
       }
-      if (!!updatedProjectsSkipped) {
+      if (updatedProjectsSkipped) {
         setProjectsSkipped(category, walletAddress, updatedProjectsSkipped);
       } else {
         setProjectsSkipped(category, walletAddress, projectsSkipped);
