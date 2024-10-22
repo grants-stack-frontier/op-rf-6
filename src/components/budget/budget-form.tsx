@@ -100,7 +100,7 @@ export function BudgetForm() {
               2023 - Aug 2024.
             </p>
             <div className="flex items-center my-6">
-              <span className="text-sm">2M</span>
+              <span className="text-sm">1M</span>
               <Slider
                 className="flex-1 mx-2"
                 min={1000000}
@@ -113,7 +113,7 @@ export function BudgetForm() {
                 rangeClassName="bg-gray-800"
                 thumbClassName="border-gray-600"
               />
-              <span className="text-sm">8M</span>
+              <span className="text-sm">3.5M</span>
               <div className="flex rounded-lg bg-[#F2F3F8] dark:bg-secondary border ml-4">
                 <input
                   type="text"
