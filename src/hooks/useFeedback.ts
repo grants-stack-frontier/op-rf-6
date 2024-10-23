@@ -16,8 +16,20 @@ const formMap: FeedbackForm = {
   confidenceRating: 'd5fd6cec-6b77-4c2d-8e76-91c181fd4ef3',
   confidenceComment: 'c06e1e36-ec60-457c-a3d5-fc3429f85a35',
 
-  influenceRating: '3cbf66ed-ed50-40bc-8043-dc9d18de1e9a',
-  influenceComment: 'e09bc091-c5f1-4b63-a76f-f70a1e5b8649',
+  budgetConfidenceRating: '91484848-4848-4848-4848-484848484848',
+  budgetConfidenceComment: '91484848-4848-4848-4848-484848484848',
+
+  allocationMethodsUsefulnessRating: '91484848-4848-4848-4848-484848484848',
+  allocationMethodsUsefulnessComment: '91484848-4848-4848-4848-484848484848',
+
+  scoringUsefulnessRating: '91484848-4848-4848-4848-484848484848',
+  scoringUsefulnessComment: '91484848-4848-4848-4848-484848484848',
+
+  trustRating: '91484848-4848-4848-4848-484848484848',
+  trustComment: '91484848-4848-4848-4848-484848484848',
+
+  // influenceRating: '3cbf66ed-ed50-40bc-8043-dc9d18de1e9a',
+  // influenceComment: 'e09bc091-c5f1-4b63-a76f-f70a1e5b8649',
 } as const;
 
 async function sendFeedback(feedback: FeedbackForm) {

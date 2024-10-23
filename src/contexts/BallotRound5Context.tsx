@@ -34,6 +34,7 @@ import {
 } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/various';
+import { ROUND } from '@/config';
 
 type BallotContext = ReturnType<typeof useBallotEditor> & {
   isPending: boolean;
@@ -92,7 +93,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
     useDistributionMethod();
   const { mutateAsync: savePosition } = useSaveRound5Position();
   const allocationSum = useRound5BallotWeightSum();
-  const { getBudget } = useBudget(5);
+  const { getBudget } = useBudget(ROUND);
   const isSavingBallot = useIsSavingRound5Ballot();
   const { mutate: saveAllocation } = useSaveRound5Allocation();
 

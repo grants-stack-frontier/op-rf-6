@@ -11,7 +11,7 @@ import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
 import { formatDate } from '@/lib/utils';
 import { Round5Ballot } from '@/types/ballot';
 
-import VotingSuccess_OPStack from '../../../public/RetroFunding_R5_IVoted_16x9.png';
+import VotingSuccessImage from '../../../public/RetroFunding_R6_IVoted.png';
 import { Button } from '../ui/button';
 import { Heading } from '../ui/headings';
 import { Text } from '../ui/text';
@@ -116,7 +116,7 @@ export function SubmitRound5Dialog({
                   <div className="flex justify-center">
                     <Image
                       id="download"
-                      {...VotingSuccess_OPStack} // Should differ based on category (?)
+                      {...VotingSuccessImage}
                       alt="Success!"
                       className="rounded-xl mb-2"
                     />
