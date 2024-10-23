@@ -92,8 +92,13 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
           >
             Continue
           </Button>
-          {(isSkippable && index < questions.length - 1) && (
-            <Button variant={'outline'} type="button" className="w-full" onClick={() => setValue('index', index + 1)}>
+          {isSkippable && index < questions.length - 1 && (
+            <Button
+              variant={'outline'}
+              type="button"
+              className="w-full"
+              onClick={() => setValue('index', index + 1)}
+            >
               Skip
             </Button>
           )}
@@ -187,8 +192,7 @@ function createQuestions(
       ),
     },
     {
-      title:
-        'How useful were allocation methods for determining your ballot?',
+      title: 'How useful were allocation methods for determining your ballot?',
       children: (
         <SelectForm
           key="allocationMethodsUsefulness"
@@ -261,8 +265,7 @@ function createQuestions(
       ),
     },
     {
-      title:
-        'To what extent do you trust the opinions of other badgeholders?',
+      title: 'To what extent do you trust the opinions of other badgeholders?',
       children: (
         <SelectForm
           key="trust"
@@ -277,7 +280,7 @@ function createQuestions(
                     ? '(moderate trust)'
                     : index === 6
                       ? '(very high trust)'
-                    : ''
+                      : ''
               }`,
               value: String(index + 1),
             }))}
@@ -324,7 +327,10 @@ function SelectForm({
       {!hideComment && (
         <Textarea
           {...register(`${name}Comment`)}
-          placeholder={commentPlaceholder ?? 'Please feel free to elaborate here. Reminder that these responses are anonymous...'}
+          placeholder={
+            commentPlaceholder ??
+            'Please feel free to elaborate here. Reminder that these responses are anonymous...'
+          }
         />
       )}
     </div>
