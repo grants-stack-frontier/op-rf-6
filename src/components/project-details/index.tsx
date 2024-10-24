@@ -15,6 +15,7 @@ import { ProjectDescription } from './project-description';
 import { ProjectHeader } from './project-header';
 import { ReposLinksContracts } from './repos-links-contracts';
 import { SocialLinksList } from './social-links';
+import { useSession } from '@/hooks/useAuth';
 // import { Testimonials } from './testimonials';
 
 export function ProjectDetails() {
@@ -38,6 +39,8 @@ export function ProjectDetails() {
     contracts,
     team,
   } = project ?? {};
+  const { data: session } = useSession();
+  const isCitizen = Boolean(session?.isCitizen);
   console.log({ project });
   return (
     <>
@@ -72,7 +75,9 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          <Attestations projectId={id} metrics={impactMetrics} />
+          {(impactMetrics && isCitizen) && (
+            <Attestations projectId={id} metrics={impactMetrics} />
+          )}
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

@@ -33,7 +33,17 @@ export function ImpactStatement({
           allowed.
         </p>
       </div>
-      {statement && (
+      {statement?.map(({ question, answer }) => (
+        <div className="flex flex-col gap-6 mb-12">
+          <p className="border-l-4 pl-2 border-red-500 font-semibold">
+            {question}
+          </p>
+          <Markdown className="text-gray-700 dark:text-gray-300">
+            {answer}
+          </Markdown>
+        </div>
+      ))}
+      {/* {statement && (
         <div className="flex flex-col gap-6 mb-12">
           <p className="border-l-4 pl-2 border-red-500 font-semibold">
             {statement.question}
@@ -42,7 +52,7 @@ export function ImpactStatement({
             {statement.answer}
           </Markdown>
         </div>
-      )}
+      )} */}
     </>
   );
 }
