@@ -155,6 +155,7 @@ function Behaviors() {
                 checked={field.value?.includes(item.id)}
                 onCheckedChange={(checked) => {
                   console.log("checked ", checked);
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   checked
                     ? field.onChange([...(field.value ?? []), item.id])
                     : field.onChange(
