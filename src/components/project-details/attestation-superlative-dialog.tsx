@@ -1,7 +1,5 @@
 'use client';
 
-import { Button } from '../ui/button';
-import { AttStarIcon } from './attestation-icons';
 import {
   Dialog,
   DialogClose,
@@ -11,6 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+
+import { Button } from '../ui/button';
+import { AttStarIcon } from './attestation-icons';
 
 export function AttestationSuperlativeDialog({
   superlative,

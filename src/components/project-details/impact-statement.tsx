@@ -33,8 +33,8 @@ export function ImpactStatement({
           allowed.
         </p>
       </div>
-      {statement?.map(({ question, answer }) => (
-        <div className="flex flex-col gap-6 mb-12">
+      {statement?.map(({ question, answer }, index) => (
+        <div className="flex flex-col gap-6 mb-12" key={index}>
           <p className="border-l-4 pl-2 border-red-500 font-semibold">
             {question}
           </p>

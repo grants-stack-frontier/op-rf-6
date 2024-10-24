@@ -11,6 +11,7 @@ import {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { ROUND } from '@/config';
 import { useSession } from '@/hooks/useAuth';
 import {
   useBallot,
@@ -34,7 +35,6 @@ import {
 } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/various';
-import { ROUND } from '@/config';
 
 type BallotContext = ReturnType<typeof useBallotEditor> & {
   isPending: boolean;

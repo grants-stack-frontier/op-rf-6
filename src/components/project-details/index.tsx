@@ -1,6 +1,7 @@
 'use client';
 import type { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
 import { useProjectContext } from '@/contexts/ProjectContext';
+import { useSession } from '@/hooks/useAuth';
 import { TeamMember } from '@/types/project-details';
 
 import { Separator } from '../ui/separator';
@@ -15,7 +16,6 @@ import { ProjectDescription } from './project-description';
 import { ProjectHeader } from './project-header';
 import { ReposLinksContracts } from './repos-links-contracts';
 import { SocialLinksList } from './social-links';
-import { useSession } from '@/hooks/useAuth';
 // import { Testimonials } from './testimonials';
 
 export function ProjectDetails() {

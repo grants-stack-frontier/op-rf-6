@@ -1737,7 +1737,7 @@ export const getGetProjectsResponseMock = (
             undefined,
           ]),
           statement: faker.helpers.arrayElement([
-            {
+            [{
               answer: faker.helpers.arrayElement([
                 faker.word.sample(),
                 undefined,
@@ -1746,7 +1746,7 @@ export const getGetProjectsResponseMock = (
                 faker.word.sample(),
                 undefined,
               ]),
-            },
+            }],
             undefined,
           ]),
           subcategory: faker.helpers.arrayElement([
@@ -2480,7 +2480,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
             undefined,
           ]),
           statement: faker.helpers.arrayElement([
-            {
+            [{
               answer: faker.helpers.arrayElement([
                 faker.word.sample(),
                 undefined,
@@ -2489,7 +2489,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
                 faker.word.sample(),
                 undefined,
               ]),
-            },
+            }],
             undefined,
           ]),
           subcategory: faker.helpers.arrayElement([
@@ -2775,13 +2775,13 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     {
       category: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       statement: faker.helpers.arrayElement([
-        {
+        [{
           answer: faker.helpers.arrayElement([faker.word.sample(), undefined]),
           question: faker.helpers.arrayElement([
             faker.word.sample(),
             undefined,
           ]),
-        },
+        }],
         undefined,
       ]),
       subcategory: faker.helpers.arrayElement([

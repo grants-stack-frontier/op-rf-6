@@ -12,6 +12,7 @@ import {
 } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
 // import mixpanel from '@/lib/mixpanel';
+import { useProjects } from '@/hooks/useProjects';
 
 import NeutralFaceEmoji from '../../../public/neutral-face-emoji.svg';
 import FrowningFaceEmoji from '../../../public/slightly-frowning-face-emoji.svg';
@@ -32,7 +33,6 @@ import {
 } from '../ui/chart';
 import { Separator } from '../ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { useProjects } from '@/hooks/useProjects';
 import { AttStarIcon, AttUserIcon, AttUserStarIcon, ThumbRatingIcon } from './attestation-icons';
 import { AttestationSuperlativeDialog } from './attestation-superlative-dialog';
 
