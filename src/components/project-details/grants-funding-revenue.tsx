@@ -23,7 +23,9 @@ export function GrantsFundingRevenue({
       (!grantsAndFunding.investment ||
         grantsAndFunding.investment.length === 0) &&
       (!grantsAndFunding.investments ||
-        grantsAndFunding.investments.length === 0))
+        grantsAndFunding.investments.length === 0) &&
+      (!grantsAndFunding.retroFunding ||
+        grantsAndFunding.retroFunding.length === 0))
   ) {
     return (
       <div className="flex flex-col gap-2">
@@ -143,11 +145,11 @@ export function GrantsFundingRevenue({
       {grantsAndFunding.grants?.map((item, index) =>
         renderItem(item, 'Grant', index)
       )}
-      {grantsAndFunding.ventureFunding?.map((item, index) =>
-        renderItem(item, 'Venture Funding', index)
+      {grantsAndFunding.retroFunding?.map((item, index) =>
+        renderItem(item, 'Grant', index)
       )}
-      {grantsAndFunding.revenue?.map((item, index) =>
-        renderItem(item, 'Revenue', index)
+      {grantsAndFunding.ventureFunding?.map((item, index) =>
+        renderItem(item, 'Investment', index)
       )}
       {grantsAndFunding.investments?.map((item, index) =>
         renderItem(item, 'Investment', index)
@@ -155,8 +157,8 @@ export function GrantsFundingRevenue({
       {grantsAndFunding.investment?.map((item, index) =>
         renderItem(item, 'Investment', index)
       )}
-      {grantsAndFunding.investments?.map((item, index) =>
-        renderItem(item, 'Investment', index)
+      {grantsAndFunding.revenue?.map((item, index) =>
+        renderItem(item, 'Revenue', index)
       )}
     </div>
   );
