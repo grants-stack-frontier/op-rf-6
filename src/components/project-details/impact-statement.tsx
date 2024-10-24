@@ -10,6 +10,7 @@ export function ImpactStatement({
   impactStatement: ProjectImpactStatement;
 }) {
   const { category, statement } = impactStatement;
+  console.log({impactStatement});
 
   return (
     <>
@@ -23,8 +24,11 @@ export function ImpactStatement({
             <p>{category ? categoryNames[category] : 'N/A'}</p>
           </div>
           <div className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-            <Heading variant="h1">Subcategory:</Heading>
-            <p>{impactStatement?.subcategory?.join(', ') ?? 'N/A'}</p>
+            {/* <Heading variant="h1">Subcategory:</Heading> */}
+            <p>
+              <span className="font-semibold">Subcategories:</span>{' '}
+              {impactStatement?.subcategory?.join(', ') ?? 'N/A'}
+            </p>
           </div>
         </div>
         <p className="text-red-600">
