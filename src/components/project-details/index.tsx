@@ -1,6 +1,7 @@
 'use client';
 import type { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
 import { useProjectContext } from '@/contexts/ProjectContext';
+import { useSession } from '@/hooks/useAuth';
 import { TeamMember } from '@/types/project-details';
 
 import { Separator } from '../ui/separator';
@@ -38,6 +39,8 @@ export function ProjectDetails() {
     contracts,
     team,
   } = project ?? {};
+  const { data: session } = useSession();
+  const isCitizen = Boolean(session?.isCitizen);
   console.log({ project });
   return (
     <>
@@ -72,7 +75,9 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          <Attestations projectId={id} metrics={impactMetrics} />
+          {(impactMetrics && isCitizen) && (
+            <Attestations projectId={id} metrics={impactMetrics} />
+          )}
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

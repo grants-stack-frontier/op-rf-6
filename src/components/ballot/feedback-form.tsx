@@ -23,6 +23,8 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Textarea } from '../ui/textarea';
+import { Card } from '../ui/card';
+import { Checkbox } from '../ui/checkbox';
 
 export function Form({
   children,
@@ -41,7 +43,7 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   const { mutate, isPending } = useSendFeedback();
 
   const questions = useMemo(() => createQuestions(register), [register]);
-  const { title, description, children } = questions[index];
+  const { title, description, children, isSkippable } = questions[index];
   return (
     <form
       onSubmit={handleSubmit((values) => {
@@ -67,7 +69,7 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
             {title}
           </Heading>
           {description && (
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground text-center">{description}</p>
           )}
         </div>
         {children}
@@ -82,17 +84,96 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
             onClick={() => setValue('index', index - 1)}
           />
         )}
-        <Button
-          className="w-full"
-          variant={'destructive'}
-          type="submit"
-          isLoading={isPending}
-          disabled={isPending}
-        >
-          Continue
-        </Button>
+        <div className="space-y-2">
+          <Button
+            className="w-full"
+            variant={'destructive'}
+            type="submit"
+            isLoading={isPending}
+            disabled={isPending}
+          >
+            Continue
+          </Button>
+          {isSkippable && index < questions.length - 1 && (
+            <Button
+              variant={'outline'}
+              type="button"
+              className="w-full"
+              onClick={() => setValue('index', index + 1)}
+            >
+              Skip
+            </Button>
+          )}
+        </div>
       </div>
     </form>
+  );
+}
+
+function Behaviors() {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const { field } = useController({
+    name: "behaviors",
+    control,
+    rules: { required: "At least one must be selected" },
+  });
+
+  const error = String(errors[field.name]?.message);
+  return (
+    <div className="">
+      <div className="space-y-2 mb-4">
+        {[
+          {
+            id: "collusion",
+            label:
+              "Collusion (e.g., secret cooperation among badgeholders for a dishonest purpose)",
+          },
+          {
+            id: "bribery",
+            label:
+              "Bribery (e.g., promising something in return for voting in a particular way)",
+          },
+          {
+            id: "self-dealing",
+            label:
+              "Self-dealing (e.g., voting in someone’s self-interest rather than in the ecosystem’s interest)",
+          },
+          {
+            id: "other",
+            label: "Other behaviors that are detrimental to the Collective",
+          },
+          { id: "none", label: "None of the above" },
+        ].map((item, i) => (
+          <label key={i} htmlFor={item.id} className="block cursor-pointer">
+            <Card className="px-4 py-3 flex gap-2 items-center w-full">
+              <Checkbox
+                id={item.id}
+                checked={field.value?.includes(item.id)}
+                onCheckedChange={(checked) => {
+                  console.log("checked ", checked);
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                  checked
+                    ? field.onChange([...(field.value ?? []), item.id])
+                    : field.onChange(
+                        field.value.filter((v: string) => v !== item.id)
+                      );
+                }}
+              />
+              {item.label}
+            </Card>
+          </label>
+        ))}
+      </div>
+      <Textarea
+        {...register("behaviorsComment")}
+        placeholder="Please feel free to elaborate here. Reminder that these responses are anonymous..."
+      />
+      <div className="text-destructive text-sm pt-4">{error}</div>
+    </div>
   );
 }
 
@@ -127,6 +208,84 @@ function createQuestions(
             }))}
         />
       ),
+    },
+    {
+      title:
+        'Did the app provide you enough information to confidently vote on the budget?',
+      children: (
+        <SelectForm
+          key="budgetConfidence"
+          name="budgetConfidence"
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(definitely not)'
+                  : index === 3
+                    ? '(somewhat)'
+                    : index === 6
+                      ? '(absolutely)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title:
+        'How useful was scoring each project before unlocking your ballot?',
+      description: 'If you used Pairwise, skip this question.',
+      isSkippable: true,
+      children: (
+        <SelectForm
+          key="scoringUsefulness"
+          name="scoringUsefulness"
+          commentPlaceholder="Optionally, how would you change or improve the scoring step? Reminder that these responses are private."
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(not useful at all)'
+                  : index === 3
+                    ? '(somewhat useful)'
+                    : index === 6
+                      ? '(very useful)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title: 'How useful were allocation methods for determining your ballot?',
+      children: (
+        <SelectForm
+          key="allocationMethodsUsefulness"
+          name="allocationMethodsUsefulness"
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(not useful at all)'
+                  : index === 3
+                    ? '(somewhat useful)'
+                    : index === 6
+                      ? '(very useful)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title: `Did you observe any behavior among your fellow badgeholders that could be considered one of the following (select all that apply)?`,
+      children: <Behaviors />,
     },
     {
       title:
@@ -179,21 +338,22 @@ function createQuestions(
       ),
     },
     {
-      title:
-        'To what extent did the “Grants and investment” information influence your token allocation among projects?',
+      title: 'To what extent do you trust the opinions of other badgeholders?',
       children: (
         <SelectForm
-          key="influence"
-          name="influence"
+          key="trust"
+          name="trust"
           options={Array(7)
             .fill(0)
             .map((_, index) => ({
               label: `${index + 1} ${
                 index === 0
-                  ? '(did not influence my token allocation)'
-                  : index === 6
-                    ? '(had a large influence on my token allocation)'
-                    : ''
+                  ? '(very low trust)'
+                  : index === 3
+                    ? '(moderate trust)'
+                    : index === 6
+                      ? '(very high trust)'
+                      : ''
               }`,
               value: String(index + 1),
             }))}
@@ -207,9 +367,11 @@ function SelectForm({
   name = '',
   options = [],
   hideComment,
+  commentPlaceholder,
 }: {
   name: string;
   hideComment?: boolean;
+  commentPlaceholder?: string;
   options: { value: string; label: string }[];
 }) {
   const _name = `${name}Rating`;
@@ -238,7 +400,10 @@ function SelectForm({
       {!hideComment && (
         <Textarea
           {...register(`${name}Comment`)}
-          placeholder="Please feel free to elaborate here. Reminder that these responses are anonymous..."
+          placeholder={
+            commentPlaceholder ??
+            'Please feel free to elaborate here. Reminder that these responses are anonymous...'
+          }
         />
       )}
     </div>
