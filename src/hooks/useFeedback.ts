@@ -4,6 +4,7 @@ import ky from 'ky';
 import { useToast } from '@/components/ui/use-toast';
 import { FeedbackForm } from '@/types/various';
 
+// TO DO: Change these
 const formMap: FeedbackForm = {
   address: '45ea618e-403e-40b8-b610-88b6b1b63b6c',
   votingTime: 'cd9c9bd0-0b16-4e3f-a28b-8a50cffe64c0',
@@ -18,18 +19,27 @@ const formMap: FeedbackForm = {
 
   budgetConfidenceRating: '91484848-4848-4848-4848-484848484848',
   budgetConfidenceComment: '91484848-4848-4848-4848-484848484848',
+  
+  scoringUsefulnessRating: '91484848-4848-4848-4848-484848484848',
+  scoringUsefulnessComment: '91484848-4848-4848-4848-484848484848',
 
   allocationMethodsUsefulnessRating: '91484848-4848-4848-4848-484848484848',
   allocationMethodsUsefulnessComment: '91484848-4848-4848-4848-484848484848',
 
-  scoringUsefulnessRating: '91484848-4848-4848-4848-484848484848',
-  scoringUsefulnessComment: '91484848-4848-4848-4848-484848484848',
+  behaviors: {
+    id: "505b462d-1d03-4799-9402-8a78f8afe56c",
+    choiceRefs: {
+      collusion: "85f58f02-0b56-494d-8dfc-b9d899f7fbed",
+      bribery: "05ec7e72-d0fc-4719-9a7a-4196fb7c4890",
+      "self-dealing": "0d8fa526-1895-4fa0-88d1-c2007ad2cc0d",
+      other: "fa6957e5-5387-48bf-9df8-ac213f1a66f0",
+      none: "cf274617-880d-46da-bdb1-48732f670f9c",
+    },
+  },
+  behaviorsComment: "fa87855f-c32d-46d2-a74f-c35b969faf71",
 
   trustRating: '91484848-4848-4848-4848-484848484848',
   trustComment: '91484848-4848-4848-4848-484848484848',
-
-  // influenceRating: '3cbf66ed-ed50-40bc-8043-dc9d18de1e9a',
-  // influenceComment: 'e09bc091-c5f1-4b63-a76f-f70a1e5b8649',
 } as const;
 
 async function sendFeedback(feedback: FeedbackForm) {
@@ -38,7 +48,13 @@ async function sendFeedback(feedback: FeedbackForm) {
       const value = feedback[key as keyof typeof formMap];
       return {
         formFieldId,
-        inputValue: { default: value },
+        inputValue: formFieldId?.choiceRefs
+        ? {
+            choiceRefs: value?.map(
+              (behavior: string) => formFieldId.choiceRefs[behavior]
+            ),
+          }
+        : { default: value },
       };
     }
   );
@@ -48,7 +64,7 @@ async function sendFeedback(feedback: FeedbackForm) {
         operationName: 'AddFormResponse',
         variables: {
           data: {
-            formId: '25b6553b-b3f9-4b94-b62f-66fd2f955d57',
+            formId: '25b6553b-b3f9-4b94-b62f-66fd2f955d57', // TO DO: Change this
             addFormResponseItems,
           },
         },
