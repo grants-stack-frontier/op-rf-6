@@ -75,7 +75,7 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {(impactMetrics && isCitizen) && (
+          {impactMetrics && isCitizen && (
             <Attestations projectId={id} metrics={impactMetrics} />
           )}
           <Separator className="my-12" />
