@@ -337,12 +337,28 @@ function AttestationElectedGovernanceMembersCard({
           {totalCount} attestations from elected governance members
         </CardTitle>
         <div className="text-sm flex flex-col">
-          {attestations.map((attestation, i) => (
+          {attestations.length > 0 ? 
+            attestations.map((attestation, i) => (
+              <AttestationElectedGovernanceMembersListItem
+                key={i}
+                {...attestation}
+              />
+            )) : (
+              <p>
+                This project did not receive any attestations from{' '}
+                <span className="font-semibold">
+                  Elected Governance Members
+                </span>
+                .
+              </p>
+            )
+          }
+          {/* {attestations.map((attestation, i) => (
             <AttestationElectedGovernanceMembersListItem
               key={i}
               {...attestation}
             />
-          ))}
+          ))} */}
         </div>
       </CardContent>
     </Card>
