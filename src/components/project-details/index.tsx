@@ -41,6 +41,7 @@ export function ProjectDetails() {
   } = project ?? {};
   const { data: session } = useSession();
   const isCitizen = Boolean(session?.isCitizen);
+  const isBadgeholder = Boolean(session?.isBadgeholder);
   console.log({ project, session });
   return (
     <>
@@ -75,7 +76,7 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {impactMetrics && isCitizen && (
+          {impactMetrics && (isCitizen || !isBadgeholder) && (
             <Attestations projectId={id} metrics={impactMetrics} />
           )}
           <Separator className="my-12" />
