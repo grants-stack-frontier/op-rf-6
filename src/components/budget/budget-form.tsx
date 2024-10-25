@@ -13,12 +13,13 @@ import { Category } from '@/types/categories';
 import { Slider } from '../ui/slider';
 
 import { CategoryItem } from './category-item';
+import { ROUND } from '@/config';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =
     useBudgetContext();
   const router = useRouter();
-  const { getBudget, saveAllocation } = useBudget(5);
+  const { getBudget, saveAllocation } = useBudget(ROUND);
   const { address } = useAccount();
 
   const [initialLoad, setInitialLoad] = useState(isLoading);
@@ -53,7 +54,7 @@ export function BudgetForm() {
       !getBudget.data?.allocations ||
       getBudget.data?.allocations.length !== categories.length;
     if (!getBudget.data?.budget) {
-      await updateRetroFundingRoundBudgetAllocation(5, address, totalBudget);
+      await updateRetroFundingRoundBudgetAllocation(ROUND, address, totalBudget);
     }
     if (
       !getBudget.data?.allocations ||
