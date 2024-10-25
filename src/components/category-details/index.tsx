@@ -86,9 +86,28 @@ export function CategoryDetails({ id }: { id: CategoryId }) {
                 <p>The following types of projects are not eligible.</p>
               </div>
               <ul className="list-disc ml-6">
-                {not_eligible_projects?.map((project, index) => (
-                  <li key={index}>{project}</li>
-                ))}
+                {not_eligible_projects?.map((project, index) => {
+                  // Special case for Governance Leadership category
+                  if (id === 'GOVERNANCE_LEADERSHIP' && index === 1) {
+                    return (
+                      <li key={index}>
+                        Delegate or Citizen governance participation, including
+                        forum engagement, participation in calls & workshops,
+                        participation in survey and other activities which are
+                        part of the responsibilities of citizens and delegates.
+                        These activities are rewarded separately as part of the{' '}
+                        <a
+                          href="https://gov.optimism.io/t/season-5-retro-governance-participation-rewards/8105"
+                          target="_blank"
+                          className="underline"
+                        >
+                          Retro Governance Participation Rewards
+                        </a>
+                      </li>
+                    );
+                  }
+                  return <li key={index}>{project}</li>;
+                })}
               </ul>
             </div>
           </>

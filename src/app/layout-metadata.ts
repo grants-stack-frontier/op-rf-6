@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const title = 'Retro Funding 6: Voting';
-const description = 'Voting is now live for Retro Funding 6: OP Stack';
+const description = 'Voting is now live for Retro Funding 6: Governance';
 const url = 'http://round6.optimism.io/';
 
 export const metadata: Metadata = {
