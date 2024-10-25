@@ -89,9 +89,9 @@ export function Attestations({
       <AttestationElectedGovernanceMembersCard
         reviews={metrics.elected_governance_reviews}
       />
-      <Link href={`https://metricsgarden.xyz/projects/${projectId}`} passHref>
+      <Link href={`https://metricsgarden.xyz/projects/${projectId}`} target='_blank' passHref>
         <p className="text-sm line-height-5 text-[#404454]">
-          View all testimonials at metricsgarden.xyz/projects/{projectId}
+          View all testimonials at metricsgarden.xyz/projects/{projectId?.substring(0, 4)}...
         </p>
       </Link>
     </div>
