@@ -260,6 +260,19 @@ function AttestationElectedGovernanceMembersCard({
   }
 
   const attestations = useMemo(() => {
+    const links: { [name: string]: string } = {
+      anticapture_commission:
+        'https://gov.optimism.io/t/season-6-anticapture-commission-amended/8132',
+      code_of_conduct_council:
+        'https://gov.optimism.io/t/final-code-of-conduct-council-cocc-operating-budget-for-season-6/8167',
+      collective_feedback_commission:
+        'https://gov.optimism.io/t/the-collective-feedback-commission-the-next-iteration/9113',
+      developer_advisory_board:
+        'https://gov.optimism.io/t/zach-obront-developer-advisory-board-operating-budget/8141',
+      grants_council:
+        'https://github.com/ethereum-optimism/OPerating-manual/blob/main/Grants%20Council%20Charter%20v0.1.md',
+      security_council: 'https://gov.optimism.io/t/security-council-charter-v0-1/6884',
+    };
     return reviews
       ? Object.entries(reviews).map(([name, review]) => ({
           name: name
@@ -269,6 +282,7 @@ function AttestationElectedGovernanceMembersCard({
           count: review.count_attestations ?? 0,
           rating: review.avg_nps_score ?? 0,
           sentiment: getSentiment(review.avg_pmf_score ?? 0),
+          url: links[name],
         }))
       : [];
   }, [reviews]);
@@ -340,6 +354,7 @@ function AttestationElectedGovernanceMembersListItem(params: {
   count: number;
   rating: number;
   sentiment: Sentiment;
+  url: string;
 }) {
   function renderSentiment(sentiment: Sentiment) {
     if (sentiment === 'extremely_upset')
@@ -381,9 +396,9 @@ function AttestationElectedGovernanceMembersListItem(params: {
   }
   return (
     <div className="flex flex-row justify-between items-center gap-2 border-b border-[#E0E2EB] py-2">
-      <p>
-        {params.name} ({params.count})
-      </p>
+      <Link href={params.url} target="_blank" passHref>
+        <p>{params.name} ({params.count})</p>
+      </Link>
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
           <ThumbRatingIcon rating={params.rating} />
