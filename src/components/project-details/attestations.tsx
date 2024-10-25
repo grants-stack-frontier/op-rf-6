@@ -390,7 +390,8 @@ function AttestationElectedGovernanceMembersListItem(params: {
           <p>
             {params.rating.toString().includes('.')
               ? params.rating.toFixed(1)
-              : params.rating} out of 10
+              : params.rating}{' '}
+            out of 10
           </p>
         </div>
         <Separator orientation="vertical" className="h-4" />

@@ -61,14 +61,17 @@ export function InfoBox() {
         <div className="space-y-6 pr-1">
           <p>
             To help you determine a Round 6 budget, it&apos;s useful to
-            reference existing data on Optimism allocations towards Governance contributions:
+            reference existing data on Optimism allocations towards Governance
+            contributions:
           </p>
           <ol className="list-decimal pl-5 space-y-2">
             <li>
-              Retro Funding 3 allocated approximately 1.1M OP to Optimism Governance Contributions at the end of 2023.
+              Retro Funding 3 allocated approximately 1.1M OP to Optimism
+              Governance Contributions at the end of 2023.
             </li>
             <li>
-              The Token House has allocated 500k OP+ in Governance Season 5 across 32+ Governance related grants.
+              The Token House has allocated 500k OP+ in Governance Season 5
+              across 32+ Governance related grants.
             </li>
             <li>
               For participation in Season 5, Citizens & Top 100 delegates have
