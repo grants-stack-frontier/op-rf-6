@@ -21,7 +21,7 @@ import { SocialLinksList } from './social-links';
 export function ProjectDetails() {
   const { project, isLoading } = useProjectContext();
   const {
-    id,
+    projectId,
     profileAvatarUrl,
     name,
     projectCoverImageUrl,
@@ -77,7 +77,7 @@ export function ProjectDetails() {
           />
           {/* <Testimonials testimonials={testimonials} /> */}
           {impactMetrics && (isCitizen || !isBadgeholder) && (
-            <Attestations projectId={id} metrics={impactMetrics} />
+            <Attestations projectId={projectId} metrics={impactMetrics} />
           )}
           <Separator className="my-12" />
           {impactStatement && (

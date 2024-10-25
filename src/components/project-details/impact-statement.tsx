@@ -32,7 +32,7 @@ export function ImpactStatement({
         </div>
         <p className="text-red-600">
           Applicants were asked to report on impact made between Oct 1, 2023 -
-          July 31, 2024. Promises of future deliverables or impact are not
+          September 18, 2024. Promises of future deliverables or impact are not
           allowed.
         </p>
       </div>

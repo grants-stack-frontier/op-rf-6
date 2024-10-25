@@ -301,7 +301,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
         id: removed.project_id,
         position: newIndex,
       }).then(() => {
-        redistribute(distributionMethod as DistributionMethod);
+        if (distributionMethod)
+          redistribute(distributionMethod as DistributionMethod);
       });
     },
     [projectList, savePosition, redistribute, distributionMethod]
@@ -360,7 +361,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
           id: movedProject.project_id,
           position: newIndex,
         }).then(() => {
-          redistribute(distributionMethod as DistributionMethod);
+          if (distributionMethod)
+            redistribute(distributionMethod as DistributionMethod);
         });
       }
     },
@@ -430,8 +432,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
     setSearchTerm,
     handleSearch,
     isMovable:
-      distributionMethod === DistributionMethod.TOP_TO_BOTTOM ||
-      distributionMethod === DistributionMethod.TOP_WEIGHTED,
+      distributionMethod !== DistributionMethod.IMPACT_GROUPS &&
+      distributionMethod !== DistributionMethod.CUSTOM,
     handleProjectMove,
     handleAllocationChange,
     handleAllocationSave,
