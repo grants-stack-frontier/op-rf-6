@@ -94,9 +94,14 @@ export function Attestations({
       <AttestationElectedGovernanceMembersCard
         reviews={metrics.elected_governance_reviews}
       />
-      <Link href={`https://metricsgarden.xyz/projects/${projectId}`} passHref>
+      <Link
+        href={`https://metricsgarden.xyz/projects/${projectId}`}
+        target="_blank"
+        passHref
+      >
         <p className="text-sm line-height-5 text-[#404454]">
-          View all testimonials at metricsgarden.xyz/projects/{projectId}
+          View all testimonials at metricsgarden.xyz/projects/
+          {projectId?.substring(0, 4)}...
         </p>
       </Link>
     </div>
@@ -133,22 +138,36 @@ function AttestationCard({
           attestations
         </CardTitle>
         <div className="text-sm line-height-5">
-          <p>
-            By{' '}
-            <span className="font-semibold">
-              Citizens ({citizensCount ?? 0}) & Top Delegates* (
-              {delegatesCount ?? 0}).
-            </span>
-          </p>
-          <p>
-            {totalCount && totalCount > attestationAvgQuantity
-              ? 'More'
-              : 'Less'}{' '}
-            than most other Governance Infrastructure & Tooling projects.
-          </p>
-          <p className="text-xs line-height-4 mt-2">
-            *The top 100 delegates by voting power.
-          </p>
+          {totalCount && totalCount > 0 && (
+            <>
+              <p>
+                By{' '}
+                <span className="font-semibold">
+                  Citizens ({citizensCount ?? 0}) & Top Delegates* (
+                  {delegatesCount ?? 0}).
+                </span>
+              </p>
+              <p>
+                {totalCount && totalCount > attestationAvgQuantity
+                  ? 'More'
+                  : 'Less'}{' '}
+                than most other Governance Infrastructure & Tooling projects.
+              </p>
+              <p className="text-xs line-height-4 mt-2">
+                *The top 100 delegates by voting power.
+              </p>
+            </>
+          )}
+          {!totalCount ||
+            (totalCount === 0 && (
+              <p>
+                This project did not receive any attestations from{' '}
+                <span className="font-semibold">
+                  Citizens & Top 100 Delegates
+                </span>
+                .
+              </p>
+            ))}
         </div>
       </CardContent>
     </Card>
@@ -368,7 +387,12 @@ function AttestationElectedGovernanceMembersListItem(params: {
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
           <ThumbRatingIcon rating={params.rating} />
-          <p>{params.rating.toString().includes('.') ? params.rating.toFixed(1) : params.rating} out of 10</p>
+          <p>
+            {params.rating.toString().includes('.')
+              ? params.rating.toFixed(1)
+              : params.rating}{' '}
+            out of 10
+          </p>
         </div>
         <Separator orientation="vertical" className="h-4" />
         <div className="flex flex-row items-center gap-1">
@@ -585,12 +609,14 @@ function AttestationChartCard({
               <TabsTrigger
                 value="citizens"
                 className="data-[state=active]:bg-[#F2F3F8] border-transparent data-[state=active]:border-[#E0E2EB] border-[1px]"
+                disabled={!counts?.citizens}
               >
                 Citizens
               </TabsTrigger>
               <TabsTrigger
                 value="delegates"
                 className="data-[state=active]:bg-[#F2F3F8] border-transparent data-[state=active]:border-[#E0E2EB] border-[1px]"
+                disabled={!counts?.delegates}
               >
                 Top Delegates
               </TabsTrigger>

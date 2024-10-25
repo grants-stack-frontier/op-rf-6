@@ -61,26 +61,37 @@ export function InfoBox() {
         <div className="space-y-6 pr-1">
           <p>
             To help you determine a Round 6 budget, it&apos;s useful to
-            reference existing data on Optimism grant allocations:
+            reference existing data on Optimism allocations towards Governance
+            contributions:
           </p>
           <ol className="list-decimal pl-5 space-y-2">
             <li>
+              Retro Funding 3 allocated approximately 1.1M OP to Optimism
+              Governance Contributions at the end of 2023.
+            </li>
+            <li>
+              The Token House has allocated 500k OP+ in Governance Season 5
+              across 32+ Governance related grants.
+            </li>
+            <li>
+              For participation in Season 5, Citizens & Top 100 delegates have
+              received a total of 337k OP in{' '}
+              <a
+                href="https://gov.optimism.io/t/season-5-retro-governance-participation-rewards/8105"
+                target="_blank"
+                className="underline"
+              >
+                Retro Governance Participation rewards
+              </a>
+              .
+            </li>
+            <li>
               Retro Funding 4 allocated 10M OP among 207 Onchain builders for
-              driving the adoption of Optimism
-            </li>
-            <li>
-              The Token House has allocated 1M+ OP since Jan 2023 to 20+
-              proactive grants for OP Stack contributions
-            </li>
-            <li>
-              The Foundation has made a 250k OP grant to{' '}
-              <span className="underline">
-                build Zero Knowledge proofs for the OP Stack
-              </span>
+              driving the adoption of Optimism.
             </li>
           </ol>
           <p>
-            Responsible allocation of OP enables the Collective to support more
+            Responsible allocation of OP enables the Collective to fund more
             builders, and to sustainably pursue Retro Funding into the future.
             Any unallocated OP will be used to reward impact in future rounds.
           </p>
