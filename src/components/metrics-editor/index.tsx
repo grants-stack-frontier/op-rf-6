@@ -22,6 +22,8 @@ import { BallotFilter } from '../ballot/ballot-filter';
 import { Card } from '../ui/card';
 
 import { ResetButton } from './reset-button';
+import { useState } from 'react';
+import { ChangeAllocationMethodDialog } from './change-allocation-dialog';
 
 export function BlueCircleCheckIcon() {
   return (
@@ -45,6 +47,9 @@ export function MetricsEditor({ budget }: { budget: number }) {
   const { mutate: saveDistributionMethod } = useDistributionMethod();
   const { data: distributionMethod, refetch } =
     useDistributionMethodFromLocalStorage();
+
+  const [isOpen, setOpen] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState<DistributionMethod>(DistributionMethod.CUSTOM);
 
   const allocationMethods = [
     {
@@ -119,6 +124,14 @@ export function MetricsEditor({ budget }: { budget: number }) {
               'border-2 border-[#BCBFCD]': distributionMethod === method.method,
             })}
             onClick={() => {
+              if (
+                distributionMethod === DistributionMethod.CUSTOM &&
+                method.method !== DistributionMethod.CUSTOM
+              ) {
+                setSelectedMethod(method.method);
+                setOpen(true);
+                return;
+              }
               saveDistributionMethodToLocalStorage(
                 method.method as DistributionMethod,
                 address
@@ -172,7 +185,11 @@ export function MetricsEditor({ budget }: { budget: number }) {
           </Card>
         ))}
       </div>
-      {/* ^^This sections is a work in progress^^ */}
+      <ChangeAllocationMethodDialog
+        isOpen={isOpen}
+        onOpenChange={setOpen}
+        distributionMethod={selectedMethod}
+      />
     </div>
   );
 }
