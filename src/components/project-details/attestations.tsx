@@ -368,7 +368,7 @@ function AttestationElectedGovernanceMembersListItem(params: {
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
           <ThumbRatingIcon rating={params.rating} />
-          <p>{params.rating.toFixed(2)}</p>
+          <p>{params.rating.toString().includes('.') ? params.rating.toFixed(1) : params.rating} out of 10</p>
         </div>
         <Separator orientation="vertical" className="h-4" />
         <div className="flex flex-row items-center gap-1">
