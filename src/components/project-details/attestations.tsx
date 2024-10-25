@@ -95,7 +95,7 @@ export function Attestations({
         reviews={metrics.elected_governance_reviews}
       />
       <Link
-        href={`https://metricsgarden.xyz/projects/${projectId}`}
+        href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
         target="_blank"
         passHref
       >
