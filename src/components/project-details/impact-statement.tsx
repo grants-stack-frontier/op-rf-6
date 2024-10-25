@@ -10,7 +10,7 @@ export function ImpactStatement({
   impactStatement: ProjectImpactStatement;
 }) {
   const { category, statement } = impactStatement;
-  console.log({impactStatement});
+  console.log({ impactStatement });
 
   return (
     <>

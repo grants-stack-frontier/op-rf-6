@@ -33,7 +33,12 @@ import {
 } from '../ui/chart';
 import { Separator } from '../ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { AttStarIcon, AttUserIcon, AttUserStarIcon, ThumbRatingIcon } from './attestation-icons';
+import {
+  AttStarIcon,
+  AttUserIcon,
+  AttUserStarIcon,
+  ThumbRatingIcon,
+} from './attestation-icons';
 import { AttestationSuperlativeDialog } from './attestation-superlative-dialog';
 
 export function Attestations({
@@ -89,9 +94,14 @@ export function Attestations({
       <AttestationElectedGovernanceMembersCard
         reviews={metrics.elected_governance_reviews}
       />
-      <Link href={`https://metricsgarden.xyz/projects/${projectId}`} target='_blank' passHref>
+      <Link
+        href={`https://metricsgarden.xyz/projects/${projectId}`}
+        target="_blank"
+        passHref
+      >
         <p className="text-sm line-height-5 text-[#404454]">
-          View all testimonials at metricsgarden.xyz/projects/{projectId?.substring(0, 4)}...
+          View all testimonials at metricsgarden.xyz/projects/
+          {projectId?.substring(0, 4)}...
         </p>
       </Link>
     </div>
@@ -107,12 +117,13 @@ function AttestationCard({
   delegatesCount?: number;
   totalCount?: number;
 }) {
-  const { data: projects } = useProjects({category: 'gov_infra'});
+  const { data: projects } = useProjects({ category: 'gov_infra' });
 
   const attestationAvgQuantity = useMemo(() => {
     return projects
       ? projects.reduce(
-          (acc, project) => acc + (project.impactMetrics?.count_total_attestations ?? 0),
+          (acc, project) =>
+            acc + (project.impactMetrics?.count_total_attestations ?? 0),
           0
         ) / projects.length
       : 0;
@@ -129,24 +140,34 @@ function AttestationCard({
         <div className="text-sm line-height-5">
           {totalCount && totalCount > 0 && (
             <>
-            <p>
-              By{' '}
-              <span className="font-semibold">
-                Citizens ({citizensCount ?? 0}) & Top Delegates* (
-                {delegatesCount ?? 0}).
-              </span>
-            </p>
-            <p>
-              {totalCount && totalCount > attestationAvgQuantity ? 'More' : 'Less'} than most other Governance Infrastructure & Tooling projects.
-            </p>
-            <p className="text-xs line-height-4 mt-2">
-              *The top 100 delegates by voting power.
-            </p>
+              <p>
+                By{' '}
+                <span className="font-semibold">
+                  Citizens ({citizensCount ?? 0}) & Top Delegates* (
+                  {delegatesCount ?? 0}).
+                </span>
+              </p>
+              <p>
+                {totalCount && totalCount > attestationAvgQuantity
+                  ? 'More'
+                  : 'Less'}{' '}
+                than most other Governance Infrastructure & Tooling projects.
+              </p>
+              <p className="text-xs line-height-4 mt-2">
+                *The top 100 delegates by voting power.
+              </p>
             </>
           )}
-          {!totalCount || totalCount === 0 && (
-            <p>This project did not receive any attestations from <span className="font-semibold">Citizens & Top 100 Delegates</span>.</p>
-          )}
+          {!totalCount ||
+            (totalCount === 0 && (
+              <p>
+                This project did not receive any attestations from{' '}
+                <span className="font-semibold">
+                  Citizens & Top 100 Delegates
+                </span>
+                .
+              </p>
+            ))}
         </div>
       </CardContent>
     </Card>
@@ -171,8 +192,10 @@ function RecommendationRatingCard({ rating }: { rating?: number }) {
         <div className="text-sm line-height-5">
           <p>
             <span className="font-semibold">Citizens & Top Delegates</span> are{' '}
-            <span className="font-semibold">{getLikelihood(roundedRating)}</span> to recommend this
-            tool.
+            <span className="font-semibold">
+              {getLikelihood(roundedRating)}
+            </span>{' '}
+            to recommend this tool.
           </p>
         </div>
       </CardContent>
@@ -364,7 +387,11 @@ function AttestationElectedGovernanceMembersListItem(params: {
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
           <ThumbRatingIcon rating={params.rating} />
-          <p>{params.rating.toString().includes('.') ? params.rating.toFixed(1) : params.rating}</p>
+          <p>
+            {params.rating.toString().includes('.')
+              ? params.rating.toFixed(1)
+              : params.rating}
+          </p>
         </div>
         <Separator orientation="vertical" className="h-4" />
         <div className="flex flex-row items-center gap-1">

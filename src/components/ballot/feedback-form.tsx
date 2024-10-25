@@ -117,9 +117,9 @@ function Behaviors() {
     formState: { errors },
   } = useFormContext();
   const { field } = useController({
-    name: "behaviors",
+    name: 'behaviors',
     control,
-    rules: { required: "At least one must be selected" },
+    rules: { required: 'At least one must be selected' },
   });
 
   const error = String(errors[field.name]?.message);
@@ -128,25 +128,25 @@ function Behaviors() {
       <div className="space-y-2 mb-4">
         {[
           {
-            id: "collusion",
+            id: 'collusion',
             label:
-              "Collusion (e.g., secret cooperation among badgeholders for a dishonest purpose)",
+              'Collusion (e.g., secret cooperation among badgeholders for a dishonest purpose)',
           },
           {
-            id: "bribery",
+            id: 'bribery',
             label:
-              "Bribery (e.g., promising something in return for voting in a particular way)",
+              'Bribery (e.g., promising something in return for voting in a particular way)',
           },
           {
-            id: "self-dealing",
+            id: 'self-dealing',
             label:
-              "Self-dealing (e.g., voting in someone’s self-interest rather than in the ecosystem’s interest)",
+              'Self-dealing (e.g., voting in someone’s self-interest rather than in the ecosystem’s interest)',
           },
           {
-            id: "other",
-            label: "Other behaviors that are detrimental to the Collective",
+            id: 'other',
+            label: 'Other behaviors that are detrimental to the Collective',
           },
-          { id: "none", label: "None of the above" },
+          { id: 'none', label: 'None of the above' },
         ].map((item, i) => (
           <label key={i} htmlFor={item.id} className="block cursor-pointer">
             <Card className="px-4 py-3 flex gap-2 items-center w-full">
@@ -154,7 +154,7 @@ function Behaviors() {
                 id={item.id}
                 checked={field.value?.includes(item.id)}
                 onCheckedChange={(checked) => {
-                  console.log("checked ", checked);
+                  console.log('checked ', checked);
                   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   checked
                     ? field.onChange([...(field.value ?? []), item.id])
@@ -169,7 +169,7 @@ function Behaviors() {
         ))}
       </div>
       <Textarea
-        {...register("behaviorsComment")}
+        {...register('behaviorsComment')}
         placeholder="Please feel free to elaborate here. Reminder that these responses are anonymous..."
       />
       <div className="text-destructive text-sm pt-4">{error}</div>

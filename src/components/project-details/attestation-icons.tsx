@@ -74,7 +74,13 @@ export function AttStarIcon({ size = 24 }: { size?: 24 | 64 }) {
   );
 }
 
-export function ThumbRatingIcon({ rating, size = 16 }: { rating: number, size?: 16 | 24 }) {
+export function ThumbRatingIcon({
+  rating,
+  size = 16,
+}: {
+  rating: number;
+  size?: 16 | 24;
+}) {
   function getColorFromRating(rating: number) {
     if (rating >= 8.34) return '#3374DB';
     if (rating >= 6.67) return '#69A0F7';
