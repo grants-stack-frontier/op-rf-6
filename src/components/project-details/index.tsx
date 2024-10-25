@@ -41,7 +41,7 @@ export function ProjectDetails() {
   } = project ?? {};
   const { data: session } = useSession();
   const isCitizen = Boolean(session?.isCitizen);
-  console.log({ project });
+  console.log({ project, session });
   return (
     <>
       {isLoading ? (
