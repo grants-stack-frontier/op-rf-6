@@ -41,7 +41,7 @@ export function ProjectDetails() {
   } = project ?? {};
   const { data: session } = useSession();
   const isCitizen = Boolean(session?.isCitizen);
-  console.log({ project });
+  console.log({ project, session });
   return (
     <>
       {isLoading ? (
@@ -75,7 +75,7 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {(impactMetrics && isCitizen) && (
+          {impactMetrics && isCitizen && (
             <Attestations projectId={id} metrics={impactMetrics} />
           )}
           <Separator className="my-12" />

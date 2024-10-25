@@ -19,7 +19,7 @@ const formMap: FeedbackForm = {
 
   budgetConfidenceRating: '91484848-4848-4848-4848-484848484848',
   budgetConfidenceComment: '91484848-4848-4848-4848-484848484848',
-  
+
   scoringUsefulnessRating: '91484848-4848-4848-4848-484848484848',
   scoringUsefulnessComment: '91484848-4848-4848-4848-484848484848',
 
@@ -27,16 +27,16 @@ const formMap: FeedbackForm = {
   allocationMethodsUsefulnessComment: '91484848-4848-4848-4848-484848484848',
 
   behaviors: {
-    id: "505b462d-1d03-4799-9402-8a78f8afe56c",
+    id: '505b462d-1d03-4799-9402-8a78f8afe56c',
     choiceRefs: {
-      collusion: "85f58f02-0b56-494d-8dfc-b9d899f7fbed",
-      bribery: "05ec7e72-d0fc-4719-9a7a-4196fb7c4890",
-      "self-dealing": "0d8fa526-1895-4fa0-88d1-c2007ad2cc0d",
-      other: "fa6957e5-5387-48bf-9df8-ac213f1a66f0",
-      none: "cf274617-880d-46da-bdb1-48732f670f9c",
+      collusion: '85f58f02-0b56-494d-8dfc-b9d899f7fbed',
+      bribery: '05ec7e72-d0fc-4719-9a7a-4196fb7c4890',
+      'self-dealing': '0d8fa526-1895-4fa0-88d1-c2007ad2cc0d',
+      other: 'fa6957e5-5387-48bf-9df8-ac213f1a66f0',
+      none: 'cf274617-880d-46da-bdb1-48732f670f9c',
     },
   },
-  behaviorsComment: "fa87855f-c32d-46d2-a74f-c35b969faf71",
+  behaviorsComment: 'fa87855f-c32d-46d2-a74f-c35b969faf71',
 
   trustRating: '91484848-4848-4848-4848-484848484848',
   trustComment: '91484848-4848-4848-4848-484848484848',
@@ -49,12 +49,12 @@ async function sendFeedback(feedback: FeedbackForm) {
       return {
         formFieldId,
         inputValue: formFieldId?.choiceRefs
-        ? {
-            choiceRefs: value?.map(
-              (behavior: string) => formFieldId.choiceRefs[behavior]
-            ),
-          }
-        : { default: value },
+          ? {
+              choiceRefs: value?.map(
+                (behavior: string) => formFieldId.choiceRefs[behavior]
+              ),
+            }
+          : { default: value },
       };
     }
   );
