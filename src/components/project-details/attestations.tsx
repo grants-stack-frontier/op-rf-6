@@ -12,7 +12,7 @@ import {
 } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
 // import mixpanel from '@/lib/mixpanel';
-import { useProjects } from '@/hooks/useProjects';
+// import { useProjects } from '@/hooks/useProjects';
 
 import NeutralFaceEmoji from '../../../public/neutral-face-emoji.svg';
 import FrowningFaceEmoji from '../../../public/slightly-frowning-face-emoji.svg';
@@ -117,17 +117,17 @@ function AttestationCard({
   delegatesCount?: number;
   totalCount?: number;
 }) {
-  const { data: projects } = useProjects({ category: 'gov_infra' });
+  // const { data: projects } = useProjects({ category: 'gov_infra' });
 
-  const attestationAvgQuantity = useMemo(() => {
-    return projects
-      ? projects.reduce(
-          (acc, project) =>
-            acc + (project.impactMetrics?.count_total_attestations ?? 0),
-          0
-        ) / projects.length
-      : 0;
-  }, [projects]);
+  // const attestationAvgQuantity = useMemo(() => {
+  //   return projects
+  //     ? projects.reduce(
+  //         (acc, project) =>
+  //           acc + (project.impactMetrics?.count_total_attestations ?? 0),
+  //         0
+  //       ) / projects.length
+  //     : 0;
+  // }, [projects]);
 
   return (
     <Card className="shadow-none">
@@ -143,11 +143,11 @@ function AttestationCard({
               <p>
                 By{' '}
                 <span className="font-semibold">
-                  Citizens ({citizensCount ?? 0}) & Top Delegates* (
+                  Citizens ({citizensCount ?? 0}) & Top 100 Delegates (
                   {delegatesCount ?? 0}).
                 </span>
               </p>
-              <p>
+              {/* <p>
                 {totalCount && totalCount > attestationAvgQuantity
                   ? 'More'
                   : 'Less'}{' '}
@@ -155,7 +155,7 @@ function AttestationCard({
               </p>
               <p className="text-xs line-height-4 mt-2">
                 *The top 100 delegates by voting power.
-              </p>
+              </p> */}
             </>
           )}
           {!totalCount ||
