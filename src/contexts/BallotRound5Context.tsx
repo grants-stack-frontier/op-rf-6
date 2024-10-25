@@ -301,7 +301,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
         id: removed.project_id,
         position: newIndex,
       }).then(() => {
-        distributionMethod &&
+        if (distributionMethod)
           redistribute(distributionMethod as DistributionMethod);
       });
     },
@@ -361,7 +361,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
           id: movedProject.project_id,
           position: newIndex,
         }).then(() => {
-          distributionMethod &&
+          if (distributionMethod)
             redistribute(distributionMethod as DistributionMethod);
         });
       }
