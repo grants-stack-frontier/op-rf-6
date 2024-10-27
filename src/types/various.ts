@@ -17,7 +17,7 @@ export type FeedbackForm = {
   budgetConfidenceComment?: string;
   scoringUsefulnessRating?: string;
   scoringUsefulnessComment?: string;
-  allocationMethodsUsefulnessRating: string;
+  allocationMethodsUsefulnessRating?: string;
   allocationMethodsUsefulnessComment?: string;
   concernRating: string;
   concernComment?: string;

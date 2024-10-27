@@ -147,6 +147,7 @@ function createQuestions(
         <SelectForm
           key="budgetConfidence"
           name="budgetConfidence"
+          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
           options={Array(7)
             .fill(0)
             .map((_, index) => ({
@@ -193,10 +194,12 @@ function createQuestions(
     },
     {
       title: 'How useful were allocation methods for determining your ballot?',
+      isSkippable: true,
       children: (
         <SelectForm
           key="allocationMethodsUsefulness"
           name="allocationMethodsUsefulness"
+          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
           options={Array(7)
             .fill(0)
             .map((_, index) => ({
@@ -306,7 +309,7 @@ function SelectForm({
           {...register(`${name}Comment`)}
           placeholder={
             commentPlaceholder ??
-            'Please feel free to elaborate here. Reminder that these responses are anonymous...'
+            'Please feel free to elaborate here. Reminder that these responses are private.'
           }
         />
       )}
