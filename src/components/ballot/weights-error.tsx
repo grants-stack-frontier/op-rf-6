@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { votingEndDate } from '@/config';
+import { ROUND, votingEndDate } from '@/config';
 import {
   useRound5BallotWeightSum,
   useDistributionMethodFromLocalStorage,
@@ -19,7 +19,7 @@ export function WeightsError() {
   const { data: distributionMethod } = useDistributionMethodFromLocalStorage();
   const {
     getBudget: { data: budgetData },
-  } = useBudget(5);
+  } = useBudget(ROUND);
 
   if (Number(seconds) < 0) {
     return (

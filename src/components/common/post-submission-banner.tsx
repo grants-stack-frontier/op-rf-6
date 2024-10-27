@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { votingEndDate } from '@/config';
 import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 
-import R5VotedImage from '../../../public/RetroFunding_R5_IVoted_16x9.png';
+import R6VotedImage from '../../../public/RetroFunding_R6_IVoted.png';
 import { downloadImage } from '../ballot/submit-dialog5';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -73,7 +73,7 @@ export function PostSubmissionBanner() {
         </p>
         <Image
           id="download"
-          src={R5VotedImage}
+          src={R6VotedImage}
           alt="Success!"
           width={142}
           height={80}

@@ -6,40 +6,36 @@ import { FeedbackForm } from '@/types/various';
 
 // TO DO: Change these
 const formMap: FeedbackForm = {
-  address: '45ea618e-403e-40b8-b610-88b6b1b63b6c',
-  votingTime: 'cd9c9bd0-0b16-4e3f-a28b-8a50cffe64c0',
+  address: '8c3fdad7-e429-48e0-af58-b61fb0ecd3c3',
+  // How much time did you spend voting in this round (in hours)?
+  votingTime: '0de463fa-f2e0-42bb-a0b9-dc10c9b0c84b',
+  // Please rate the voting experience
+  votingRating: '3633a6b2-cda0-4354-9b59-9b47115d8c87',
+  
+  // Did the app provide you enough information to confidently vote on the round budget and category allocation?
+  budgetConfidenceRating: '410b1eed-599d-4f4e-b9fd-a796ee55c356',
+  // Please feel free to elaborate here. Reminder that these responses are private.
+  budgetConfidenceComment: 'fe74da9d-1a41-47d7-8add-b8e590222f93',
+  
+  // How useful was scoring each project before deciding on your allocation?
+  scoringUsefulnessRating: '4f7c19cc-2fc3-4267-89be-62ec502f3601',
+  // Please feel free to elaborate here. Reminder that these responses are private.
+  scoringUsefulnessComment: 'b32bc787-58ca-46ce-91ef-7f7c2ec6e705',
+  
+  // How useful were allocation methods for determining your ballot?
+  allocationMethodsUsefulnessRating: '6b19127e-fb76-449c-b367-8850d252b9d2',
+  // Please feel free to elaborate here. Reminder that these responses are private.
+  allocationMethodsUsefulnessComment: '1dfbf276-3aee-4152-b7dc-b09938842027',
 
-  votingRating: 'a4779d7d-8b78-4322-a101-6d4524e19a12',
+  // How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?
+  concernRating: '73ed49d2-ce15-428f-a765-aeb37e504767',
+  // Please feel free to elaborate here. Reminder that these responses are private.
+  concernComment: 'd04c2581-85d2-43b6-bcc4-0e71a167842f',
 
-  concernRating: '125df7e0-9622-428f-87a7-624b29df0b4f',
-  concernComment: '71a745ae-e5d5-433b-badf-3a93e4e2326b',
-
-  confidenceRating: 'd5fd6cec-6b77-4c2d-8e76-91c181fd4ef3',
-  confidenceComment: 'c06e1e36-ec60-457c-a3d5-fc3429f85a35',
-
-  budgetConfidenceRating: '91484848-4848-4848-4848-484848484848',
-  budgetConfidenceComment: '91484848-4848-4848-4848-484848484848',
-
-  scoringUsefulnessRating: '91484848-4848-4848-4848-484848484848',
-  scoringUsefulnessComment: '91484848-4848-4848-4848-484848484848',
-
-  allocationMethodsUsefulnessRating: '91484848-4848-4848-4848-484848484848',
-  allocationMethodsUsefulnessComment: '91484848-4848-4848-4848-484848484848',
-
-  behaviors: {
-    id: '505b462d-1d03-4799-9402-8a78f8afe56c',
-    choiceRefs: {
-      collusion: '85f58f02-0b56-494d-8dfc-b9d899f7fbed',
-      bribery: '05ec7e72-d0fc-4719-9a7a-4196fb7c4890',
-      'self-dealing': '0d8fa526-1895-4fa0-88d1-c2007ad2cc0d',
-      other: 'fa6957e5-5387-48bf-9df8-ac213f1a66f0',
-      none: 'cf274617-880d-46da-bdb1-48732f670f9c',
-    },
-  },
-  behaviorsComment: 'fa87855f-c32d-46d2-a74f-c35b969faf71',
-
-  trustRating: '91484848-4848-4848-4848-484848484848',
-  trustComment: '91484848-4848-4848-4848-484848484848',
+  // Given the design of this round, how confident do you feel that rewards will be allocated efficiently to the most deserving projects?
+  confidenceRating: '5ef68cc1-f4b9-463d-83a3-c4aaddb4f250',
+  // Please feel free to elaborate here. Reminder that these responses are private.
+  confidenceComment: 'd3b99ab5-b75c-4e5d-ae45-b8e3d0524f56',
 } as const;
 
 async function sendFeedback(feedback: FeedbackForm) {
@@ -48,13 +44,7 @@ async function sendFeedback(feedback: FeedbackForm) {
       const value = feedback[key as keyof typeof formMap];
       return {
         formFieldId,
-        inputValue: formFieldId?.choiceRefs
-          ? {
-              choiceRefs: value?.map(
-                (behavior: string) => formFieldId.choiceRefs[behavior]
-              ),
-            }
-          : { default: value },
+        inputValue: { default: value },
       };
     }
   );
@@ -64,7 +54,7 @@ async function sendFeedback(feedback: FeedbackForm) {
         operationName: 'AddFormResponse',
         variables: {
           data: {
-            formId: '25b6553b-b3f9-4b94-b62f-66fd2f955d57', // TO DO: Change this
+            formId: 'a15a5008-314a-4323-85c5-fe0ee0939004', // TO DO: Change this
             addFormResponseItems,
           },
         },

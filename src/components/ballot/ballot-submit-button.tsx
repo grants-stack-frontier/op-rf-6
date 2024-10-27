@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import { votingEndDate } from '@/config';
+import { ROUND, votingEndDate } from '@/config';
 import { useRound5BallotWeightSum } from '@/hooks/useBallotRound5';
 import { useBudget } from '@/hooks/useBudget';
 
@@ -13,7 +13,7 @@ export function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
   const [seconds] = useVotingTimeLeft(votingEndDate);
   const {
     getBudget: { data: budgetData },
-  } = useBudget(5);
+  } = useBudget(ROUND);
 
   const isBudgetIncomplete =
     !budgetData?.budget ||

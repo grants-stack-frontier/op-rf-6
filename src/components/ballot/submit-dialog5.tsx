@@ -6,7 +6,7 @@ import { ComponentProps, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { votingEndDate } from '@/config';
+import { ROUND, votingEndDate } from '@/config';
 import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
 import { formatDate } from '@/lib/utils';
 import { Round5Ballot } from '@/types/ballot';
@@ -17,7 +17,7 @@ import { Heading } from '../ui/headings';
 import { Text } from '../ui/text';
 
 import { Feedback, Form } from './feedback-form';
-import { exportRound5Ballot } from './import-ballot5';
+// import { exportRound5Ballot } from './import-ballot5';
 
 export function SubmitRound5Dialog({
   open,
@@ -125,9 +125,8 @@ export function SubmitRound5Dialog({
                     Your vote has been received!
                   </Heading>
                   <Text className="text-muted-foreground text-center">
-                    Thank you for your participation in Retro Funding Round 5
-                    Voting! Your work as a badgeholder is crucial to the
-                    improvement of the Superchain.
+                    Your work as a badgeholder is crucial to the
+                    improvement of the OP Stack! We made you an image to share this moment.
                   </Text>
                   <Button
                     variant="destructive"
@@ -139,7 +138,7 @@ export function SubmitRound5Dialog({
                     Download image
                     <ArrowDownToLineIcon className="size-4 ml-2" />
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     isLoading={submit.isPending}
                     disabled={submit.isPending}
@@ -148,7 +147,7 @@ export function SubmitRound5Dialog({
                     }
                   >
                     Export your ballot
-                  </Button>
+                  </Button> */}
                   <Button variant="ghost" onClick={() => onOpenChange?.(false)}>
                     Close
                   </Button>
@@ -166,7 +165,7 @@ export function downloadImage(element: HTMLImageElement | null) {
   const anchor = document.createElement('a');
   anchor.href = element.src;
 
-  anchor.download = 'optimism-round4-voted.png';
+  anchor.download = `optimism-round${ROUND}-voted.png`;
 
   document.body.appendChild(anchor);
   anchor.click();
