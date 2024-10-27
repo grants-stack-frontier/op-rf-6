@@ -23,8 +23,6 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Textarea } from '../ui/textarea';
-import { Card } from '../ui/card';
-import { Checkbox } from '../ui/checkbox';
 
 export function Form({
   children,
@@ -110,73 +108,6 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   );
 }
 
-function Behaviors() {
-  const {
-    control,
-    register,
-    formState: { errors },
-  } = useFormContext();
-  const { field } = useController({
-    name: 'behaviors',
-    control,
-    rules: { required: 'At least one must be selected' },
-  });
-
-  const error = String(errors[field.name]?.message);
-  return (
-    <div className="">
-      <div className="space-y-2 mb-4">
-        {[
-          {
-            id: 'collusion',
-            label:
-              'Collusion (e.g., secret cooperation among badgeholders for a dishonest purpose)',
-          },
-          {
-            id: 'bribery',
-            label:
-              'Bribery (e.g., promising something in return for voting in a particular way)',
-          },
-          {
-            id: 'self-dealing',
-            label:
-              'Self-dealing (e.g., voting in someone’s self-interest rather than in the ecosystem’s interest)',
-          },
-          {
-            id: 'other',
-            label: 'Other behaviors that are detrimental to the Collective',
-          },
-          { id: 'none', label: 'None of the above' },
-        ].map((item, i) => (
-          <label key={i} htmlFor={item.id} className="block cursor-pointer">
-            <Card className="px-4 py-3 flex gap-2 items-center w-full">
-              <Checkbox
-                id={item.id}
-                checked={field.value?.includes(item.id)}
-                onCheckedChange={(checked) => {
-                  console.log('checked ', checked);
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  checked
-                    ? field.onChange([...(field.value ?? []), item.id])
-                    : field.onChange(
-                        field.value.filter((v: string) => v !== item.id)
-                      );
-                }}
-              />
-              {item.label}
-            </Card>
-          </label>
-        ))}
-      </div>
-      <Textarea
-        {...register('behaviorsComment')}
-        placeholder="Please feel free to elaborate here. Reminder that these responses are anonymous..."
-      />
-      <div className="text-destructive text-sm pt-4">{error}</div>
-    </div>
-  );
-}
-
 function createQuestions(
   register: UseFormRegister<FeedbackForm & { index: number }>
 ) {
@@ -211,7 +142,7 @@ function createQuestions(
     },
     {
       title:
-        'Did the app provide you enough information to confidently vote on the budget?',
+        'Did the app provide you enough information to confidently vote on the round budget and category allocation?',
       children: (
         <SelectForm
           key="budgetConfidence"
@@ -235,7 +166,7 @@ function createQuestions(
     },
     {
       title:
-        'How useful was scoring each project before unlocking your ballot?',
+        'How useful was scoring each project before deciding on your allocation?',
       description: 'If you used Pairwise, skip this question.',
       isSkippable: true,
       children: (
@@ -284,10 +215,6 @@ function createQuestions(
       ),
     },
     {
-      title: `Did you observe any behavior among your fellow badgeholders that could be considered one of the following (select all that apply)?`,
-      children: <Behaviors />,
-    },
-    {
       title:
         'How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?',
       description:
@@ -315,7 +242,7 @@ function createQuestions(
     },
     {
       title:
-        'Given the design of this round, how confident do you feel that OP rewards will be allocated efficiently to the most deserving projects?',
+        'Given the design of this round, how confident do you feel that rewards will be allocated efficiently to the most deserving projects?',
       children: (
         <SelectForm
           key="confidence"
@@ -330,29 +257,6 @@ function createQuestions(
                     ? '(some confidence)'
                     : index === 6
                       ? '(very high confidence)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title: 'To what extent do you trust the opinions of other badgeholders?',
-      children: (
-        <SelectForm
-          key="trust"
-          name="trust"
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(very low trust)'
-                  : index === 3
-                    ? '(moderate trust)'
-                    : index === 6
-                      ? '(very high trust)'
                       : ''
               }`,
               value: String(index + 1),
