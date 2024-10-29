@@ -7,7 +7,7 @@ import { TeamMember } from '@/types/project-details';
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 
-import { Attestations } from './attestations';
+import { AttestationCard, Attestations } from './attestations';
 import { CategoryAndTeam } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
@@ -76,9 +76,10 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {impactMetrics && (isCitizen || !isBadgeholder) && (
-            <Attestations projectId={projectId} metrics={impactMetrics} />
-          )}
+          {(impactMetrics || impactStatement?.category === 'GOVERNANCE_INFRA_AND_TOOLING') &&
+            (isCitizen || !isBadgeholder) && (
+              <Attestations projectId={projectId} metrics={impactMetrics} />
+            )}
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />
