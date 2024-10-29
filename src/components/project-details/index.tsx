@@ -7,7 +7,7 @@ import { TeamMember } from '@/types/project-details';
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 
-import { AttestationCard, Attestations } from './attestations';
+import { Attestations } from './attestations';
 import { CategoryAndTeam } from './category-team';
 import { GrantsFundingRevenue } from './grants-funding-revenue';
 import { ImpactStatement } from './impact-statement';
