@@ -76,9 +76,10 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {impactMetrics && (isCitizen || !isBadgeholder) && (
-            <Attestations projectId={projectId} metrics={impactMetrics} />
-          )}
+          {(impactMetrics || impactStatement?.category === 'GOVERNANCE_INFRA_AND_TOOLING') &&
+            (isCitizen || !isBadgeholder) && (
+              <Attestations projectId={projectId} metrics={impactMetrics} />
+            )}
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

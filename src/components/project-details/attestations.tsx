@@ -54,7 +54,29 @@ export function Attestations({
     return { mostPositive, cannotLiveWithout };
   }, [metrics]);
 
-  if (!metrics) return null;
+  if (!metrics) return (
+    <div className="flex flex-col gap-2 mt-12">
+      <Heading className="text-sm font-medium leading-5" variant="h1">
+        Attestations
+      </Heading>
+      <p className="text-sm line-height-5 text-[#404454]">
+        Given to this project by citizens and delegates at metricsgarden.xyz.
+        Only applicable for projects in the Governance Infrastructure & Tooling
+        category.
+      </p>
+      <AttestationCard totalCount={0} />
+      <Link
+        href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
+        target="_blank"
+        passHref
+      >
+        <p className="text-sm line-height-5 text-[#404454]">
+          View all testimonials at metricsgarden.xyz/projects/
+          {projectId?.substring(0, 4)}...
+        </p>
+      </Link>
+    </div>
+  );
 
   return (
     <div className="flex flex-col gap-2 mt-12">
@@ -68,9 +90,9 @@ export function Attestations({
       </p>
       <div className="grid grid-cols-2 gap-2">
         <AttestationCard
-          citizensCount={metrics?.count_citizen_attestations}
-          delegatesCount={metrics?.count_delegate_attestations}
-          totalCount={metrics?.count_total_attestations}
+          citizensCount={metrics.count_citizen_attestations}
+          delegatesCount={metrics.count_delegate_attestations}
+          totalCount={metrics.count_total_attestations ?? 0}
         />
         <RecommendationRatingCard rating={metrics?.avg_nps_score} />
       </div>
@@ -91,9 +113,11 @@ export function Attestations({
           total: metrics.count_total_attestations,
         }}
       />
-      <AttestationElectedGovernanceMembersCard
-        reviews={metrics.elected_governance_reviews}
-      />
+      {(metrics.elected_governance_reviews && Object.keys(metrics.elected_governance_reviews ?? {}).length > 0) && (
+        <AttestationElectedGovernanceMembersCard
+          reviews={metrics.elected_governance_reviews}
+        />
+      )}
       <Link
         href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
         target="_blank"
@@ -108,14 +132,14 @@ export function Attestations({
   );
 }
 
-function AttestationCard({
+export function AttestationCard({
   citizensCount,
   delegatesCount,
   totalCount,
 }: {
   citizensCount?: number;
   delegatesCount?: number;
-  totalCount?: number;
+  totalCount: number;
 }) {
   // const { data: projects } = useProjects({ category: 'gov_infra' });
 
@@ -138,7 +162,7 @@ function AttestationCard({
           attestations
         </CardTitle>
         <div className="text-sm line-height-5">
-          {totalCount && totalCount > 0 && (
+          {totalCount > 0 && (
             <>
               <p>
                 By{' '}
@@ -158,16 +182,15 @@ function AttestationCard({
               </p> */}
             </>
           )}
-          {!totalCount ||
-            (totalCount === 0 && (
-              <p>
-                This project did not receive any attestations from{' '}
+          {totalCount === 0 && (
+            <p>
+              This project did not receive any attestations from{' '}
                 <span className="font-semibold">
                   Citizens & Top 100 Delegates
                 </span>
                 .
-              </p>
-            ))}
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>
