@@ -11,6 +11,7 @@ import {
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { ROUND } from '@/config';
 import { useSession } from '@/hooks/useAuth';
 import {
   useBallot,
@@ -92,7 +93,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
     useDistributionMethod();
   const { mutateAsync: savePosition } = useSaveRound5Position();
   const allocationSum = useRound5BallotWeightSum();
-  const { getBudget } = useBudget(5);
+  const { getBudget } = useBudget(ROUND);
   const isSavingBallot = useIsSavingRound5Ballot();
   const { mutate: saveAllocation } = useSaveRound5Allocation();
 
@@ -300,7 +301,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
         id: removed.project_id,
         position: newIndex,
       }).then(() => {
-        redistribute(distributionMethod as DistributionMethod);
+        if (distributionMethod)
+          redistribute(distributionMethod as DistributionMethod);
       });
     },
     [projectList, savePosition, redistribute, distributionMethod]
@@ -359,7 +361,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
           id: movedProject.project_id,
           position: newIndex,
         }).then(() => {
-          redistribute(distributionMethod as DistributionMethod);
+          if (distributionMethod)
+            redistribute(distributionMethod as DistributionMethod);
         });
       }
     },
@@ -429,8 +432,8 @@ export function BallotProvider({ children }: PropsWithChildren) {
     setSearchTerm,
     handleSearch,
     isMovable:
-      distributionMethod === DistributionMethod.TOP_TO_BOTTOM ||
-      distributionMethod === DistributionMethod.TOP_WEIGHTED,
+      distributionMethod !== DistributionMethod.IMPACT_GROUPS &&
+      distributionMethod !== DistributionMethod.CUSTOM,
     handleProjectMove,
     handleAllocationChange,
     handleAllocationSave,

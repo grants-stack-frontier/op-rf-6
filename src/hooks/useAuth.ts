@@ -78,6 +78,8 @@ export function useSession() {
         });
       }
 
+      console.log('user', user);
+
       return user;
     },
   });

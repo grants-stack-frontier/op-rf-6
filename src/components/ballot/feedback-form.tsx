@@ -41,7 +41,7 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   const { mutate, isPending } = useSendFeedback();
 
   const questions = useMemo(() => createQuestions(register), [register]);
-  const { title, description, children } = questions[index];
+  const { title, description, children, isSkippable } = questions[index];
   return (
     <form
       onSubmit={handleSubmit((values) => {
@@ -67,7 +67,7 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
             {title}
           </Heading>
           {description && (
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground text-center">{description}</p>
           )}
         </div>
         {children}
@@ -82,15 +82,27 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
             onClick={() => setValue('index', index - 1)}
           />
         )}
-        <Button
-          className="w-full"
-          variant={'destructive'}
-          type="submit"
-          isLoading={isPending}
-          disabled={isPending}
-        >
-          Continue
-        </Button>
+        <div className="space-y-2">
+          <Button
+            className="w-full"
+            variant={'destructive'}
+            type="submit"
+            isLoading={isPending}
+            disabled={isPending}
+          >
+            Continue
+          </Button>
+          {isSkippable && index < questions.length - 1 && (
+            <Button
+              variant={'outline'}
+              type="button"
+              className="w-full"
+              onClick={() => setValue('index', index + 1)}
+            >
+              Skip
+            </Button>
+          )}
+        </div>
       </div>
     </form>
   );
@@ -130,6 +142,83 @@ function createQuestions(
     },
     {
       title:
+        'Did the app provide you enough information to confidently vote on the round budget and category allocation?',
+      children: (
+        <SelectForm
+          key="budgetConfidence"
+          name="budgetConfidence"
+          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(definitely not)'
+                  : index === 3
+                    ? '(somewhat)'
+                    : index === 6
+                      ? '(absolutely)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title:
+        'How useful was scoring each project before deciding on your allocation?',
+      description: 'If you used Pairwise, skip this question.',
+      isSkippable: true,
+      children: (
+        <SelectForm
+          key="scoringUsefulness"
+          name="scoringUsefulness"
+          commentPlaceholder="Optionally, how would you change or improve the scoring step? Reminder that these responses are private."
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(not useful at all)'
+                  : index === 3
+                    ? '(somewhat useful)'
+                    : index === 6
+                      ? '(very useful)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title: 'How useful were allocation methods for determining your ballot?',
+      isSkippable: true,
+      children: (
+        <SelectForm
+          key="allocationMethodsUsefulness"
+          name="allocationMethodsUsefulness"
+          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
+          options={Array(7)
+            .fill(0)
+            .map((_, index) => ({
+              label: `${index + 1} ${
+                index === 0
+                  ? '(not useful at all)'
+                  : index === 3
+                    ? '(somewhat useful)'
+                    : index === 6
+                      ? '(very useful)'
+                      : ''
+              }`,
+              value: String(index + 1),
+            }))}
+        />
+      ),
+    },
+    {
+      title:
         'How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?',
       description:
         'Examples are collusion, bribery, self-dealing, or other behaviors at odds with the goals of the Collective.',
@@ -156,7 +245,7 @@ function createQuestions(
     },
     {
       title:
-        'Given the design of this round, how confident do you feel that OP rewards will be allocated efficiently to the most deserving projects?',
+        'Given the design of this round, how confident do you feel that rewards will be allocated efficiently to the most deserving projects?',
       children: (
         <SelectForm
           key="confidence"
@@ -178,28 +267,6 @@ function createQuestions(
         />
       ),
     },
-    {
-      title:
-        'To what extent did the “Grants and investment” information influence your token allocation among projects?',
-      children: (
-        <SelectForm
-          key="influence"
-          name="influence"
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(did not influence my token allocation)'
-                  : index === 6
-                    ? '(had a large influence on my token allocation)'
-                    : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
   ];
 }
 
@@ -207,9 +274,11 @@ function SelectForm({
   name = '',
   options = [],
   hideComment,
+  commentPlaceholder,
 }: {
   name: string;
   hideComment?: boolean;
+  commentPlaceholder?: string;
   options: { value: string; label: string }[];
 }) {
   const _name = `${name}Rating`;
@@ -238,7 +307,10 @@ function SelectForm({
       {!hideComment && (
         <Textarea
           {...register(`${name}Comment`)}
-          placeholder="Please feel free to elaborate here. Reminder that these responses are anonymous..."
+          placeholder={
+            commentPlaceholder ??
+            'Please feel free to elaborate here. Reminder that these responses are private.'
+          }
         />
       )}
     </div>

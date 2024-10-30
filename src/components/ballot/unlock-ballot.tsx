@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
+import { ROUND } from '@/config';
 
 export function UnlockBallotDialog() {
   const { showUnlockDialog: isOpen, setShowUnlockDialog: setOpen } =
@@ -25,7 +26,7 @@ export function UnlockBallotDialog() {
   const router = useRouter();
   const { address } = useAccount();
   const queryClient = useQueryClient();
-  const roundId = 5;
+  const roundId = ROUND;
   const { updateBallotState } = useBallotRound5Context();
 
   const handleUnlock = useCallback(async () => {

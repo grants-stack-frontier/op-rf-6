@@ -1,6 +1,7 @@
 'use client';
 import type { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
 import { useProjectContext } from '@/contexts/ProjectContext';
+import { useSession } from '@/hooks/useAuth';
 import { TeamMember } from '@/types/project-details';
 
 import { Separator } from '../ui/separator';
@@ -20,7 +21,7 @@ import { SocialLinksList } from './social-links';
 export function ProjectDetails() {
   const { project, isLoading } = useProjectContext();
   const {
-    id,
+    projectId,
     profileAvatarUrl,
     name,
     projectCoverImageUrl,
@@ -38,7 +39,10 @@ export function ProjectDetails() {
     contracts,
     team,
   } = project ?? {};
-  console.log({ project });
+  const { data: session } = useSession();
+  const isCitizen = Boolean(session?.isCitizen);
+  const isBadgeholder = Boolean(session?.isBadgeholder);
+  console.log({ project, session });
   return (
     <>
       {isLoading ? (
@@ -72,7 +76,10 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          <Attestations projectId={id} metrics={impactMetrics} />
+          {(impactMetrics || impactStatement?.category === 'GOVERNANCE_INFRA_AND_TOOLING') &&
+            (isCitizen || !isBadgeholder) && (
+              <Attestations projectId={projectId} metrics={impactMetrics} />
+            )}
           <Separator className="my-12" />
           {impactStatement && (
             <ImpactStatement impactStatement={impactStatement} />

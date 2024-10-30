@@ -14,14 +14,17 @@ import {
 } from '@/hooks/useBallotRound5';
 import { cn } from '@/lib/utils';
 
-import Custom from '../../../public/chart-custom.svg';
-import Impact from '../../../public/chart-impact.svg';
-import TopBottom from '../../../public/chart-top-bottom.svg';
-import TopWeighted from '../../../public/chart-top-weighted.svg';
+import Custom from '../../../public/chart-custom-2.svg';
+import Impact from '../../../public/chart-impact-2.svg';
+import TopBottom from '../../../public/chart-top-bottom-2.svg';
+import TopWeighted from '../../../public/chart-top-weighted-2.svg';
+import Pareto from '../../../public/chart-pareto.svg';
 import { BallotFilter } from '../ballot/ballot-filter';
 import { Card } from '../ui/card';
 
 import { ResetButton } from './reset-button';
+import { useState } from 'react';
+import { ChangeAllocationMethodDialog } from './change-allocation-dialog';
 
 export function BlueCircleCheckIcon() {
   return (
@@ -46,6 +49,9 @@ export function MetricsEditor({ budget }: { budget: number }) {
   const { data: distributionMethod, refetch } =
     useDistributionMethodFromLocalStorage();
 
+  const [isOpen, setOpen] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState<DistributionMethod>(DistributionMethod.CUSTOM);
+
   const allocationMethods = [
     {
       name: 'Impact groups',
@@ -67,6 +73,12 @@ export function MetricsEditor({ budget }: { budget: number }) {
         'Reward allocation is weighted toward projects at the top of your ballot.',
       method: DistributionMethod.TOP_WEIGHTED,
       image: TopWeighted,
+    },
+    {
+      name: 'Pareto',
+      description: 'The Pareto distribution is a power law probability distribution which states that 80% of outcomes are due to 20% of causes. Alse known as the “80-20 rule”.',
+      method: DistributionMethod.PARETO,
+      image: Pareto,
     },
     {
       name: 'Custom',
@@ -111,7 +123,7 @@ export function MetricsEditor({ budget }: { budget: number }) {
         )}
         {distributionMethod && <ResetButton />}
       </div>
-      <div className="grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
+      <div className="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-4">
         {allocationMethods.map((method) => (
           <Card
             key={method.name}
@@ -119,6 +131,14 @@ export function MetricsEditor({ budget }: { budget: number }) {
               'border-2 border-[#BCBFCD]': distributionMethod === method.method,
             })}
             onClick={() => {
+              if (
+                distributionMethod === DistributionMethod.CUSTOM &&
+                method.method !== DistributionMethod.CUSTOM
+              ) {
+                setSelectedMethod(method.method);
+                setOpen(true);
+                return;
+              }
               saveDistributionMethodToLocalStorage(
                 method.method as DistributionMethod,
                 address
@@ -126,7 +146,8 @@ export function MetricsEditor({ budget }: { budget: number }) {
               if (
                 method.method === DistributionMethod.IMPACT_GROUPS ||
                 method.method === DistributionMethod.TOP_TO_BOTTOM ||
-                method.method === DistributionMethod.TOP_WEIGHTED
+                method.method === DistributionMethod.TOP_WEIGHTED ||
+                method.method === DistributionMethod.PARETO
               ) {
                 saveDistributionMethod(method.method);
               }
@@ -134,7 +155,7 @@ export function MetricsEditor({ budget }: { budget: number }) {
             }}
           >
             <div
-              className="mb-4 w-[220px] h-[130px]"
+              className="mb-4 w-[168px] h-[84px]"
               style={{
                 backgroundImage: `url(${method.image.src})`,
                 backgroundSize: '100% 100%', // Stretch horizontally and vertically to fill the container
@@ -172,7 +193,11 @@ export function MetricsEditor({ budget }: { budget: number }) {
           </Card>
         ))}
       </div>
-      {/* ^^This sections is a work in progress^^ */}
+      <ChangeAllocationMethodDialog
+        isOpen={isOpen}
+        onOpenChange={setOpen}
+        distributionMethod={selectedMethod}
+      />
     </div>
   );
 }

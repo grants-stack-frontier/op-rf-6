@@ -13,10 +13,14 @@ export type FeedbackForm = {
   address: string;
   votingTime: string;
   votingRating: string;
+  budgetConfidenceRating: string;
+  budgetConfidenceComment?: string;
+  scoringUsefulnessRating?: string;
+  scoringUsefulnessComment?: string;
+  allocationMethodsUsefulnessRating?: string;
+  allocationMethodsUsefulnessComment?: string;
   concernRating: string;
   concernComment?: string;
   confidenceRating: string;
   confidenceComment?: string;
-  influenceRating: string;
-  influenceComment?: string;
 };
