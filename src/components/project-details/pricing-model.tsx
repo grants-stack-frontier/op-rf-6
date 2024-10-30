@@ -23,7 +23,7 @@ export function PricingModel({
 
   const isFreemiumOrFree = (model: ProjectPricingModel | string) => {
     if (typeof model === 'string') {
-      return model === 'freemium';
+      return model === 'freemium' || model === 'free';
     }
     return model.type === 'free' || model.type === 'freemium';
   };
