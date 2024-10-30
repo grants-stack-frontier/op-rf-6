@@ -150,6 +150,7 @@ export enum DistributionMethod {
   TOP_TO_BOTTOM = 'TOP_TO_BOTTOM',
   IMPACT_GROUPS = 'IMPACT_GROUPS',
   TOP_WEIGHTED = 'TOP_WEIGHTED',
+  PARETO = 'PARETO',
   CUSTOM = 'CUSTOM',
 }
 
