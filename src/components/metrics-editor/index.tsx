@@ -14,10 +14,11 @@ import {
 } from '@/hooks/useBallotRound5';
 import { cn } from '@/lib/utils';
 
-import Custom from '../../../public/chart-custom.svg';
-import Impact from '../../../public/chart-impact.svg';
-import TopBottom from '../../../public/chart-top-bottom.svg';
-import TopWeighted from '../../../public/chart-top-weighted.svg';
+import Custom from '../../../public/chart-custom-2.svg';
+import Impact from '../../../public/chart-impact-2.svg';
+import TopBottom from '../../../public/chart-top-bottom-2.svg';
+import TopWeighted from '../../../public/chart-top-weighted-2.svg';
+import Pareto from '../../../public/chart-pareto.svg';
 import { BallotFilter } from '../ballot/ballot-filter';
 import { Card } from '../ui/card';
 
@@ -74,6 +75,12 @@ export function MetricsEditor({ budget }: { budget: number }) {
       image: TopWeighted,
     },
     {
+      name: 'Pareto',
+      description: 'The Pareto distribution is a power law probability distribution which states that 80% of outcomes are due to 20% of causes. Alse known as the “80-20 rule”.',
+      method: DistributionMethod.PARETO,
+      image: Pareto,
+    },
+    {
       name: 'Custom',
       description: 'Reward allocation is customized by you.',
       method: DistributionMethod.CUSTOM,
@@ -116,7 +123,7 @@ export function MetricsEditor({ budget }: { budget: number }) {
         )}
         {distributionMethod && <ResetButton />}
       </div>
-      <div className="grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
+      <div className="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-4">
         {allocationMethods.map((method) => (
           <Card
             key={method.name}
@@ -139,7 +146,8 @@ export function MetricsEditor({ budget }: { budget: number }) {
               if (
                 method.method === DistributionMethod.IMPACT_GROUPS ||
                 method.method === DistributionMethod.TOP_TO_BOTTOM ||
-                method.method === DistributionMethod.TOP_WEIGHTED
+                method.method === DistributionMethod.TOP_WEIGHTED ||
+                method.method === DistributionMethod.PARETO
               ) {
                 saveDistributionMethod(method.method);
               }
@@ -147,7 +155,7 @@ export function MetricsEditor({ budget }: { budget: number }) {
             }}
           >
             <div
-              className="mb-4 w-[220px] h-[130px]"
+              className="mb-4 w-[168px] h-[84px]"
               style={{
                 backgroundImage: `url(${method.image.src})`,
                 backgroundSize: '100% 100%', // Stretch horizontally and vertically to fill the container
