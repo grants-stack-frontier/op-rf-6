@@ -17,7 +17,7 @@ export function useBudgetForm() {
   const { address } = useAccount();
   const allProjectsByCategory = useAllProjectsByCategory();
   const { getBudget, saveAllocation } = useBudget(roundId);
-  const [totalBudget, setTotalBudget] = useState<number>(1_000_000);
+  const [totalBudget, setTotalBudget] = useState<number>(1_100_000);
   const [allocations, setAllocations] = useState<Record<string, number>>({});
   const [lockedFields, setLockedFields] = useState<Record<string, boolean>>({});
   const [error, setError] = useState('');
@@ -76,7 +76,7 @@ export function useBudgetForm() {
   useEffect(() => {
     if (getBudget.data) {
       const newAllocations: Record<string, number> = {};
-      setTotalBudget(getBudget.data.budget ?? 1_000_000);
+      setTotalBudget(getBudget.data.budget ?? 1_100_000);
       for (const allocation of getBudget.data.allocations || []) {
         if (allocation.category_slug !== undefined) {
           newAllocations[allocation.category_slug] = Number(
