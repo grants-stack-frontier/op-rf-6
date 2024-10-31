@@ -25,7 +25,7 @@ import {
 } from '@/hooks/useBallotRound5';
 import { useBallotEditor } from '@/hooks/useBallotRound5Editor';
 import { useBudget } from '@/hooks/useBudget';
-import { useProjectsByCategory } from '@/hooks/useProjects';
+import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
 import {
@@ -96,6 +96,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
   const { getBudget } = useBudget(ROUND);
   const isSavingBallot = useIsSavingRound5Ballot();
   const { mutate: saveAllocation } = useSaveRound5Allocation();
+  const { isPending: isResettingAllocations } = useSaveProjects();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -174,6 +175,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
       localBallot &&
       !distributionMethod &&
       allocationSum > 0 &&
+      !isResettingAllocations &&
       !isUpdatingDistributionMethod
     ) {
       updateDistributionMethodLocally(DistributionMethod.CUSTOM);
@@ -182,6 +184,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
       (!distributionMethod ||
         distributionMethod === DistributionMethod.CUSTOM) &&
       allocationSum === 0 &&
+      !isResettingAllocations &&
       !isUpdatingDistributionMethod
     ) {
       updateDistributionMethodLocally(null);
@@ -190,6 +193,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
     localBallot,
     distributionMethod,
     allocationSum,
+    isResettingAllocations,
     isUpdatingDistributionMethod,
   ]);
 

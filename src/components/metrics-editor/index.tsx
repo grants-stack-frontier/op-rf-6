@@ -75,7 +75,7 @@ export function MetricsEditor({ budget }: { budget: number }) {
       image: TopWeighted,
     },
     {
-      name: 'Pareto',
+      name: 'Pareto distribution',
       description: 'The Pareto distribution is a power law probability distribution which states that 80% of outcomes are due to 20% of causes. Alse known as the “80-20 rule”.',
       method: DistributionMethod.PARETO,
       image: Pareto,

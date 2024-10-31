@@ -13,7 +13,7 @@ import { submitRetroFundingBallot } from '@/__generated__/api/agora';
 import type { SubmitRetroFundingBallotBody } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI, ROUND } from '@/config';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+// import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { request } from '@/lib/request';
 import { Round5Ballot } from '@/types/ballot';
 
@@ -259,14 +259,15 @@ export function useIsSavingRound5Ballot() {
 }
 
 export function useRound5BallotWeightSum() {
-  const { ballot } = useBallotRound5Context();
+  const { address } = useAccount();
+  const { data: ballot } = useBallot(address);
 
   const allocationSum = useMemo(() => {
     if (!ballot || !ballot.project_allocations) return 0;
 
     let sum = 0;
     for (let i = 0; i < ballot.project_allocations.length; i++) {
-      const allocation = ballot.project_allocations[i].allocation;
+      const allocation = Number(ballot.project_allocations[i].allocation);
       sum += Math.round(allocation * 100);
     }
     return sum / 100;
