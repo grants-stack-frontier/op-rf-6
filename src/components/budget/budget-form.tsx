@@ -101,10 +101,10 @@ export function BudgetForm() {
               2023 - Aug 2024.
             </p>
             <div className="flex items-center my-6">
-              <span className="text-sm">1M</span>
+              <span className="text-sm">1.1M</span>
               <Slider
                 className="flex-1 mx-2"
-                min={1000000}
+                min={1100000}
                 max={3500000}
                 step={50000}
                 value={[totalBudget]}
