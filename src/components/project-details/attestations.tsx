@@ -54,29 +54,30 @@ export function Attestations({
     return { mostPositive, cannotLiveWithout };
   }, [metrics]);
 
-  if (!metrics) return (
-    <div className="flex flex-col gap-2 mt-12">
-      <Heading className="text-sm font-medium leading-5" variant="h1">
-        Attestations
-      </Heading>
-      <p className="text-sm line-height-5 text-[#404454]">
-        Given to this project by citizens and delegates at metricsgarden.xyz.
-        Only applicable for projects in the Governance Infrastructure & Tooling
-        category.
-      </p>
-      <AttestationCard totalCount={0} />
-      <Link
-        href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
-        target="_blank"
-        passHref
-      >
+  if (!metrics)
+    return (
+      <div className="flex flex-col gap-2 mt-12">
+        <Heading className="text-sm font-medium leading-5" variant="h1">
+          Attestations
+        </Heading>
         <p className="text-sm line-height-5 text-[#404454]">
-          View all testimonials at metricsgarden.xyz/projects/
-          {projectId?.substring(0, 4)}...
+          Given to this project by citizens and delegates at metricsgarden.xyz.
+          Only applicable for projects in the Governance Infrastructure &
+          Tooling category.
         </p>
-      </Link>
-    </div>
-  );
+        <AttestationCard totalCount={0} />
+        <Link
+          href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
+          target="_blank"
+          passHref
+        >
+          <p className="text-sm line-height-5 text-[#404454]">
+            View all testimonials at metricsgarden.xyz/projects/
+            {projectId?.substring(0, 4)}...
+          </p>
+        </Link>
+      </div>
+    );
 
   return (
     <div className="flex flex-col gap-2 mt-12">
@@ -113,11 +114,12 @@ export function Attestations({
           total: metrics.count_total_attestations,
         }}
       />
-      {(metrics.elected_governance_reviews && Object.keys(metrics.elected_governance_reviews ?? {}).length > 0) && (
-        <AttestationElectedGovernanceMembersCard
-          reviews={metrics.elected_governance_reviews}
-        />
-      )}
+      {metrics.elected_governance_reviews &&
+        Object.keys(metrics.elected_governance_reviews ?? {}).length > 0 && (
+          <AttestationElectedGovernanceMembersCard
+            reviews={metrics.elected_governance_reviews}
+          />
+        )}
       <Link
         href={`https://www.metricsgarden.xyz/projects/${projectId?.toLowerCase()}/?tab=insights`}
         target="_blank"
@@ -185,10 +187,10 @@ export function AttestationCard({
           {totalCount === 0 && (
             <p>
               This project did not receive any attestations from{' '}
-                <span className="font-semibold">
-                  Citizens & Top 100 Delegates
-                </span>
-                .
+              <span className="font-semibold">
+                Citizens & Top 100 Delegates
+              </span>
+              .
             </p>
           )}
         </div>
@@ -277,8 +279,8 @@ function AttestationElectedGovernanceMembersCard({
   reviews?: ProjectImpactMetricsElectedGovernanceReviews;
 }) {
   function getSentiment(pmf_score: number): Sentiment {
-    if (pmf_score >= 4) return 'extremely_upset';
-    if (pmf_score >= 3) return 'somewhat_upset';
+    if (pmf_score >= 2.5) return 'extremely_upset';
+    if (pmf_score >= 1.5) return 'somewhat_upset';
     return 'neutral';
   }
 
@@ -294,7 +296,8 @@ function AttestationElectedGovernanceMembersCard({
         'https://gov.optimism.io/t/zach-obront-developer-advisory-board-operating-budget/8141',
       grants_council:
         'https://github.com/ethereum-optimism/OPerating-manual/blob/main/Grants%20Council%20Charter%20v0.1.md',
-      security_council: 'https://gov.optimism.io/t/security-council-charter-v0-1/6884',
+      security_council:
+        'https://gov.optimism.io/t/security-council-charter-v0-1/6884',
     };
     return reviews
       ? Object.entries(reviews).map(([name, review]) => ({
@@ -360,22 +363,19 @@ function AttestationElectedGovernanceMembersCard({
           {totalCount} attestations from elected governance members
         </CardTitle>
         <div className="text-sm flex flex-col">
-          {attestations.length > 0 ? 
+          {attestations.length > 0 ? (
             attestations.map((attestation, i) => (
               <AttestationElectedGovernanceMembersListItem
                 key={i}
                 {...attestation}
               />
-            )) : (
-              <p>
-                This project did not receive any attestations from{' '}
-                <span className="font-semibold">
-                  Elected Governance Members
-                </span>
-                .
-              </p>
-            )
-          }
+            ))
+          ) : (
+            <p>
+              This project did not receive any attestations from{' '}
+              <span className="font-semibold">Elected Governance Members</span>.
+            </p>
+          )}
           {/* {attestations.map((attestation, i) => (
             <AttestationElectedGovernanceMembersListItem
               key={i}
@@ -436,7 +436,9 @@ function AttestationElectedGovernanceMembersListItem(params: {
   return (
     <div className="flex flex-row justify-between items-center gap-2 border-b border-[#E0E2EB] py-2">
       <Link href={params.url} target="_blank" passHref>
-        <p>{params.name} ({params.count})</p>
+        <p>
+          {params.name} ({params.count})
+        </p>
       </Link>
       <div className="flex flex-row items-center justify-end gap-2">
         <div className="flex flex-row items-center gap-1">
