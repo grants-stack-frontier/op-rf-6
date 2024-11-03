@@ -49,12 +49,22 @@ export function ReposLinksContracts({
   )
     return null;
 
-  const totalItems = (github?.length ?? 0) + (links?.length ?? 0) + (contracts?.length ?? 0);
+  const totalItems =
+    (github?.length ?? 0) + (links?.length ?? 0) + (contracts?.length ?? 0);
   if (totalItems > 5) {
     const allItems = [
-      ...(github?.map((repo, i) => ({ type: 'github', item: repo, index: i })) ?? []),
-      ...(links?.map((link, i) => ({ type: 'link', item: link, index: i })) ?? []),
-      ...(contracts?.map((contract, i) => ({ type: 'contract', item: contract, index: i })) ?? [])
+      ...(github?.map((repo, i) => ({
+        type: 'github',
+        item: repo,
+        index: i,
+      })) ?? []),
+      ...(links?.map((link, i) => ({ type: 'link', item: link, index: i })) ??
+        []),
+      ...(contracts?.map((contract, i) => ({
+        type: 'contract',
+        item: contract,
+        index: i,
+      })) ?? []),
     ];
     return (
       <div className="flex flex-col gap-2">
@@ -62,9 +72,34 @@ export function ReposLinksContracts({
           Repos, links and contracts
         </Heading>
         {allItems.slice(0, isExpanded ? allItems.length : 5).map((item) => {
-          if (item.type === 'github') return <GithubItem key={item.index} repo={item.item as ProjectGithubItem} index={item.index} />;
-          if (item.type === 'link') return <LinkItem key={item.index} link={item.item as string | { name: string; url: string; description: string }} index={item.index} />;
-          if (item.type === 'contract') return <ContractItem key={item.index} contract={item.item as ProjectContractsItem} index={item.index} />;
+          if (item.type === 'github')
+            return (
+              <GithubItem
+                key={item.index}
+                repo={item.item as ProjectGithubItem}
+                index={item.index}
+              />
+            );
+          if (item.type === 'link')
+            return (
+              <LinkItem
+                key={item.index}
+                link={
+                  item.item as
+                    | string
+                    | { name: string; url: string; description: string }
+                }
+                index={item.index}
+              />
+            );
+          if (item.type === 'contract')
+            return (
+              <ContractItem
+                key={item.index}
+                contract={item.item as ProjectContractsItem}
+                index={item.index}
+              />
+            );
         })}
         {totalItems > 5 && (
           <div>
@@ -107,7 +142,13 @@ export function ReposLinksContracts({
   );
 }
 
-function GithubItem({ repo, index }: { repo: ProjectGithubItem; index: number }) {
+function GithubItem({
+  repo,
+  index,
+}: {
+  repo: ProjectGithubItem;
+  index: number;
+}) {
   if (typeof repo === 'string') {
     return (
       <Card className="shadow-none" key={index}>
@@ -161,9 +202,7 @@ function GithubItem({ repo, index }: { repo: ProjectGithubItem; index: number })
       }
     >
       {typedRepo.description && (
-        <div className="p-2">
-          {typedRepo.description ?? 'No description'}
-        </div>
+        <div className="p-2">{typedRepo.description ?? 'No description'}</div>
       )}
       {typedRepo.metrics && (
         <div className="grid grid-cols-3 gap-2 p-2">
@@ -187,8 +226,8 @@ function GithubItem({ repo, index }: { repo: ProjectGithubItem; index: number })
             <div className="bg-secondary p-2 rounded-md flex items-center gap-2">
               <RiUserStarFill className="h-4 w-4" />{' '}
               <span>
-                {Number(num_trusted_contributors).toLocaleString()}{' '}
-                trusted contributors
+                {Number(num_trusted_contributors).toLocaleString()} trusted
+                contributors
               </span>
             </div>
           )}
@@ -235,7 +274,13 @@ function GithubItem({ repo, index }: { repo: ProjectGithubItem; index: number })
   );
 }
 
-function LinkItem({ link, index }: { link: string | { name: string; url: string; description: string }; index: number }) {
+function LinkItem({
+  link,
+  index,
+}: {
+  link: string | { name: string; url: string; description: string };
+  index: number;
+}) {
   if (typeof link === 'string') {
     return (
       <Card className="shadow-none" key={index}>
@@ -277,15 +322,19 @@ function LinkItem({ link, index }: { link: string | { name: string; url: string;
       }
     >
       {typedLink.description && (
-        <div className="p-2">
-          {typedLink.description ?? 'No description'}
-        </div>
+        <div className="p-2">{typedLink.description ?? 'No description'}</div>
       )}
     </CustomAccordion>
   );
 }
 
-function ContractItem({ contract, index }: { contract: ProjectContractsItem; index: number }) {
+function ContractItem({
+  contract,
+  index,
+}: {
+  contract: ProjectContractsItem;
+  index: number;
+}) {
   const { address, chainId } = contract;
   const chain = [optimism, base, mode, zora, fraxtal].find(
     (c) => c.id === Number(chainId)

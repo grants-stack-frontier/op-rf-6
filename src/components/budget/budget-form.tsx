@@ -54,7 +54,11 @@ export function BudgetForm() {
       !getBudget.data?.allocations ||
       getBudget.data?.allocations.length !== categories.length;
     if (!getBudget.data?.budget) {
-      await updateRetroFundingRoundBudgetAllocation(ROUND, address, totalBudget);
+      await updateRetroFundingRoundBudgetAllocation(
+        ROUND,
+        address,
+        totalBudget
+      );
     }
     if (
       !getBudget.data?.allocations ||

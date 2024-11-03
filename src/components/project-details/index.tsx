@@ -76,7 +76,8 @@ export function ProjectDetails() {
             contracts={contracts}
           />
           {/* <Testimonials testimonials={testimonials} /> */}
-          {(impactMetrics || impactStatement?.category === 'GOVERNANCE_INFRA_AND_TOOLING') &&
+          {(impactMetrics ||
+            impactStatement?.category === 'GOVERNANCE_INFRA_AND_TOOLING') &&
             (isCitizen || !isBadgeholder) && (
               <Attestations projectId={projectId} metrics={impactMetrics} />
             )}
