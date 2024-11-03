@@ -631,15 +631,15 @@ function AttestationChartCard({
 
   const config = {
     ['extremely_upset']: {
-      label: 'Extremely upset',
+      label: 'Extremely upset:',
       color: '#3374DB',
     },
     ['somewhat_upset']: {
-      label: 'Somewhat upset',
+      label: 'Somewhat upset:',
       color: '#AAC9FD',
     },
     ['neutral']: {
-      label: 'Neutral',
+      label: 'Neutral:',
       color: '#D6E4FF',
     },
   } satisfies ChartConfig;
