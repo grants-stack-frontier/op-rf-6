@@ -24,8 +24,7 @@ import { Card, CardContent } from '../ui/card';
 import { Heading } from '../ui/headings';
 import { useState } from 'react';
 import { Button } from '../ui/button';
-import { ChevronDown } from 'lucide-react';
-import { ChevronUp } from 'lucide-react';
+import { ChevronDown , ChevronUp } from 'lucide-react';
 
 interface ReposLinksContractsProps {
   github?: ProjectGithubItem[];
