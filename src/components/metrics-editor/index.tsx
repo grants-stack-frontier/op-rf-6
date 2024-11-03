@@ -50,7 +50,9 @@ export function MetricsEditor({ budget }: { budget: number }) {
     useDistributionMethodFromLocalStorage();
 
   const [isOpen, setOpen] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState<DistributionMethod>(DistributionMethod.CUSTOM);
+  const [selectedMethod, setSelectedMethod] = useState<DistributionMethod>(
+    DistributionMethod.CUSTOM
+  );
 
   const allocationMethods = [
     {
@@ -76,7 +78,8 @@ export function MetricsEditor({ budget }: { budget: number }) {
     },
     {
       name: 'Pareto distribution',
-      description: 'The Pareto distribution is a power law probability distribution which states that 80% of outcomes are due to 20% of causes. Alse known as the “80-20 rule”.',
+      description:
+        'The Pareto distribution is a power law probability distribution which states that 80% of outcomes are due to 20% of causes. Alse known as the “80-20 rule”.',
       method: DistributionMethod.PARETO,
       image: Pareto,
     },

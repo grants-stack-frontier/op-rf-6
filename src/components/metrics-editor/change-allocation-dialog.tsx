@@ -29,8 +29,7 @@ export function ChangeAllocationMethodDialog({
 }) {
   const { address } = useAccount();
   const { mutate: saveDistributionMethod } = useDistributionMethod();
-  const { refetch } =
-    useDistributionMethodFromLocalStorage();
+  const { refetch } = useDistributionMethodFromLocalStorage();
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -47,10 +46,7 @@ export function ChangeAllocationMethodDialog({
           <Button
             variant="destructive"
             onClick={() => {
-              saveDistributionMethodToLocalStorage(
-                distributionMethod,
-                address
-              );
+              saveDistributionMethodToLocalStorage(distributionMethod, address);
               if (
                 distributionMethod === DistributionMethod.IMPACT_GROUPS ||
                 distributionMethod === DistributionMethod.TOP_TO_BOTTOM ||
