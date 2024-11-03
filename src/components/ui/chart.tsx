@@ -190,6 +190,11 @@ const ChartTooltipContent = React.forwardRef<
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const indicatorColor = color || item.payload.fill || item.color;
 
+            const value =
+              typeof item.value === 'number'
+                ? (item.value * 100).toFixed(1) + '%'
+                : '';
+
             return (
               <div
                 key={item.dataKey}
@@ -238,9 +243,9 @@ const ChartTooltipContent = React.forwardRef<
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
-                      {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                      {value && (
+                        <span className="font-mono font-medium tabular-nums text-foreground ml-1">
+                          {value}
                         </span>
                       )}
                     </div>
