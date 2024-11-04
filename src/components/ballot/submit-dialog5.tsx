@@ -126,7 +126,8 @@ export function SubmitRound5Dialog({
                   </Heading>
                   <Text className="text-muted-foreground text-center">
                     Your work as a badgeholder is crucial to the improvement of
-                    the OP Stack! We made you an image to share this moment.
+                    the Optimism Governance! We made you an image to share this
+                    moment.
                   </Text>
                   <Button
                     variant="destructive"
