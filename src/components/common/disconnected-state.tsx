@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { ConnectButton } from '@/components/auth/connect-button';
 import { Heading } from '@/components/ui/headings';
 import { Text } from '@/components/ui/text';
+import { ROUND_NAME } from '@/config';
 
 export const DisconnectedState = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -47,7 +48,7 @@ export const DisconnectedState = () => {
           <Heading variant={'h2'}>Retro Funding Round 6: Governance</Heading>
           <Text className="text-center max-w-[640px] text-lg">
             In this round of Retro Funding, badgeholders will vote on impact to
-            Optimism Governance.
+            {ROUND_NAME}.
           </Text>
           <ConnectButton />
         </div>

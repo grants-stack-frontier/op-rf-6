@@ -18,6 +18,7 @@ import { ImpactScore } from '@/types/project-scoring';
 import { ScoringProgressBar } from '../ballot/scoring-progress';
 import { ConflictOfInterestDialog } from '../common/conflict-of-interest-dialog';
 import { Skeleton } from '../ui/skeleton';
+import { ROUND_NAME } from '@/config';
 
 export function ReviewSidebar() {
   const {
@@ -66,7 +67,7 @@ export function ReviewSidebar() {
         <CardTitle className="text-base font-medium text-center">
           {isVoted
             ? "You've already voted on this project"
-            : "How would you score this project's impact on Optimism Governance?"}
+            : `How would you score this project's impact on ${ROUND_NAME}?`}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
