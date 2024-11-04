@@ -1,4 +1,5 @@
 export const ROUND = 6;
+export const ROUND_NAME = 'Optimism Governance';
 
 export const agoraRoundsAPI = `/api/agora/retrofunding/rounds/${ROUND}`;
 

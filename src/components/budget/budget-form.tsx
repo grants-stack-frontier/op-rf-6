@@ -13,7 +13,7 @@ import { Category } from '@/types/categories';
 import { Slider } from '../ui/slider';
 
 import { CategoryItem } from './category-item';
-import { ROUND } from '@/config';
+import { ROUND, ROUND_NAME } from '@/config';
 
 export function BudgetForm() {
   const { categories, error, isLoading, totalBudget, setTotalBudget } =
@@ -101,8 +101,8 @@ export function BudgetForm() {
               <span className="text-red-500">*</span>
             </p>
             <p className="text-[14px] font-normal text-gray-600">
-              Round 6 rewards impact made to the Optimism Governance from Oct
-              2023 - Aug 2024.
+              Round 6 rewards impact made to the {ROUND_NAME} from Oct 2023 -
+              Aug 2024.
             </p>
             <div className="flex items-center my-6">
               <span className="text-sm">1.1M</span>
