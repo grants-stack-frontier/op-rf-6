@@ -4,6 +4,7 @@ import { Category } from '@/types/categories';
 import govAnalytics from '../../public/govAnalytics.svg';
 import govInfra from '../../public/govInfra.svg';
 import govLeadership from '../../public/govLeadership.svg';
+import { ROUND_NAME } from '@/config';
 
 export const categoryNames: Record<string, string> = {
   GOVERNANCE_INFRA_AND_TOOLING: 'Governance Infrastructure & Tooling',
@@ -20,19 +21,19 @@ export const categories: Category[] = [
       'Infrastructure and tooling that powered governance or that made the usage of governance infrastructure more accessible.',
     examples: [
       'Work on Optimism Governor contracts',
-      'Optimism Governance voting clients and interfaces',
+      `${ROUND_NAME} voting clients and interfaces`,
       'work on Optimism identity and reputation infrastructure',
       'Retro Funding voting clients and sign up.',
     ],
     eligibility: {
       eligible_projects: [
-        'Governance Infrastructure: Technical infrastructure that powers the voting process within Optimism Governance',
-        'Governance Tooling: Tools that are used by Delegates or Citizens to participate in Optimism Governance',
+        `Governance Infrastructure: Technical infrastructure that powers the voting process within ${ROUND_NAME}`,
+        `Governance Tooling: Tools that are used by Delegates or Citizens to participate in ${ROUND_NAME}`,
         'Grants Tooling: Tools that support the Token House grants process, including the operation of the Grants Council. Tools which power or support the Retro Funding process.',
       ],
       not_eligible_projects: [
-        'Non-Optimism related governance tooling: Tools that have not been used in Optimism Governance',
-        'Resources for Governance Onboarding: Documentation, educational videos or other resources that are dedicated to explaining Optimism Governance',
+        `Non-Optimism related governance tooling: Tools that have not been used in ${ROUND_NAME}`,
+        `Resources for Governance Onboarding: Documentation, educational videos or other resources that are dedicated to explaining ${ROUND_NAME}`,
       ],
     },
   },
@@ -49,10 +50,10 @@ export const categories: Category[] = [
     ],
     eligibility: {
       eligible_projects: [
-        'Optimism Governance related Analytics: Analyses of the performance of Optimism governance, including governance participation, grant allocation and more',
+        `${ROUND_NAME} related Analytics: Analyses of the performance of ${ROUND_NAME}, including governance participation, grant allocation and more`,
       ],
       not_eligible_projects: [
-        'Analytics infrastructure or reports which are not related to Optimism Governance',
+        `Analytics infrastructure or reports which are not related to ${ROUND_NAME}`,
       ],
     },
   },
@@ -63,7 +64,7 @@ export const categories: Category[] = [
     description:
       'Demonstrated leadership in the Collective, including but not limited to, hosting community calls and/or participation in councils, boards and commissions beyond executing on basic responsibilities outlined in Token House Charters.',
     examples: [
-      'Various Optimism Governance Councils',
+      `Various ${ROUND_NAME} Councils`,
       'Commissions and Boards',
       'governance process facilitation',
     ],

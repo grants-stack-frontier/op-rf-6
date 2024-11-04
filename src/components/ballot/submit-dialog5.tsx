@@ -6,7 +6,7 @@ import { ComponentProps, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { ROUND, votingEndDate } from '@/config';
+import { ROUND, ROUND_NAME, votingEndDate } from '@/config';
 import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
 import { formatDate } from '@/lib/utils';
 import { Round5Ballot } from '@/types/ballot';
@@ -126,7 +126,7 @@ export function SubmitRound5Dialog({
                   </Heading>
                   <Text className="text-muted-foreground text-center">
                     Your work as a badgeholder is crucial to the improvement of
-                    the OP Stack! We made you an image to share this moment.
+                    the {ROUND_NAME}! We made you an image to share this moment.
                   </Text>
                   <Button
                     variant="destructive"
