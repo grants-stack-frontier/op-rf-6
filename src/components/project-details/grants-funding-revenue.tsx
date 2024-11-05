@@ -154,6 +154,9 @@ export function GrantsFundingRevenue({
       {grantsAndFunding.investments?.map((item, index) =>
         renderItem(item, 'Investment', index)
       )}
+      {grantsAndFunding.investments?.map((item, index) =>
+        renderItem(item, 'Investment', index)
+      )}
       {grantsAndFunding.investment?.map((item, index) =>
         renderItem(item, 'Investment', index)
       )}
