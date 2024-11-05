@@ -33,6 +33,7 @@ export function ProjectDetails() {
     links,
     grantsAndFunding,
     pricingModel,
+    pricingModelDetails,
     impactMetrics,
     impactStatement,
     // testimonials,
@@ -86,7 +87,10 @@ export function ProjectDetails() {
             <ImpactStatement impactStatement={impactStatement} />
           )}
           <Separator className="my-12" />
-          <PricingModel pricingModel={pricingModel} />
+          <PricingModel
+            pricingModel={pricingModel}
+            pricingModelDetails={pricingModelDetails}
+          />
           <GrantsFundingRevenue grantsAndFunding={grantsAndFunding} />
         </>
       )}

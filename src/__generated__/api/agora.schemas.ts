@@ -29,8 +29,6 @@ Live and stable.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
-
-Not Live.
 - 0.3.0: Round 6 mock projects data
 - 0.3.1: Round 6 production release with real data
 
@@ -48,9 +46,9 @@ Not Live.
 | OP 0.2.2 | LIVE   | Sep 4th |
 | OP 0.2.3 | LIVE   | Sep 20th |
 |----------|---------|---------------|
-| OP 0.3.0 | ON TRACK   | Oct 11th |
-| OP 0.3.1 | ON TRACK   | Oct 25th |
- * OpenAPI spec version: 0.2.1
+| OP 0.3.0 | LIVE   | Oct 11th |
+| OP 0.3.1 | LIVE   | Oct 25th |
+ * OpenAPI spec version: 0.3.1
  */
 export type PutImactMetricCommentVoteBody = {
   vote?: number;
@@ -105,9 +103,9 @@ export type UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateRetroFundingRoundCategoryAllocationBodyCategorySlug = {
-  // ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  // OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  // OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
+  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
   GOVERNANCE_INFRA_AND_TOOLING: 'GOVERNANCE_INFRA_AND_TOOLING',
   GOVERNANCE_ANALYTICS: 'GOVERNANCE_ANALYTICS',
   GOVERNANCE_LEADERSHIP: 'GOVERNANCE_LEADERSHIP',
@@ -287,6 +285,17 @@ export type GetDelegateVotes200 = {
   votes?: Vote[];
 };
 
+export type GetDelegateVotesParams = {
+  /**
+   * Limits the number of returned results.
+   */
+  limit?: LimitParamParameter;
+  /**
+   * Offset from which start returned results.
+   */
+  offset?: OffsetParamParameter;
+};
+
 export type GetDelegates200 = {
   data?: DelegateChunk[];
   meta?: PageMetadata;
@@ -331,17 +340,6 @@ export type OffsetParamParameter = number;
  * Limits the number of returned results.
  */
 export type LimitParamParameter = number;
-
-export type GetDelegateVotesParams = {
-  /**
-   * Limits the number of returned results.
-   */
-  limit?: LimitParamParameter;
-  /**
-   * Offset from which start returned results.
-   */
-  offset?: OffsetParamParameter;
-};
 
 export type GetDelegatesParams = {
   /**
@@ -470,9 +468,9 @@ export type RetroFundingBallotCategoriesAllocationCategorySlug =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RetroFundingBallotCategoriesAllocationCategorySlug = {
-  // ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
-  // OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
-  // OP_STACK_TOOLING: 'OP_STACK_TOOLING',
+  ETHEREUM_CORE_CONTRIBUTIONS: 'ETHEREUM_CORE_CONTRIBUTIONS',
+  OP_STACK_RESEARCH_AND_DEVELOPMENT: 'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+  OP_STACK_TOOLING: 'OP_STACK_TOOLING',
   GOVERNANCE_INFRA_AND_TOOLING: 'GOVERNANCE_INFRA_AND_TOOLING',
   GOVERNANCE_ANALYTICS: 'GOVERNANCE_ANALYTICS',
   GOVERNANCE_LEADERSHIP: 'GOVERNANCE_LEADERSHIP',
@@ -588,37 +586,7 @@ export interface SocialLinks {
   website?: string;
 }
 
-export type ProjectPricingModel = {
-  details?: string;
-  type?: string;
-};
-
-export type ProjectImpactStatementStatement = {
-  answer?: string;
-  question?: string;
-};
-
-export type ProjectImpactStatement = {
-  category?: string;
-  statement?: ProjectImpactStatementStatement[];
-  subcategory?: string[];
-};
-
-export type ProjectImpactMetricsPercentageDistributions = {
-  citizens?: ProjectImpactMetricsPercentageDistributionsCitizens;
-  top_delegates?: ProjectImpactMetricsPercentageDistributionsTopDelegates;
-};
-
-export type ProjectImpactMetrics = {
-  avg_nps_score?: number;
-  cant_live_without_superlative?: string;
-  count_citizen_attestations?: number;
-  count_delegate_attestations?: number;
-  count_total_attestations?: number;
-  elected_governance_reviews?: ProjectImpactMetricsElectedGovernanceReviews;
-  most_positive_superlative?: string;
-  percentage_distributions?: ProjectImpactMetricsPercentageDistributions;
-};
+export type ProjectTeamItem = { [key: string]: unknown };
 
 /**
  * Information about a project submitted for Retroactive Public Goods Funding on Agora.
@@ -645,18 +613,46 @@ export interface Project {
   name?: string;
   organization?: Organization;
   packages?: string[];
-  pricingModel?: ProjectPricingModel;
+  pricingModel?: string;
+  pricingModelDetails?: string;
   profileAvatarUrl?: string;
   projectCoverImageUrl?: string;
   projectId?: string;
   socialLinks?: SocialLinks;
-  team?: string[];
+  team?: ProjectTeamItem[];
 }
+
+export type ProjectImpactStatementStatement = {
+  answer?: string;
+  question?: string;
+};
+
+export type ProjectImpactStatement = {
+  category?: string;
+  statement?: ProjectImpactStatementStatement | ProjectImpactStatementStatement[];
+  subcategory?: string[];
+};
 
 export type ProjectImpactMetricsPercentageDistributionsTopDelegates = {
   extremely_upset?: number;
   neutral?: number;
   somewhat_upset?: number;
+};
+
+export type ProjectImpactMetricsPercentageDistributions = {
+  citizens?: ProjectImpactMetricsPercentageDistributionsCitizens;
+  top_delegates?: ProjectImpactMetricsPercentageDistributionsTopDelegates;
+};
+
+export type ProjectImpactMetrics = {
+  avg_nps_score?: number;
+  cant_live_without_superlative?: string;
+  count_citizen_attestations?: number;
+  count_delegate_attestations?: number;
+  count_total_attestations?: number;
+  elected_governance_reviews?: ProjectImpactMetricsElectedGovernanceReviews;
+  most_positive_superlative?: string;
+  percentage_distributions?: ProjectImpactMetricsPercentageDistributions;
 };
 
 export type ProjectImpactMetricsPercentageDistributionsCitizens = {
@@ -703,6 +699,12 @@ export type ProjectGrantsAndFundingRevenueItem = {
   details?: string;
 };
 
+export type ProjectGrantsAndFundingInvestmentsItem = {
+  amount?: string;
+  details?: string;
+  year?: string;
+};
+
 export type ProjectGrantsAndFundingGrantsItem = {
   amount?: string;
   date?: string;
@@ -713,10 +715,11 @@ export type ProjectGrantsAndFundingGrantsItem = {
 
 export type ProjectGrantsAndFunding = {
   grants?: ProjectGrantsAndFundingGrantsItem[];
+  investments?: ProjectGrantsAndFundingInvestmentsItem[];
   revenue?: ProjectGrantsAndFundingRevenueItem[];
   ventureFunding?: ProjectGrantsAndFundingVentureFundingItem[];
+  // Keeping these just in case
   investment?: ProjectGrantsAndFundingVentureFundingItem[];
-  investments?: ProjectGrantsAndFundingVentureFundingItem[];
   retroFunding?: ProjectGrantsAndFundingGrantsItem[];
 };
 

@@ -1,4 +1,3 @@
-import { ProjectPricingModel } from '@/__generated__/api/agora.schemas';
 import { Heading } from '@/components/ui/headings';
 
 import { CustomAccordion } from '../common/custom-accordion';
@@ -6,8 +5,10 @@ import { Card, CardContent } from '../ui/card';
 
 export function PricingModel({
   pricingModel,
+  pricingModelDetails,
 }: {
-  pricingModel?: ProjectPricingModel | string;
+  pricingModel?: string;
+  pricingModelDetails?: string;
 }) {
   if (!pricingModel) return null;
 
@@ -21,29 +22,32 @@ export function PricingModel({
     return type.replace(/_/g, ' ');
   };
 
-  const isFreemiumOrFree = (model: ProjectPricingModel | string) => {
-    if (typeof model === 'string') {
-      return model === 'freemium' || model === 'free';
-    }
-    return model.type === 'free' || model.type === 'freemium';
+  const isFreemiumOrFree = (model: string) => {
+    return model === 'freemium' || model === 'free';
+    // if (typeof model === 'string') {
+    //   return model === 'freemium' || model === 'free';
+    // }
+    // return model.type === 'free' || model.type === 'freemium';
   };
 
-  const getType = (model: ProjectPricingModel | string) => {
-    if (typeof model === 'string') {
-      return model;
-    }
-    return model.type;
+  const getType = (model: string) => {
+    return model;
+    // if (typeof model === 'string') {
+    //   return model;
+    // }
+    // return model.type;
   };
 
-  const getDetails = (model: ProjectPricingModel | string) => {
-    if (typeof model === 'string') {
-      return null;
-    }
-    return model.details;
-  };
+  // const getDetails = (model: string) => {
+  //   if (typeof model === 'string') {
+  //     return null;
+  //   }
+  //   return model.details;
+  // };
 
   const type = getType(pricingModel);
-  const details = getDetails(pricingModel);
+  const details = pricingModelDetails;
+  // const details = getDetails(pricingModel);
 
   return (
     <div className="flex flex-col gap-2 mb-12">
