@@ -29,8 +29,6 @@ Live and stable.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
-
-Not Live.
 - 0.3.0: Round 6 mock projects data
 - 0.3.1: Round 6 production release with real data
 
@@ -48,9 +46,9 @@ Not Live.
 | OP 0.2.2 | LIVE   | Sep 4th |
 | OP 0.2.3 | LIVE   | Sep 20th |
 |----------|---------|---------------|
-| OP 0.3.0 | ON TRACK   | Oct 11th |
-| OP 0.3.1 | ON TRACK   | Oct 25th |
- * OpenAPI spec version: 0.2.1
+| OP 0.3.0 | LIVE   | Oct 11th |
+| OP 0.3.1 | LIVE   | Oct 25th |
+ * OpenAPI spec version: 0.3.1
  */
 import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
@@ -1566,6 +1564,26 @@ export const getGetProjectsResponseMock = (
             })),
             undefined,
           ]),
+          investments: faker.helpers.arrayElement([
+            Array.from(
+              { length: faker.number.int({ min: 1, max: 10 }) },
+              (_, i) => i + 1
+            ).map(() => ({
+              amount: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              details: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              year: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+            })),
+            undefined,
+          ]),
           revenue: faker.helpers.arrayElement([
             Array.from(
               { length: faker.number.int({ min: 1, max: 10 }) },
@@ -1737,18 +1755,16 @@ export const getGetProjectsResponseMock = (
             undefined,
           ]),
           statement: faker.helpers.arrayElement([
-            [
-              {
-                answer: faker.helpers.arrayElement([
-                  faker.word.sample(),
-                  undefined,
-                ]),
-                question: faker.helpers.arrayElement([
-                  faker.word.sample(),
-                  undefined,
-                ]),
-              },
-            ],
+            {
+              answer: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              question: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+            },
             undefined,
           ]),
           subcategory: faker.helpers.arrayElement([
@@ -1791,10 +1807,11 @@ export const getGetProjectsResponseMock = (
         undefined,
       ]),
       pricingModel: faker.helpers.arrayElement([
-        {
-          details: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-          type: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-        },
+        faker.word.sample(),
+        undefined,
+      ]),
+      pricingModelDetails: faker.helpers.arrayElement([
+        faker.word.sample(),
         undefined,
       ]),
       profileAvatarUrl: faker.helpers.arrayElement([
@@ -1822,7 +1839,7 @@ export const getGetProjectsResponseMock = (
         Array.from(
           { length: faker.number.int({ min: 1, max: 10 }) },
           (_, i) => i + 1
-        ).map(() => faker.word.sample()),
+        ).map(() => ({})),
         undefined,
       ]),
     })),
@@ -1937,6 +1954,9 @@ export const getGetRetroFundingRoundBallotByIdResponseBallotMock = (
         ]),
         category_slug: faker.helpers.arrayElement([
           faker.helpers.arrayElement([
+            'ETHEREUM_CORE_CONTRIBUTIONS',
+            'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+            'OP_STACK_TOOLING',
             'GOVERNANCE_INFRA_AND_TOOLING',
             'GOVERNANCE_ANALYTICS',
             'GOVERNANCE_LEADERSHIP',
@@ -2311,6 +2331,26 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
             })),
             undefined,
           ]),
+          investments: faker.helpers.arrayElement([
+            Array.from(
+              { length: faker.number.int({ min: 1, max: 10 }) },
+              (_, i) => i + 1
+            ).map(() => ({
+              amount: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              details: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              year: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+            })),
+            undefined,
+          ]),
           revenue: faker.helpers.arrayElement([
             Array.from(
               { length: faker.number.int({ min: 1, max: 10 }) },
@@ -2482,18 +2522,16 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
             undefined,
           ]),
           statement: faker.helpers.arrayElement([
-            [
-              {
-                answer: faker.helpers.arrayElement([
-                  faker.word.sample(),
-                  undefined,
-                ]),
-                question: faker.helpers.arrayElement([
-                  faker.word.sample(),
-                  undefined,
-                ]),
-              },
-            ],
+            {
+              answer: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+              question: faker.helpers.arrayElement([
+                faker.word.sample(),
+                undefined,
+              ]),
+            },
             undefined,
           ]),
           subcategory: faker.helpers.arrayElement([
@@ -2536,10 +2574,11 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
         undefined,
       ]),
       pricingModel: faker.helpers.arrayElement([
-        {
-          details: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-          type: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-        },
+        faker.word.sample(),
+        undefined,
+      ]),
+      pricingModelDetails: faker.helpers.arrayElement([
+        faker.word.sample(),
         undefined,
       ]),
       profileAvatarUrl: faker.helpers.arrayElement([
@@ -2567,7 +2606,7 @@ export const getGetRetroFundingRoundProjectsResponseMock = (
         Array.from(
           { length: faker.number.int({ min: 1, max: 10 }) },
           (_, i) => i + 1
-        ).map(() => faker.word.sample()),
+        ).map(() => ({})),
         undefined,
       ]),
     })),
@@ -2623,6 +2662,17 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
           details: faker.helpers.arrayElement([faker.word.sample(), undefined]),
           grant: faker.helpers.arrayElement([faker.word.sample(), undefined]),
           link: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+        })),
+        undefined,
+      ]),
+      investments: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 1, max: 10 }) },
+          (_, i) => i + 1
+        ).map(() => ({
+          amount: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+          details: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+          year: faker.helpers.arrayElement([faker.word.sample(), undefined]),
         })),
         undefined,
       ]),
@@ -2779,18 +2829,13 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     {
       category: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       statement: faker.helpers.arrayElement([
-        [
-          {
-            answer: faker.helpers.arrayElement([
-              faker.word.sample(),
-              undefined,
-            ]),
-            question: faker.helpers.arrayElement([
-              faker.word.sample(),
-              undefined,
-            ]),
-          },
-        ],
+        {
+          answer: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+          question: faker.helpers.arrayElement([
+            faker.word.sample(),
+            undefined,
+          ]),
+        },
         undefined,
       ]),
       subcategory: faker.helpers.arrayElement([
@@ -2829,11 +2874,9 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     ).map(() => faker.word.sample()),
     undefined,
   ]),
-  pricingModel: faker.helpers.arrayElement([
-    {
-      details: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-      type: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    },
+  pricingModel: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  pricingModelDetails: faker.helpers.arrayElement([
+    faker.word.sample(),
     undefined,
   ]),
   profileAvatarUrl: faker.helpers.arrayElement([
@@ -2858,7 +2901,7 @@ export const getGetRetroFundingRoundProjectByIdResponseMock = (
     Array.from(
       { length: faker.number.int({ min: 1, max: 10 }) },
       (_, i) => i + 1
-    ).map(() => faker.word.sample()),
+    ).map(() => ({})),
     undefined,
   ]),
   ...overrideResponse,
@@ -2953,6 +2996,9 @@ export const getUpdateRetroFundingRoundProjectsResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3064,6 +3110,9 @@ export const getUpdateRetroFundingRoundProjectAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3175,6 +3224,9 @@ export const getUpdateRetroFundingRoundProjectImpactResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3286,6 +3338,9 @@ export const getUpdateRetroFundingRoundProjectPositionResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3397,6 +3452,9 @@ export const getUpdateRetroFundingRoundCategoryAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3508,6 +3566,9 @@ export const getUpdateRetroFundingRoundBudgetAllocationResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',
@@ -3619,6 +3680,9 @@ export const getUpdateRetroFundingBallotDistributionMethodResponseMock = (
       allocation: faker.helpers.arrayElement([faker.word.sample(), undefined]),
       category_slug: faker.helpers.arrayElement([
         faker.helpers.arrayElement([
+          'ETHEREUM_CORE_CONTRIBUTIONS',
+          'OP_STACK_RESEARCH_AND_DEVELOPMENT',
+          'OP_STACK_TOOLING',
           'GOVERNANCE_INFRA_AND_TOOLING',
           'GOVERNANCE_ANALYTICS',
           'GOVERNANCE_LEADERSHIP',

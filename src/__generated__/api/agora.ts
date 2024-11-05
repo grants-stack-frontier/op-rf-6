@@ -29,8 +29,6 @@ Live and stable.
 - **Round 5**: Data related to Retro Funding for Optimism Round 5
 - 0.2.2: **DistributionStrategies** Round 5 Distribution strategies with mock data
 - 0.2.3: Round 5 Production release with real data
-
-Not Live.
 - 0.3.0: Round 6 mock projects data
 - 0.3.1: Round 6 production release with real data
 
@@ -48,9 +46,9 @@ Not Live.
 | OP 0.2.2 | LIVE   | Sep 4th |
 | OP 0.2.3 | LIVE   | Sep 20th |
 |----------|---------|---------------|
-| OP 0.3.0 | ON TRACK   | Oct 11th |
-| OP 0.3.1 | ON TRACK   | Oct 25th |
- * OpenAPI spec version: 0.2.1
+| OP 0.3.0 | LIVE   | Oct 11th |
+| OP 0.3.1 | LIVE   | Oct 25th |
+ * OpenAPI spec version: 0.3.1
  */
 import type {
   AddImpactMetricToRetroFundingBallotBody,
@@ -1068,7 +1066,11 @@ export type updateRetroFundingBallotDistributionMethodResponse = {
 export const getUpdateRetroFundingBallotDistributionMethodUrl = (
   roundId: number,
   addressOrEnsName: string,
-  distributionMethod: 'IMPACT_GROUPS' | 'TOP_TO_BOTTOM'
+  distributionMethod:
+    | 'IMPACT_GROUPS'
+    | 'TOP_TO_BOTTOM'
+    | 'TOP_WEIGHTED'
+    | 'PARETO'
 ) => {
   return `/api/agora/retrofunding/rounds/${roundId}/ballots/${addressOrEnsName}/distribution_method/${distributionMethod}`;
 };
@@ -1076,7 +1078,11 @@ export const getUpdateRetroFundingBallotDistributionMethodUrl = (
 export const updateRetroFundingBallotDistributionMethod = async (
   roundId: number,
   addressOrEnsName: string,
-  distributionMethod: 'IMPACT_GROUPS' | 'TOP_TO_BOTTOM',
+  distributionMethod:
+    | 'IMPACT_GROUPS'
+    | 'TOP_TO_BOTTOM'
+    | 'TOP_WEIGHTED'
+    | 'PARETO',
   options?: RequestInit
 ): Promise<updateRetroFundingBallotDistributionMethodResponse> => {
   return customFetch<
