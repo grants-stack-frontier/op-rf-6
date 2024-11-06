@@ -36,26 +36,28 @@ export function ImpactStatement({
           allowed.
         </p>
       </div>
-      {statement?.map(({ question, answer }, index) => (
-        <div className="flex flex-col gap-6 mb-12" key={index}>
-          <p className="border-l-4 pl-2 border-red-500 font-semibold">
-            {question}
-          </p>
-          <Markdown className="text-gray-700 dark:text-gray-300">
-            {answer}
-          </Markdown>
-        </div>
-      ))}
-      {/* {statement && (
-        <div className="flex flex-col gap-6 mb-12">
-          <p className="border-l-4 pl-2 border-red-500 font-semibold">
-            {statement.question}
-          </p>
-          <Markdown className="text-gray-700 dark:text-gray-300">
-            {statement.answer}
-          </Markdown>
-        </div>
-      )} */}
+      {Array.isArray(statement)
+        ? statement.map(({ question, answer }, index) => (
+            <div className="flex flex-col gap-6 mb-12" key={index}>
+              <p className="border-l-4 pl-2 border-red-500 font-semibold">
+                {question}
+              </p>
+              <Markdown className="text-gray-700 dark:text-gray-300">
+                {answer}
+              </Markdown>
+            </div>
+          ))
+        : statement && (
+          <div className="flex flex-col gap-6 mb-12">
+            <p className="border-l-4 pl-2 border-red-500 font-semibold">
+              {statement.question}
+            </p>
+            <Markdown className="text-gray-700 dark:text-gray-300">
+              {statement.answer}
+            </Markdown>
+          </div>
+        )
+      }
     </>
   );
 }
