@@ -8,7 +8,7 @@ import {
   useDistributionMethodFromLocalStorage,
   useDistributionMethod,
   saveDistributionMethodToLocalStorage,
-} from '@/hooks/useBallotRound5';
+} from '@/hooks/useBallot';
 
 import { Button } from '../ui/button';
 import {

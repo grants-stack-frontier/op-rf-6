@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 const impactScores: { [key: number]: string } = {
   0: 'Conflict of interest',
@@ -13,7 +13,7 @@ const impactScores: { [key: number]: string } = {
 };
 
 export function ConflictsSection() {
-  const { conflicts } = useBallotRound5Context();
+  const { conflicts } = useBallotContext();
 
   if (conflicts.length === 0) {
     return null;

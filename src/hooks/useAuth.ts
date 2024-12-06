@@ -8,10 +8,11 @@ import mixpanel from '@/lib/mixpanel';
 import { getToken, setToken } from '@/lib/token';
 
 import type { Address } from 'viem';
+import { ReactQueryKeys } from '@/types/various';
 
 export function useNonce() {
   return useQuery({
-    queryKey: ['nonce'],
+    queryKey: [ReactQueryKeys.SIWE_NONCE],
     queryFn: async () => ky.get('/api/agora/auth/nonce').text(),
   });
 }
@@ -48,7 +49,7 @@ export function useDisconnect() {
     wagmiDisconnect.disconnect();
     global?.localStorage?.removeItem('token');
     mixpanel.reset();
-    await client.invalidateQueries({ queryKey: ['session'] });
+    await client.invalidateQueries({ queryKey: [ReactQueryKeys.SIWE_SESSION] });
     router.push('/');
   }
 
@@ -57,7 +58,7 @@ export function useDisconnect() {
 
 export function useSession() {
   return useQuery({
-    queryKey: ['session'],
+    queryKey: [ReactQueryKeys.SIWE_SESSION],
     queryFn: async () => {
       const accessToken = getToken();
 

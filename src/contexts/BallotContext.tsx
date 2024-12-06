@@ -15,30 +15,30 @@ import { ROUND } from '@/config';
 import { useSession } from '@/hooks/useAuth';
 import {
   useBallot,
-  useSaveRound5Position,
-  useRound5BallotWeightSum,
+  useSavePosition,
+  useBallotWeightSum,
   useDistributionMethodFromLocalStorage,
   useDistributionMethod,
   DistributionMethod,
-  useIsSavingRound5Ballot,
-  useSaveRound5Allocation,
-} from '@/hooks/useBallotRound5';
-import { useBallotEditor } from '@/hooks/useBallotRound5Editor';
+  useIsSavingBallot,
+  useSaveAllocation,
+} from '@/hooks/useBallot';
+import { useBallotEditor } from '@/hooks/useBallotEditor';
 import { useBudget } from '@/hooks/useBudget';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
 import { useProjectSorting } from '@/hooks/useProjectSorting';
 import {
   ProjectAllocationState,
-  Round5Ballot,
-  Round5ProjectAllocation,
+  Ballot,
+  ProjectAllocation,
 } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
 import { CategoryId } from '@/types/various';
 
-type BallotContext = ReturnType<typeof useBallotEditor> & {
+type BallotContextType = ReturnType<typeof useBallotEditor> & {
   isPending: boolean;
-  ballot?: Round5Ballot | undefined;
+  ballot?: Ballot | undefined;
   updateBallotState: () => Promise<void>;
   projectList: ProjectAllocationState[];
   conflicts: ProjectAllocationState[];
@@ -70,12 +70,12 @@ type BallotContext = ReturnType<typeof useBallotEditor> & {
   isSavingBallot: boolean;
 };
 
-const BallotRound5Context = createContext({} as BallotContext);
+const BallotContext = createContext({} as BallotContextType);
 
 export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
   const { data: ballot, isFetched, isPending, refetch } = useBallot(address);
-  const [localBallot, setLocalBallot] = useState<Round5Ballot | undefined>(
+  const [localBallot, setLocalBallot] = useState<Ballot | undefined>(
     ballot
   );
 
@@ -91,11 +91,11 @@ export function BallotProvider({ children }: PropsWithChildren) {
   } = useDistributionMethodFromLocalStorage();
   const { mutate: redistribute, isPending: isRedistributing } =
     useDistributionMethod();
-  const { mutateAsync: savePosition } = useSaveRound5Position();
-  const allocationSum = useRound5BallotWeightSum();
+  const { mutateAsync: savePosition } = useSavePosition();
+  const allocationSum = useBallotWeightSum();
   const { getBudget } = useBudget(ROUND);
-  const isSavingBallot = useIsSavingRound5Ballot();
-  const { mutate: saveAllocation } = useSaveRound5Allocation();
+  const isSavingBallot = useIsSavingBallot();
+  const { mutate: saveAllocation } = useSaveAllocation();
   const { isPending: isResettingAllocations } = useSaveProjects();
 
   const [isSubmitting, setSubmitting] = useState(false);
@@ -382,7 +382,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
   }, []);
 
   function sortAndPrepProjects(
-    newProjects: Round5ProjectAllocation[],
+    newProjects: ProjectAllocation[],
     filter?: 'conflict' | 'no-conflict'
   ): ProjectAllocationState[] {
     const preparedProjects = newProjects
@@ -452,12 +452,12 @@ export function BallotProvider({ children }: PropsWithChildren) {
   };
 
   return (
-    <BallotRound5Context.Provider value={value}>
+    <BallotContext.Provider value={value}>
       {children}
-    </BallotRound5Context.Provider>
+    </BallotContext.Provider>
   );
 }
 
-export function useBallotRound5Context() {
-  return useContext(BallotRound5Context);
+export function useBallotContext() {
+  return useContext(BallotContext);
 }

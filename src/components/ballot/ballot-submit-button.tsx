@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
 import { ROUND, votingEndDate } from '@/config';
-import { useRound5BallotWeightSum } from '@/hooks/useBallotRound5';
+import { useBallotWeightSum } from '@/hooks/useBallot';
 import { useBudget } from '@/hooks/useBudget';
 
 import { useVotingTimeLeft } from '../common/voting-ends-in';
@@ -9,7 +9,7 @@ import { Button } from '../ui/button';
 import { DisabledTooltip } from '../ui/tooltip';
 
 export function BallotSubmitButton({ onClick }: ComponentProps<typeof Button>) {
-  const allocationSum = useRound5BallotWeightSum();
+  const allocationSum = useBallotWeightSum();
   const [seconds] = useVotingTimeLeft(votingEndDate);
   const {
     getBudget: { data: budgetData },

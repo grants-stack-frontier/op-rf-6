@@ -20,7 +20,7 @@ import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
 import { ProjectsResponse } from '@/types/projects';
-import type { CategoryId } from '@/types/various';
+import { ReactQueryKeys, type CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
   GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
@@ -31,7 +31,7 @@ export const categoryMap: Record<CategoryId, string> = {
 export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
   const { limit, offset, category } = params ?? {};
   return useQuery({
-    queryKey: ['projects', limit, offset, category],
+    queryKey: [ReactQueryKeys.PROJECTS, limit, offset, category],
     queryFn: async () => {
       if (limit !== undefined) {
         const results: getRetroFundingRoundProjectsResponse =
@@ -77,7 +77,7 @@ export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
 
 export function useProjectsByCategory(categoryId?: CategoryId) {
   return useQuery({
-    queryKey: ['projects-by-category', categoryId],
+    queryKey: [ReactQueryKeys.PROJECTS_BY_CATEGORY, categoryId],
     queryFn: async () =>
       getRetroFundingRoundProjects(ROUND, {
         limit: 100,
@@ -95,7 +95,7 @@ export function useSaveProjectImpact() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['save-project-impact'],
+    mutationKey: [ReactQueryKeys.SAVE_PROJECT_IMPACT],
     mutationFn: async ({
       projectId,
       impact,
@@ -131,7 +131,7 @@ export function useSaveProjects() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['save-projects'],
+    mutationKey: [ReactQueryKeys.SAVE_PROJECTS],
     mutationFn: async ({
       projects,
     }: {
@@ -169,7 +169,7 @@ export function useSaveProjects() {
 
 export function useProjectById(projectId: string) {
   return useQuery({
-    queryKey: ['projects-by-id', projectId],
+    queryKey: [ReactQueryKeys.PROJECTS_BY_ID, projectId],
     queryFn: async () =>
       getRetroFundingRoundProjectById(ROUND, projectId).then(
         (results: getRetroFundingRoundProjectByIdResponse) => {
@@ -181,7 +181,7 @@ export function useProjectById(projectId: string) {
 
 export function useAllProjectsByCategory() {
   return useQuery({
-    queryKey: ['all-projects-by-category'],
+    queryKey: [ReactQueryKeys.ALL_PROJECTS_BY_CATEGORY],
     queryFn: async () => {
       const categories = Object.values(categoryMap);
       const projectsByCategory: Record<string, Project[]> = {};

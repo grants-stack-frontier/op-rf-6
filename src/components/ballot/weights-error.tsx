@@ -2,15 +2,15 @@ import { useMemo } from 'react';
 
 import { ROUND, votingEndDate } from '@/config';
 import {
-  useRound5BallotWeightSum,
+  useBallotWeightSum,
   useDistributionMethodFromLocalStorage,
-} from '@/hooks/useBallotRound5';
+} from '@/hooks/useBallot';
 import { useBudget } from '@/hooks/useBudget';
 
 import { useVotingTimeLeft } from '../common/voting-ends-in';
 
 export function WeightsError() {
-  const allocationSum = useRound5BallotWeightSum();
+  const allocationSum = useBallotWeightSum();
   const remainingAllocation = useMemo(() => {
     return 100 - allocationSum;
   }, [allocationSum]);

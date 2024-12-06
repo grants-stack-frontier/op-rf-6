@@ -14,7 +14,7 @@ import type {
   Ballot,
 } from '@/__generated__/api/agora.schemas';
 import { useToast } from '@/components/ui/use-toast';
-import type { Round5Allocation } from '@/types/various';
+import { ReactQueryKeys, type RoundAllocation } from '@/types/various';
 
 export function useBudget(roundId: number) {
   const { toast } = useToast();
@@ -23,7 +23,7 @@ export function useBudget(roundId: number) {
 
   const getBudget = useQuery({
     enabled: Boolean(address),
-    queryKey: ['budget', address, roundId],
+    queryKey: [ReactQueryKeys.BUDGET, address, roundId],
     queryFn: async () => {
       if (!address) throw new Error('No address provided');
       return getRetroFundingRoundBallotById(roundId, address).then(
@@ -43,8 +43,8 @@ export function useBudget(roundId: number) {
   });
 
   const saveAllocation = useMutation({
-    mutationKey: ['save-budget', roundId],
-    mutationFn: async (allocation: Round5Allocation) => {
+    mutationKey: [ReactQueryKeys.SAVE_BUDGET, roundId],
+    mutationFn: async (allocation: RoundAllocation) => {
       if (!address) throw new Error('No address provided');
       return updateRetroFundingRoundCategoryAllocation(
         roundId,
@@ -54,7 +54,7 @@ export function useBudget(roundId: number) {
         const updatedBallot = response.data as Ballot;
         // Update the query data with the full structure
         queryClient.setQueryData(
-          ['budget', address, roundId],
+          [ReactQueryKeys.BUDGET, address, roundId],
           (_: unknown) => ({
             budget: updatedBallot.budget,
             allocations: updatedBallot.category_allocations,
