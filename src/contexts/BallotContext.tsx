@@ -75,9 +75,7 @@ const BallotContext = createContext({} as BallotContextType);
 export function BallotProvider({ children }: PropsWithChildren) {
   const { address } = useAccount();
   const { data: ballot, isFetched, isPending, refetch } = useBallot(address);
-  const [localBallot, setLocalBallot] = useState<Ballot | undefined>(
-    ballot
-  );
+  const [localBallot, setLocalBallot] = useState<Ballot | undefined>(ballot);
 
   const editor = useBallotEditor();
 
@@ -452,9 +450,7 @@ export function BallotProvider({ children }: PropsWithChildren) {
   };
 
   return (
-    <BallotContext.Provider value={value}>
-      {children}
-    </BallotContext.Provider>
+    <BallotContext.Provider value={value}>{children}</BallotContext.Provider>
   );
 }
 
