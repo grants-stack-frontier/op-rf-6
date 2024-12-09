@@ -8,7 +8,7 @@ import {
   removeSkippedProject,
   setProjectsSkipped,
 } from '@/lib/localStorage';
-import { Round5Ballot } from '@/types/ballot';
+import { Ballot } from '@/types/ballot';
 import { ImpactScore, ProjectsSkipped } from '@/types/project-scoring';
 
 import type { Address } from 'viem';
@@ -28,7 +28,7 @@ export const useProjectScoring = (
   category: string,
   id: string,
   walletAddress: Address | undefined,
-  ballot: Round5Ballot | undefined
+  ballot: Ballot | undefined
 ) => {
   const [allProjectsScored, setAllProjectsScored] = useState(false);
   const [isSaving, setIsSaving] = useState(false);

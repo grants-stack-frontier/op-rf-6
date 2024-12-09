@@ -11,7 +11,7 @@ import {
   saveDistributionMethodToLocalStorage,
   useDistributionMethod,
   useDistributionMethodFromLocalStorage,
-} from '@/hooks/useBallotRound5';
+} from '@/hooks/useBallot';
 import { cn } from '@/lib/utils';
 
 import Custom from '../../../public/chart-custom-2.svg';

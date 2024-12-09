@@ -4,11 +4,11 @@ import { Address } from 'viem';
 
 import { Project } from '@/__generated__/api/agora.schemas';
 import { getProjectsSkipped } from '@/lib/localStorage';
-import { Round5Ballot } from '@/types/ballot';
+import { Ballot } from '@/types/ballot';
 
 export function useProjectSorting(
   projects: Project[] | undefined,
-  ballot: Round5Ballot | undefined,
+  ballot: Ballot | undefined,
   currentProject: Project | undefined,
   walletAddress: Address | undefined
 ) {

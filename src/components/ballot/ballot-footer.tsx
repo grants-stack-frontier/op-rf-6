@@ -1,7 +1,7 @@
 import { LoaderIcon } from 'lucide-react';
 import React from 'react';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 import { BallotSubmitButton } from './ballot-submit-button';
 import { SubmitRound5Dialog } from './submit-dialog5';
@@ -9,7 +9,7 @@ import { WeightsError } from './weights-error';
 
 export function BallotFooter() {
   const { ballot, isSubmitting, setSubmitting, isSavingBallot } =
-    useBallotRound5Context();
+    useBallotContext();
 
   return (
     <div className="flex flex-col gap-6 mt-6">

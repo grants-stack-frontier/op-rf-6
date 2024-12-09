@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 import { SearchInput } from '../common/search-input';
 import { MetricsEditor } from '../metrics-editor';
@@ -9,7 +9,7 @@ import { ProjectItem } from './project-item';
 
 export function BallotProjects() {
   const { displayProjects, budget, searchTerm, handleSearch } =
-    useBallotRound5Context();
+    useBallotContext();
 
   return (
     <>

@@ -11,12 +11,12 @@ import { ConflictsSection } from '@/components/ballot/conflicts-section';
 import { PageView } from '@/components/common/page-view';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useProjects } from '@/hooks/useProjects';
 
 export default function BallotPage() {
   const { address, isConnecting } = useAccount();
-  const { state, ballot, isPending } = useBallotRound5Context();
+  const { state, ballot, isPending } = useBallotContext();
   const { data: projects } = useProjects();
 
   console.log({ ballot, projects });

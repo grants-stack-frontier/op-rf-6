@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/common/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { BallotProvider } from '@/contexts/BallotRound5Context';
+import { BallotProvider } from '@/contexts/BallotContext';
 import { BudgetProvider } from '@/contexts/BudgetContext';
 import { cn } from '@/lib/utils';
 

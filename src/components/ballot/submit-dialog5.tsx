@@ -7,9 +7,9 @@ import { useAccount } from 'wagmi';
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ROUND, ROUND_NAME, votingEndDate } from '@/config';
-import { useBallot, useSubmitBallot } from '@/hooks/useBallotRound5';
+import { useBallot, useSubmitBallot } from '@/hooks/useBallot';
 import { formatDate } from '@/lib/utils';
-import { Round5Ballot } from '@/types/ballot';
+import { Ballot } from '@/types/ballot';
 
 import VotingSuccessImage from '../../../public/RetroFunding_R6_IVoted.png';
 import { Button } from '../ui/button';
@@ -23,7 +23,7 @@ export function SubmitRound5Dialog({
   open,
   ballot,
   onOpenChange,
-}: ComponentProps<typeof Dialog> & { ballot?: Round5Ballot }) {
+}: ComponentProps<typeof Dialog> & { ballot?: Ballot }) {
   const [feedbackProgress, setFeedbackProgress] = useState<
     'init' | 'in_progress' | 'submit' | 'done'
   >(ballot?.status === 'SUBMITTED' ? 'submit' : 'init');

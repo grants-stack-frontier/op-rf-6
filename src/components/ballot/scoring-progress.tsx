@@ -3,12 +3,12 @@
 import { useMemo } from 'react';
 
 import { Text } from '@/components/ui/text';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 
 import { Progress } from '../ui/progress';
 
 export function ScoringProgressBar() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
 
   const quantities = useMemo(() => {
     if (ballot) {

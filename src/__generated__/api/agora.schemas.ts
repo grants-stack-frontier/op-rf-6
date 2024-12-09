@@ -629,7 +629,9 @@ export type ProjectImpactStatementStatement = {
 
 export type ProjectImpactStatement = {
   category?: string;
-  statement?: ProjectImpactStatementStatement | ProjectImpactStatementStatement[];
+  statement?:
+    | ProjectImpactStatementStatement
+    | ProjectImpactStatementStatement[];
   subcategory?: string[];
 };
 

@@ -10,7 +10,7 @@ import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { Project } from '@/__generated__/api/agora.schemas';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
 import { useProjectById, useProjectsByCategory } from '@/hooks/useProjects';
 import { useProjectScoring } from '@/hooks/useProjectScoring';
@@ -43,7 +43,7 @@ export const ProjectProvider: React.FC<{
   const { data: project, isPending: isProjectLoading } = useProjectById(id);
   const { data: projects, isPending: isProjectsLoading } =
     useProjectsByCategory(project?.applicationCategory as CategoryId);
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const { address } = useAccount();
 
   const [showUnlockDialog, setShowUnlockDialog] = useState(false);

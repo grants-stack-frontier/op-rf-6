@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { NumberInput } from '@/components/ui/number-input';
 import { Separator } from '@/components/ui/separator';
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { ProjectAllocationState } from '@/types/ballot';
 
 interface ProjectItemProps {
@@ -32,7 +32,7 @@ export function ProjectItem({ project, index }: ProjectItemProps) {
     budget,
     formatAllocationOPAmount,
     isInteractive,
-  } = useBallotRound5Context();
+  } = useBallotContext();
 
   const [isInputFocused, setIsInputFocused] = useState(false);
 

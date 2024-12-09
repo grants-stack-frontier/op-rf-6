@@ -3,17 +3,17 @@
 import { type ComponentProps, useCallback, useRef } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useSession } from '@/hooks/useAuth';
 import {
   DistributionMethod,
   useDistributionMethodFromLocalStorage,
   useBallot,
-} from '@/hooks/useBallotRound5';
+} from '@/hooks/useBallot';
 import { useProjectsByCategory, useSaveProjects } from '@/hooks/useProjects';
 import { format, parseCSV } from '@/lib/csv';
 import mixpanel from '@/lib/mixpanel';
-import { Round5ProjectAllocation } from '@/types/ballot';
+import { ProjectAllocation } from '@/types/ballot';
 import { ImpactScore } from '@/types/project-scoring';
 import type { CategoryId } from '@/types/various';
 
@@ -51,7 +51,7 @@ export function ImportBallotDialog({
 }
 
 function ImportBallotButton({ onClose }: { onClose: () => void }) {
-  const { ballot, reset } = useBallotRound5Context();
+  const { ballot, reset } = useBallotContext();
   const { mutateAsync: saveProjects } = useSaveProjects();
   const { address } = useAccount();
   const { refetch } = useBallot(address);
@@ -66,7 +66,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
   const importCSV = useCallback(
     (csvString: string) => {
       // Parse CSV and build the ballot data (remove name column)
-      const { data } = parseCSV<Round5ProjectAllocation>(csvString);
+      const { data } = parseCSV<ProjectAllocation>(csvString);
       const allocations = data.map(({ project_id, allocation, impact }) => ({
         project_id,
         allocation: Number(allocation).toString(),
@@ -93,7 +93,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
           position: ballot?.project_allocations.find(
             (p) => p.project_id === alloc.project_id
           )?.position,
-        })) as Round5ProjectAllocation[]
+        })) as ProjectAllocation[]
       );
 
       mixpanel.track('Import CSV', { ballotSize: allocations.length });
@@ -145,7 +145,7 @@ function ImportBallotButton({ onClose }: { onClose: () => void }) {
 }
 
 function ExportBallotButton() {
-  const { ballot } = useBallotRound5Context();
+  const { ballot } = useBallotContext();
   const emptyBallot: any[] = ballot
     ? ballot.project_allocations.map((alloc) => ({
         project_id: alloc.project_id,
@@ -162,7 +162,7 @@ function ExportBallotButton() {
   );
 }
 
-export function exportRound5Ballot(ballot: Round5ProjectAllocation[]) {
+export function exportRound5Ballot(ballot: ProjectAllocation[]) {
   const csv = format(
     ballot.map((alloc) => ({
       project_id: alloc.project_id,

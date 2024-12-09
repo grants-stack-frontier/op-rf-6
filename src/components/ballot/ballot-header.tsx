@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { categoryNames } from '@/lib/categories';
 import { CategoryId } from '@/types/various';
 
 export function BallotHeader() {
-  const { votingCategory, ballot } = useBallotRound5Context();
+  const { votingCategory, ballot } = useBallotContext();
 
   return (
     <p>
