@@ -43,34 +43,10 @@ export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
         return results.data?.projects ?? [];
       }
 
-      const allProjects: Project[] = [];
-      let currentOffset = offset ?? 0;
-      const pageLimit = 100;
-
-      let hasMoreData = true;
-      while (hasMoreData) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit: pageLimit,
-            offset: currentOffset,
-            category: category ?? 'all',
-          });
-
-        const res: ProjectsResponse = results.data;
-
-        if (!res.data || res.data.length === 0) {
-          hasMoreData = false;
-        } else {
-          allProjects.push(...res.data);
-          currentOffset += pageLimit;
-
-          if (res.data.length < pageLimit) {
-            hasMoreData = false;
-          }
-        }
-      }
-
-      return allProjects;
+      return await getAllProjects({
+        category,
+        offset,
+      });
     },
   });
 }
@@ -187,32 +163,9 @@ export function useAllProjectsByCategory() {
       const projectsByCategory: Record<string, Project[]> = {};
 
       for (const category of categories) {
-        const allProjects: Project[] = [];
-        let currentOffset = 0;
-        const pageLimit = 100;
-
-        let hasMoreData = true;
-        while (hasMoreData) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(ROUND, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category as GetRetroFundingRoundProjectsCategory,
-            });
-
-          const res: ProjectsResponse = results.data;
-
-          if (!res.data || res.data.length === 0) {
-            hasMoreData = false;
-          } else {
-            allProjects.push(...res.data);
-            currentOffset += pageLimit;
-
-            if (res.data.length < pageLimit) {
-              hasMoreData = false;
-            }
-          }
-        }
+        const allProjects = await getAllProjects({
+          category: category as GetRetroFundingRoundProjectsCategory,
+        });
 
         projectsByCategory[category] = allProjects;
       }
@@ -220,4 +173,42 @@ export function useAllProjectsByCategory() {
       return projectsByCategory;
     },
   });
+}
+
+async function getAllProjects({
+  category = 'all',
+  offset = 0,
+  limit = 100,
+}: {
+  category?: GetRetroFundingRoundProjectsCategory;
+  offset?: number;
+  limit?: number;
+}) {
+  const allProjects: Project[] = [];
+  let currentOffset = offset;
+
+  let hasMoreData = true;
+  while (hasMoreData) {
+    const results: getRetroFundingRoundProjectsResponse =
+      await getRetroFundingRoundProjects(ROUND, {
+        limit,
+        offset: currentOffset,
+        category,
+      });
+
+    const res: ProjectsResponse = results.data;
+
+    if (!res.data || res.data.length === 0) {
+      hasMoreData = false;
+    } else {
+      allProjects.push(...res.data);
+      currentOffset += limit;
+
+      if (res.data.length < limit) {
+        hasMoreData = false;
+      }
+    }
+  }
+
+  return allProjects;
 }
