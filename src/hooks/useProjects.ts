@@ -20,7 +20,7 @@ import { agoraRoundsAPI, ROUND } from '@/config';
 import { request } from '@/lib/request';
 import { ImpactScore } from '@/types/project-scoring';
 import { ProjectsResponse } from '@/types/projects';
-import type { CategoryId } from '@/types/various';
+import { ReactQueryKeys, type CategoryId } from '@/types/various';
 
 export const categoryMap: Record<CategoryId, string> = {
   GOVERNANCE_INFRA_AND_TOOLING: 'gov_infra',
@@ -31,7 +31,7 @@ export const categoryMap: Record<CategoryId, string> = {
 export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
   const { limit, offset, category } = params ?? {};
   return useQuery({
-    queryKey: ['projects', limit, offset, category],
+    queryKey: [ReactQueryKeys.PROJECTS, limit, offset, category],
     queryFn: async () => {
       if (limit !== undefined) {
         const results: getRetroFundingRoundProjectsResponse =
@@ -43,41 +43,17 @@ export function useProjects(params?: GetRetroFundingRoundProjectsParams) {
         return results.data?.projects ?? [];
       }
 
-      const allProjects: Project[] = [];
-      let currentOffset = offset ?? 0;
-      const pageLimit = 100;
-
-      let hasMoreData = true;
-      while (hasMoreData) {
-        const results: getRetroFundingRoundProjectsResponse =
-          await getRetroFundingRoundProjects(ROUND, {
-            limit: pageLimit,
-            offset: currentOffset,
-            category: category ?? 'all',
-          });
-
-        const res: ProjectsResponse = results.data;
-
-        if (!res.data || res.data.length === 0) {
-          hasMoreData = false;
-        } else {
-          allProjects.push(...res.data);
-          currentOffset += pageLimit;
-
-          if (res.data.length < pageLimit) {
-            hasMoreData = false;
-          }
-        }
-      }
-
-      return allProjects;
+      return await getAllProjects({
+        category,
+        offset,
+      });
     },
   });
 }
 
 export function useProjectsByCategory(categoryId?: CategoryId) {
   return useQuery({
-    queryKey: ['projects-by-category', categoryId],
+    queryKey: [ReactQueryKeys.PROJECTS_BY_CATEGORY, categoryId],
     queryFn: async () =>
       getRetroFundingRoundProjects(ROUND, {
         limit: 100,
@@ -95,7 +71,7 @@ export function useSaveProjectImpact() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['save-project-impact'],
+    mutationKey: [ReactQueryKeys.SAVE_PROJECT_IMPACT],
     mutationFn: async ({
       projectId,
       impact,
@@ -131,7 +107,7 @@ export function useSaveProjects() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['save-projects'],
+    mutationKey: [ReactQueryKeys.SAVE_PROJECTS],
     mutationFn: async ({
       projects,
     }: {
@@ -169,7 +145,7 @@ export function useSaveProjects() {
 
 export function useProjectById(projectId: string) {
   return useQuery({
-    queryKey: ['projects-by-id', projectId],
+    queryKey: [ReactQueryKeys.PROJECTS_BY_ID, projectId],
     queryFn: async () =>
       getRetroFundingRoundProjectById(ROUND, projectId).then(
         (results: getRetroFundingRoundProjectByIdResponse) => {
@@ -181,38 +157,15 @@ export function useProjectById(projectId: string) {
 
 export function useAllProjectsByCategory() {
   return useQuery({
-    queryKey: ['all-projects-by-category'],
+    queryKey: [ReactQueryKeys.ALL_PROJECTS_BY_CATEGORY],
     queryFn: async () => {
       const categories = Object.values(categoryMap);
       const projectsByCategory: Record<string, Project[]> = {};
 
       for (const category of categories) {
-        const allProjects: Project[] = [];
-        let currentOffset = 0;
-        const pageLimit = 100;
-
-        let hasMoreData = true;
-        while (hasMoreData) {
-          const results: getRetroFundingRoundProjectsResponse =
-            await getRetroFundingRoundProjects(ROUND, {
-              limit: pageLimit,
-              offset: currentOffset,
-              category: category as GetRetroFundingRoundProjectsCategory,
-            });
-
-          const res: ProjectsResponse = results.data;
-
-          if (!res.data || res.data.length === 0) {
-            hasMoreData = false;
-          } else {
-            allProjects.push(...res.data);
-            currentOffset += pageLimit;
-
-            if (res.data.length < pageLimit) {
-              hasMoreData = false;
-            }
-          }
-        }
+        const allProjects = await getAllProjects({
+          category: category as GetRetroFundingRoundProjectsCategory,
+        });
 
         projectsByCategory[category] = allProjects;
       }
@@ -220,4 +173,42 @@ export function useAllProjectsByCategory() {
       return projectsByCategory;
     },
   });
+}
+
+async function getAllProjects({
+  category = 'all',
+  offset = 0,
+  limit = 100,
+}: {
+  category?: GetRetroFundingRoundProjectsCategory;
+  offset?: number;
+  limit?: number;
+}) {
+  const allProjects: Project[] = [];
+  let currentOffset = offset;
+
+  let hasMoreData = true;
+  while (hasMoreData) {
+    const results: getRetroFundingRoundProjectsResponse =
+      await getRetroFundingRoundProjects(ROUND, {
+        limit,
+        offset: currentOffset,
+        category,
+      });
+
+    const res: ProjectsResponse = results.data;
+
+    if (!res.data || res.data.length === 0) {
+      hasMoreData = false;
+    } else {
+      allProjects.push(...res.data);
+      currentOffset += limit;
+
+      if (res.data.length < limit) {
+        hasMoreData = false;
+      }
+    }
+  }
+
+  return allProjects;
 }

@@ -15,28 +15,29 @@ import { useToast } from '@/components/ui/use-toast';
 import { agoraRoundsAPI, ROUND } from '@/config';
 // import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
 import { request } from '@/lib/request';
-import { Round5Ballot } from '@/types/ballot';
+import { Ballot } from '@/types/ballot';
+import { ReactQueryKeys } from '@/types/various';
 
 export function useBallot(address?: string) {
   return useQuery({
     enabled: Boolean(address),
-    queryKey: ['ballot-round5', address],
+    queryKey: [ReactQueryKeys.BALLOT, address],
     queryFn: async () =>
       request
         .get(`${agoraRoundsAPI}/ballots/${address}`)
-        .json<Round5Ballot>()
+        .json<Ballot>()
         .then((r) => r ?? null),
   });
 }
 
-export function useSaveRound5Allocation() {
+export function useSaveAllocation() {
   const { toast } = useToast();
   const { address } = useAccount();
 
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['save-round5-ballot'],
+    mutationKey: [ReactQueryKeys.SAVE_BALLOT],
     mutationFn: async (allocation: {
       project_id: string;
       allocation: number;
@@ -46,9 +47,9 @@ export function useSaveRound5Allocation() {
           `${agoraRoundsAPI}/ballots/${address}/projects/${allocation.project_id}/allocation/${allocation.allocation}`,
           {}
         )
-        .json<Round5Ballot>()
+        .json<Ballot>()
         .then((r) => {
-          queryClient.setQueryData(['ballot-round5', address], r);
+          queryClient.setQueryData([ReactQueryKeys.BALLOT, address], r);
           return r;
         });
       return res;
@@ -101,7 +102,7 @@ export function useSubmitBallot({ onSuccess }: { onSuccess: () => void }) {
       });
 
       await queryClient.invalidateQueries({
-        queryKey: ['ballot-round5', address],
+        queryKey: [ReactQueryKeys.BALLOT, address],
       });
       await refetch();
 
@@ -127,19 +128,19 @@ function saveBallotSubmissionToLocalStorage(
   }
 }
 
-export function useSaveRound5Position() {
+export function useSavePosition() {
   const { toast } = useToast();
   const { address } = useAccount();
 
   return useMutation({
-    mutationKey: ['save-round5-position'],
+    mutationKey: [ReactQueryKeys.SAVE_POSITION],
     mutationFn: async (project: { id: string; position: number }) => {
       return request
         .post(
           `${agoraRoundsAPI}/ballots/${address}/projects/${project.id}/position/${project.position}`,
           {}
         )
-        .json<Round5Ballot>();
+        .json<Ballot>();
     },
     onError: () =>
       toast({ variant: 'destructive', title: 'Error saving ballot' }),
@@ -184,7 +185,7 @@ export function useDistributionMethodFromLocalStorage() {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ['distribution-method-local-storage', address],
+    queryKey: [ReactQueryKeys.DISTRIBUTION_METHOD_LOCAL_STORAGE, address],
     queryFn: () =>
       address ? getDistributionMethodFromLocalStorage(address) : null,
     enabled: !!address,
@@ -200,7 +201,7 @@ export function useDistributionMethodFromLocalStorage() {
     onSuccess: (method) => {
       if (address) {
         queryClient.setQueryData(
-          ['distribution-method-local-storage', address],
+          [ReactQueryKeys.DISTRIBUTION_METHOD_LOCAL_STORAGE, address],
           method
         );
       }
@@ -224,16 +225,16 @@ export function useDistributionMethod() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationKey: ['save-round5-distribution-method', address],
+    mutationKey: [ReactQueryKeys.SAVE_DISTRIBUTION_METHOD, address],
     mutationFn: async (distribution_method: DistributionMethod) => {
       const res = await request
         .post(
           `${agoraRoundsAPI}/ballots/${address}/distribution_method/${distribution_method}`,
           {}
         )
-        .json<Round5Ballot>()
+        .json<Ballot>()
         .then((r) => {
-          queryClient.setQueryData(['ballot-round5', address], r);
+          queryClient.setQueryData([ReactQueryKeys.BALLOT, address], r);
           if (address) {
             saveDistributionMethodToLocalStorage(distribution_method, address);
           }
@@ -254,11 +255,11 @@ export function useDistributionMethod() {
   });
 }
 
-export function useIsSavingRound5Ballot() {
-  return Boolean(useIsMutating({ mutationKey: ['save-round5-ballot'] }));
+export function useIsSavingBallot() {
+  return Boolean(useIsMutating({ mutationKey: [ReactQueryKeys.SAVE_BALLOT] }));
 }
 
-export function useRound5BallotWeightSum() {
+export function useBallotWeightSum() {
   const { address } = useAccount();
   const { data: ballot } = useBallot(address);
 

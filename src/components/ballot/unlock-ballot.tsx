@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
-import { useBallotRound5Context } from '@/contexts/BallotRound5Context';
+import { useBallotContext } from '@/contexts/BallotContext';
 import { useProjectContext } from '@/contexts/ProjectContext';
 
 import { LoadingDialog } from '../common/loading-dialog';
@@ -27,7 +27,7 @@ export function UnlockBallotDialog() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const roundId = ROUND;
-  const { updateBallotState } = useBallotRound5Context();
+  const { updateBallotState } = useBallotContext();
 
   const handleUnlock = useCallback(async () => {
     setIsUnlockedLoading(true);
