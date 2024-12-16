@@ -1,4 +1,8 @@
-import { BallotStatus, Ballot as RFBallot, RetroFundingBallotCategoriesAllocation } from '@/__generated__/api/agora.schemas';
+import {
+  BallotStatus,
+  Ballot as RFBallot,
+  RetroFundingBallotCategoriesAllocation,
+} from '@/__generated__/api/agora.schemas';
 
 export interface ProjectAllocationState extends ProjectAllocation {
   allocationInput: string;
