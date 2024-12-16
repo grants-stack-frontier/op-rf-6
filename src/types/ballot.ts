@@ -1,12 +1,4 @@
-import { RetroFunding5BallotSubmissionContent } from '@/__generated__/api/agora.schemas';
-
-import type { CategoryId } from './various';
-
-export type RoundAllocation = {
-  category_slug: CategoryId;
-  allocation: number;
-  locked: boolean;
-};
+import { BallotStatus, Ballot as RFBallot, RetroFundingBallotCategoriesAllocation } from '@/__generated__/api/agora.schemas';
 
 export interface ProjectAllocationState extends ProjectAllocation {
   allocationInput: string;
@@ -23,31 +15,14 @@ export type ProjectAllocation = {
   impact: number;
 };
 
-export type BallotStatus =
-  | 'NOT STARTED'
-  | 'RANKED'
-  | 'PENDING SUBMISSION'
-  | 'SUBMITTED';
-
-export type Ballot = {
+export interface Ballot extends RFBallot {
   address: string;
   round_id: number;
   status: BallotStatus;
-  budget?: number;
-  created_at?: string;
-  updated_at?: string;
-  published_at?: string;
-  submitted_at?: string;
-  category_allocations: CategoryAllocation[];
+  category_allocations: RetroFundingBallotCategoriesAllocation[];
   project_allocations: ProjectAllocation[];
   projects_to_be_evaluated: string[];
   total_projects: number;
-  payload_for_signature?: RetroFunding5BallotSubmissionContent;
+  submitted_at?: string;
   distribution_method?: string;
-};
-
-export type CategoryAllocation = {
-  category_slug: CategoryId;
-  allocation: number;
-  locked: boolean;
-};
+}
