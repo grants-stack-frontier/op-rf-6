@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form';
 
 import { useSendFeedback } from '@/hooks/useFeedback';
-import { FeedbackForm } from '@/types/various';
+import { FeedbackForm, FeedbackFormKeyName } from '@/types/feedback';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Textarea } from '../ui/textarea';
+import { feedbackFormConfig } from '@/lib/feedbackConfig';
 
 export function Form({
   children,
@@ -40,7 +41,8 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
 
   const { mutate, isPending } = useSendFeedback();
 
-  const questions = useMemo(() => createQuestions(register), [register]);
+  // const questions = useMemo(() => createQuestions(register), [register]);
+  const questions = useMemo(() => createQuestions2(register), [register]);
   const { title, description, children, isSkippable } = questions[index];
   return (
     <form
@@ -108,182 +110,253 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
   );
 }
 
-function createQuestions(
+// function createQuestions(
+//   register: UseFormRegister<FeedbackForm & { index: number }>
+// ) {
+//   return [
+//     {
+//       title: 'How much time did you spend on voting in this round (in hours)?',
+//       children: (
+//         <Input
+//           {...register('votingTime', { required: true })}
+//           type="number"
+//           placeholder="Ex: 10 hours"
+//         />
+//       ),
+//     },
+//     {
+//       title: 'Please rate the voting experience',
+//       children: (
+//         <SelectForm
+//           key="voting"
+//           name="voting"
+//           hideComment
+//           options={Array(10)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0 ? '(terrible)' : index === 9 ? '(amazing ✨)' : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//     {
+//       title:
+//         'Did the app provide you enough information to confidently vote on the round budget and category allocation?',
+//       children: (
+//         <SelectForm
+//           key="budgetConfidence"
+//           name="budgetConfidence"
+//           commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
+//           options={Array(7)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0
+//                   ? '(definitely not)'
+//                   : index === 3
+//                     ? '(somewhat)'
+//                     : index === 6
+//                       ? '(absolutely)'
+//                       : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//     {
+//       title:
+//         'How useful was scoring each project before deciding on your allocation?',
+//       description: 'If you used Pairwise, skip this question.',
+//       isSkippable: true,
+//       children: (
+//         <SelectForm
+//           key="scoringUsefulness"
+//           name="scoringUsefulness"
+//           commentPlaceholder="Optionally, how would you change or improve the scoring step? Reminder that these responses are private."
+//           options={Array(7)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0
+//                   ? '(not useful at all)'
+//                   : index === 3
+//                     ? '(somewhat useful)'
+//                     : index === 6
+//                       ? '(very useful)'
+//                       : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//     {
+//       title: 'How useful were allocation methods for determining your ballot?',
+//       isSkippable: true,
+//       children: (
+//         <SelectForm
+//           key="allocationMethodsUsefulness"
+//           name="allocationMethodsUsefulness"
+//           commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
+//           options={Array(7)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0
+//                   ? '(not useful at all)'
+//                   : index === 3
+//                     ? '(somewhat useful)'
+//                     : index === 6
+//                       ? '(very useful)'
+//                       : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//     {
+//       title:
+//         'How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?',
+//       description:
+//         'Examples are collusion, bribery, self-dealing, or other behaviors at odds with the goals of the Collective.',
+//       children: (
+//         <SelectForm
+//           key="concern"
+//           name="concern"
+//           options={Array(7)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0
+//                   ? '(not worried)'
+//                   : index === 3
+//                     ? '(somewhat worried)'
+//                     : index === 6
+//                       ? '(very worried)'
+//                       : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//     {
+//       title:
+//         'Given the design of this round, how confident do you feel that rewards will be allocated efficiently to the most deserving projects?',
+//       children: (
+//         <SelectForm
+//           key="confidence"
+//           name="confidence"
+//           options={Array(7)
+//             .fill(0)
+//             .map((_, index) => ({
+//               label: `${index + 1} ${
+//                 index === 0
+//                   ? '(very low confidence)'
+//                   : index === 3
+//                     ? '(some confidence)'
+//                     : index === 6
+//                       ? '(very high confidence)'
+//                       : ''
+//               }`,
+//               value: String(index + 1),
+//             }))}
+//         />
+//       ),
+//     },
+//   ];
+// }
+
+// function SelectForm({
+//   name = '',
+//   options = [],
+//   hideComment,
+//   commentPlaceholder,
+// }: {
+//   name: string;
+//   hideComment?: boolean;
+//   commentPlaceholder?: string;
+//   options: { value: string; label: string }[];
+// }) {
+//   const _name = `${name}Rating`;
+//   const { control, register } = useFormContext();
+//   const { field } = useController({ name: _name, control });
+
+//   return (
+//     <div className="space-y-2">
+//       <Select
+//         required
+//         value={field.value}
+//         defaultValue={field.value}
+//         onValueChange={field.onChange}
+//       >
+//         <SelectTrigger>
+//           <SelectValue placeholder="Select" />
+//         </SelectTrigger>
+//         <SelectContent>
+//           {options.map((opt) => (
+//             <SelectItem key={opt.value} value={opt.value}>
+//               {opt.label}
+//             </SelectItem>
+//           ))}
+//         </SelectContent>
+//       </Select>
+//       {!hideComment && (
+//         <Textarea
+//           {...register(`${name}Comment`)}
+//           placeholder={
+//             commentPlaceholder ??
+//             'Please feel free to elaborate here. Reminder that these responses are private.'
+//           }
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
+
+function createQuestions2(
   register: UseFormRegister<FeedbackForm & { index: number }>
 ) {
-  return [
-    {
-      title: 'How much time did you spend on voting in this round (in hours)?',
-      children: (
-        <Input
-          {...register('votingTime', { required: true })}
-          type="number"
-          placeholder="Ex: 10 hours"
-        />
-      ),
-    },
-    {
-      title: 'Please rate the voting experience',
-      children: (
-        <SelectForm
-          key="voting"
-          name="voting"
-          hideComment
-          options={Array(10)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0 ? '(terrible)' : index === 9 ? '(amazing ✨)' : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title:
-        'Did the app provide you enough information to confidently vote on the round budget and category allocation?',
-      children: (
-        <SelectForm
-          key="budgetConfidence"
-          name="budgetConfidence"
-          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(definitely not)'
-                  : index === 3
-                    ? '(somewhat)'
-                    : index === 6
-                      ? '(absolutely)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title:
-        'How useful was scoring each project before deciding on your allocation?',
-      description: 'If you used Pairwise, skip this question.',
-      isSkippable: true,
-      children: (
-        <SelectForm
-          key="scoringUsefulness"
-          name="scoringUsefulness"
-          commentPlaceholder="Optionally, how would you change or improve the scoring step? Reminder that these responses are private."
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(not useful at all)'
-                  : index === 3
-                    ? '(somewhat useful)'
-                    : index === 6
-                      ? '(very useful)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title: 'How useful were allocation methods for determining your ballot?',
-      isSkippable: true,
-      children: (
-        <SelectForm
-          key="allocationMethodsUsefulness"
-          name="allocationMethodsUsefulness"
-          commentPlaceholder="Please feel free to elaborate or provide additional feedback here. Reminder that these responses are private."
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(not useful at all)'
-                  : index === 3
-                    ? '(somewhat useful)'
-                    : index === 6
-                      ? '(very useful)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title:
-        'How worried are you about detrimental behavior among badgeholders influencing the allocation of Retro Funding in this round?',
-      description:
-        'Examples are collusion, bribery, self-dealing, or other behaviors at odds with the goals of the Collective.',
-      children: (
-        <SelectForm
-          key="concern"
-          name="concern"
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(not worried)'
-                  : index === 3
-                    ? '(somewhat worried)'
-                    : index === 6
-                      ? '(very worried)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-    {
-      title:
-        'Given the design of this round, how confident do you feel that rewards will be allocated efficiently to the most deserving projects?',
-      children: (
-        <SelectForm
-          key="confidence"
-          name="confidence"
-          options={Array(7)
-            .fill(0)
-            .map((_, index) => ({
-              label: `${index + 1} ${
-                index === 0
-                  ? '(very low confidence)'
-                  : index === 3
-                    ? '(some confidence)'
-                    : index === 6
-                      ? '(very high confidence)'
-                      : ''
-              }`,
-              value: String(index + 1),
-            }))}
-        />
-      ),
-    },
-  ];
+  return feedbackFormConfig.formFields.filter(field => field.type !== 'hidden').map((field) => ({
+    title: field.title,
+    description: field.description,
+    isSkippable: field.skippable,
+    children: field.type === 'select' ? (
+      <SelectForm2
+        name={field.keyName}
+        options={field.options ?? []}
+        comment={field.comment}
+      />
+    ) : (
+      <Input
+        {...register(field.keyName, { required: true })}
+        type={field.type}
+        placeholder={field.placeholder}
+      />
+    ),
+  }));
 }
 
-function SelectForm({
-  name = '',
+function SelectForm2({
+  name,
   options = [],
-  hideComment,
-  commentPlaceholder,
+  comment,
 }: {
-  name: string;
-  hideComment?: boolean;
-  commentPlaceholder?: string;
-  options: { value: string; label: string }[];
+  name: FeedbackFormKeyName;
+  comment?: {
+    keyName: FeedbackFormKeyName;
+    placeholder?: string;
+  };
+  options: { label: string; value: string }[];
 }) {
-  const _name = `${name}Rating`;
   const { control, register } = useFormContext();
-  const { field } = useController({ name: _name, control });
+  const { field } = useController({ name, control });
 
   return (
     <div className="space-y-2">
@@ -304,11 +377,11 @@ function SelectForm({
           ))}
         </SelectContent>
       </Select>
-      {!hideComment && (
+      {comment && (
         <Textarea
-          {...register(`${name}Comment`)}
+          {...register(comment.keyName)}
           placeholder={
-            commentPlaceholder ??
+            comment.placeholder ??
             'Please feel free to elaborate here. Reminder that these responses are private.'
           }
         />

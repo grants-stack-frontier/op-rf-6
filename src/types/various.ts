@@ -20,22 +20,6 @@ export type RoundAllocation = {
   locked: boolean;
 };
 
-export type FeedbackForm = {
-  address: string;
-  votingTime: string;
-  votingRating: string;
-  budgetConfidenceRating: string;
-  budgetConfidenceComment?: string;
-  scoringUsefulnessRating?: string;
-  scoringUsefulnessComment?: string;
-  allocationMethodsUsefulnessRating?: string;
-  allocationMethodsUsefulnessComment?: string;
-  concernRating: string;
-  concernComment?: string;
-  confidenceRating: string;
-  confidenceComment?: string;
-};
-
 export enum ReactQueryKeys {
   SIWE_NONCE = 'nonce',
   SIWE_SESSION = 'session',
