@@ -4,14 +4,14 @@ export type RoundId = 5 | 6;
 
 export type CategoryId<T extends RoundId = 6> = T extends 5
   ?
-    | 'ETHEREUM_CORE_CONTRIBUTIONS'
-    | 'OP_STACK_RESEARCH_AND_DEVELOPMENT'
-    | 'OP_STACK_TOOLING'
+      | 'ETHEREUM_CORE_CONTRIBUTIONS'
+      | 'OP_STACK_RESEARCH_AND_DEVELOPMENT'
+      | 'OP_STACK_TOOLING'
   : T extends 6
     ?
-      | 'GOVERNANCE_INFRA_AND_TOOLING'
-      | 'GOVERNANCE_ANALYTICS'
-      | 'GOVERNANCE_LEADERSHIP'
+        | 'GOVERNANCE_INFRA_AND_TOOLING'
+        | 'GOVERNANCE_ANALYTICS'
+        | 'GOVERNANCE_LEADERSHIP'
     : RetroFundingBallotCategoriesAllocationCategorySlug;
 
 export type RoundAllocation = {

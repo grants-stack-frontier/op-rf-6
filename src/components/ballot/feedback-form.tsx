@@ -319,28 +319,30 @@ export function Feedback({ onSubmit = () => {} }: { onSubmit?: () => void }) {
 //   );
 // }
 
-
 function createQuestions2(
   register: UseFormRegister<FeedbackForm & { index: number }>
 ) {
-  return feedbackFormConfig.formFields.filter(field => field.type !== 'hidden').map((field) => ({
-    title: field.title,
-    description: field.description,
-    isSkippable: field.skippable,
-    children: field.type === 'select' ? (
-      <SelectForm2
-        name={field.keyName}
-        options={field.options ?? []}
-        comment={field.comment}
-      />
-    ) : (
-      <Input
-        {...register(field.keyName, { required: true })}
-        type={field.type}
-        placeholder={field.placeholder}
-      />
-    ),
-  }));
+  return feedbackFormConfig.formFields
+    .filter((field) => field.type !== 'hidden')
+    .map((field) => ({
+      title: field.title,
+      description: field.description,
+      isSkippable: field.skippable,
+      children:
+        field.type === 'select' ? (
+          <SelectForm2
+            name={field.keyName}
+            options={field.options ?? []}
+            comment={field.comment}
+          />
+        ) : (
+          <Input
+            {...register(field.keyName, { required: true })}
+            type={field.type}
+            placeholder={field.placeholder}
+          />
+        ),
+    }));
 }
 
 function SelectForm2({

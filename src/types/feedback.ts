@@ -32,7 +32,7 @@ export interface FeedbackFormField {
     id: string;
     keyName: FeedbackFormKeyName;
     placeholder?: string;
-  }
+  };
 }
 
 export interface FeedbackFormConfig {
