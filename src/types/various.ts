@@ -1,28 +1,23 @@
-export type CategoryId =
-  | 'GOVERNANCE_INFRA_AND_TOOLING'
-  | 'GOVERNANCE_ANALYTICS'
-  | 'GOVERNANCE_LEADERSHIP';
+import { RetroFundingBallotCategoriesAllocationCategorySlug } from '@/__generated__/api/agora.schemas';
+
+export type RoundId = 5 | 6;
+
+export type CategoryId<T extends RoundId = 6> = T extends 5
+  ?
+      | 'ETHEREUM_CORE_CONTRIBUTIONS'
+      | 'OP_STACK_RESEARCH_AND_DEVELOPMENT'
+      | 'OP_STACK_TOOLING'
+  : T extends 6
+    ?
+        | 'GOVERNANCE_INFRA_AND_TOOLING'
+        | 'GOVERNANCE_ANALYTICS'
+        | 'GOVERNANCE_LEADERSHIP'
+    : RetroFundingBallotCategoriesAllocationCategorySlug;
 
 export type RoundAllocation = {
   category_slug: CategoryId;
   allocation: number;
   locked: boolean;
-};
-
-export type FeedbackForm = {
-  address: string;
-  votingTime: string;
-  votingRating: string;
-  budgetConfidenceRating: string;
-  budgetConfidenceComment?: string;
-  scoringUsefulnessRating?: string;
-  scoringUsefulnessComment?: string;
-  allocationMethodsUsefulnessRating?: string;
-  allocationMethodsUsefulnessComment?: string;
-  concernRating: string;
-  concernComment?: string;
-  confidenceRating: string;
-  confidenceComment?: string;
 };
 
 export enum ReactQueryKeys {
